@@ -16,6 +16,7 @@ import org.andot.shre.basic.dto.UserDto;
 import org.andot.shre.basic.dto.XUserDetail;
 import org.andot.shre.basic.service.UserService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

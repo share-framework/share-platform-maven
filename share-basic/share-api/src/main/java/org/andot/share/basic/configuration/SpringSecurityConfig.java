@@ -17,6 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
+
 /**
  * @author lucas
  */
@@ -34,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserUnAuthenticationHandler userUnAuthenticationHandler;
     @Autowired
     private UserAccessDecisionManager userAccessDecisionManager;
-    @Autowired
+    @Resource
     private UserServiceImpl userService;
 
     @Bean
