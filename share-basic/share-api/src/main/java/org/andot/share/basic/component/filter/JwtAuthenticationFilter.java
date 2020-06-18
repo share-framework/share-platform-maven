@@ -5,7 +5,7 @@ import org.andot.share.basic.component.ShareValueComponent;
 import org.andot.share.basic.component.exception.TokenErrorServletException;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.utils.JwtUtil;
-import org.andot.shre.basic.service.impl.UserServiceImpl;
+import org.andot.share.basic.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package org.andot.shre.basic.service.impl;
+package org.andot.share.basic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,11 @@ import org.andot.share.basic.entity.Role;
 import org.andot.share.basic.entity.RoleUser;
 import org.andot.share.basic.entity.User;
 import org.andot.share.basic.entity.UserDetail;
-import org.andot.shre.basic.dto.RoleDto;
-import org.andot.shre.basic.dto.UserDto;
-import org.andot.shre.basic.dto.XUserDetail;
-import org.andot.shre.basic.service.UserService;
+import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.UserDto;
+import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.basic.service.UserService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

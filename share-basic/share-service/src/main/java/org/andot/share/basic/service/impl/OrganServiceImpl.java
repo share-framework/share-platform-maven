@@ -1,8 +1,8 @@
-package org.andot.shre.basic.service.impl;
+package org.andot.share.basic.service.impl;
 
 import org.andot.share.basic.entity.Organ;
-import org.andot.shre.basic.dto.OrganDto;
-import org.andot.shre.basic.service.OrganService;
+import org.andot.share.basic.dto.OrganDto;
+import org.andot.share.basic.service.OrganService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

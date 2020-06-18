@@ -1,10 +1,10 @@
-package org.andot.shre.basic.service.impl;
+package org.andot.share.basic.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.andot.share.basic.dao.RoleMapper;
 import org.andot.share.basic.entity.Role;
-import org.andot.shre.basic.dto.RoleDto;
-import org.andot.shre.basic.service.RoleService;
+import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;

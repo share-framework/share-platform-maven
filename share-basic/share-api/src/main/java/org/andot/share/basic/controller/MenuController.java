@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.shre.basic.dto.MenuDto;
-import org.andot.shre.basic.dto.PageDto;
-import org.andot.shre.basic.service.MenuService;
+import org.andot.share.basic.dto.MenuDto;
+import org.andot.share.basic.dto.PageDto;
+import org.andot.share.basic.service.MenuService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

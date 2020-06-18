@@ -4,8 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.shre.basic.dto.PageDto;
-import org.andot.shre.basic.dto.RoleDto;
+import org.andot.share.basic.dto.PageDto;
+import org.andot.share.basic.dto.RoleDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

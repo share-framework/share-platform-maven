@@ -1,11 +1,11 @@
-package org.andot.shre.basic.service.impl;
+package org.andot.share.basic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.andot.share.basic.dao.MenuMapper;
 import org.andot.share.basic.entity.AnMenu;
-import org.andot.shre.basic.dto.MenuDto;
-import org.andot.shre.basic.service.MenuService;
+import org.andot.share.basic.service.MenuService;
+import org.andot.share.basic.dto.MenuDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

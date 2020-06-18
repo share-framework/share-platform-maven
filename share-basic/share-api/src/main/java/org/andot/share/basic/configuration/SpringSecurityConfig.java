@@ -6,7 +6,7 @@ import org.andot.share.basic.component.handler.UserLogoutSuccessHandler;
 import org.andot.share.basic.component.handler.UserUnAuthenticationHandler;
 import org.andot.share.basic.component.filter.CORSSecurityFilter;
 import org.andot.share.basic.component.filter.JwtAuthenticationFilter;
-import org.andot.shre.basic.service.impl.UserServiceImpl;
+import org.andot.share.basic.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

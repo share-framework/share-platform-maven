@@ -1,7 +1,7 @@
-package org.andot.shre.basic.service;
+package org.andot.share.basic.service;
 
 import org.andot.share.basic.entity.Organ;
-import org.andot.shre.basic.dto.OrganDto;
+import org.andot.share.basic.dto.OrganDto;
 
 import java.util.List;
 

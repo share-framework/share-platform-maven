@@ -1,4 +1,4 @@
-package org.andot.shre.basic.dto;
+package org.andot.share.basic.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

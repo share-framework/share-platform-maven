@@ -7,15 +7,14 @@ import org.andot.share.common.domain.AccessToken;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.common.utils.JwtUtil;
-import org.andot.shre.basic.dto.RoleDto;
-import org.andot.shre.basic.dto.XUserDetail;
-import org.andot.shre.basic.service.UserService;
+import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.basic.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;

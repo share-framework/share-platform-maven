@@ -1,4 +1,4 @@
-package org.andot.shre.basic.service;
+package org.andot.share.basic.service;
 
 import org.andot.share.basic.entity.Action;
 

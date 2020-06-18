@@ -1,8 +1,8 @@
-package org.andot.shre.basic.service;
+package org.andot.share.basic.service;
 
 import org.andot.share.basic.entity.UserDetail;
-import org.andot.shre.basic.dto.UserDto;
-import org.andot.shre.basic.dto.XUserDetail;
+import org.andot.share.basic.dto.UserDto;
+import org.andot.share.basic.dto.XUserDetail;
 
 public interface UserService {
     /**

@@ -12,6 +12,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class MallApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MallApplication.class, args);
+        try {
+            SpringApplication.run(MallApplication.class, args);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

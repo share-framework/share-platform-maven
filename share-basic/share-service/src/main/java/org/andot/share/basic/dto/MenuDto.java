@@ -1,4 +1,4 @@
-package org.andot.shre.basic.dto;
+package org.andot.share.basic.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

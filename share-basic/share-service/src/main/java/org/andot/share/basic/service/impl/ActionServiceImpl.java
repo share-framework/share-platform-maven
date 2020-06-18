@@ -1,10 +1,10 @@
-package org.andot.shre.basic.service.impl;
+package org.andot.share.basic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.andot.share.basic.dao.ActionMapper;
 import org.andot.share.basic.entity.Action;
-import org.andot.shre.basic.service.ActionService;
+import org.andot.share.basic.service.ActionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

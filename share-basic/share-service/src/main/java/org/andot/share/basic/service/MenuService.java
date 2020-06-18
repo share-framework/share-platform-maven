@@ -1,6 +1,6 @@
-package org.andot.shre.basic.service;
+package org.andot.share.basic.service;
 
-import org.andot.shre.basic.dto.MenuDto;
+import org.andot.share.basic.dto.MenuDto;
 
 import java.util.List;
 

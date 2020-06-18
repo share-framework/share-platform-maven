@@ -1,6 +1,6 @@
-package org.andot.shre.basic.service;
+package org.andot.share.basic.service;
 
-import org.andot.shre.basic.dto.RoleDto;
+import org.andot.share.basic.dto.RoleDto;
 
 import java.util.List;
 
