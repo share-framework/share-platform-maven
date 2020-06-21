@@ -2,6 +2,7 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.ActionDto;
@@ -13,6 +14,7 @@ import java.util.List;
 /***
  * @author lucas
  */
+@Slf4j
 @Api(tags = "操作方法API", description = "操作方法请求控制器")
 @RequestMapping("/action")
 @RestController
@@ -39,6 +41,7 @@ public class ActionController {
     @ApiOperation("根据id获取数据")
     @GetMapping("/{id}")
     public CommonResult get(@PathVariable("id") Long id) {
+        log.debug("来了，老弟："+id);
         return null;
     }
 
