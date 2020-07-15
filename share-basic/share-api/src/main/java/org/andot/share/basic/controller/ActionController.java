@@ -8,6 +8,7 @@ import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.ActionDto;
 import org.andot.share.basic.dto.PageDto;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -54,7 +55,18 @@ public class ActionController {
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
     public CommonResult getList(ActionDto actionDto) {
+        this.test();
         return null;
+    }
+
+    @Async
+    public void test(){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.err.println("執行了");
     }
 
     @ApiOperation("根据条件获取分页列表数据")
