@@ -19,6 +19,7 @@
         <module>share-app-crm</module>
         <module>share-app-oa</module>
         <module>share-app-mall</module>
+        <module>share-app-search</module>
     </modules>
 
     <properties>

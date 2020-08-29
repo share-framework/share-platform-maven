@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Resource;
@@ -39,9 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = JwtUtil.getTokenByHeader(httpServletRequest.getHeader("Authorization"));
-        if ("".equals(token)) {
-            log.error("token 为空，请求接口请携带token");
-        } else {
+        if (!StringUtils.isEmpty(token)) {
             if (JwtUtil.isTokenExpired(token, shareValueComponent.getJwtSecret())) {
                 throw new TokenErrorServletException("登录信息已经失效，请重新登录");
             }
