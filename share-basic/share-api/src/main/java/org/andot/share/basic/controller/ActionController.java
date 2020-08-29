@@ -3,12 +3,15 @@ package org.andot.share.basic.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.andot.share.basic.async.TestAsync;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.ActionDto;
 import org.andot.share.basic.dto.PageDto;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /***
@@ -19,6 +22,9 @@ import java.util.List;
 @RequestMapping("/action")
 @RestController
 public class ActionController {
+
+    @Resource
+    private TestAsync testAsync;
 
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
@@ -41,14 +47,26 @@ public class ActionController {
     @ApiOperation("根据id获取数据")
     @GetMapping("/{id}")
     public CommonResult get(@PathVariable("id") Long id) {
+        System.err.println(testAsync.test(id+"AAAA"));
         log.debug("来了，老弟："+id);
-        return null;
+        return CommonResult.success("哈哈");
     }
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
     public CommonResult getList(ActionDto actionDto) {
+        this.test();
         return null;
+    }
+
+    @Async
+    public void test(){
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.err.println("執行了");
     }
 
     @ApiOperation("根据条件获取分页列表数据")
