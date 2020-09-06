@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.andot.share.basic.dao.MenuMapper">
+
+    <resultMap id="menuMap" type="org.andot.share.basic.dao.MenuMapper">
+
+    </resultMap>
+
+    <select id="getMenuListByUserId" parameterType="long" resultMap="menuMap">
+        SELECT
+            menu.*
+        FROM
+            menu
+            JOIN role_menu ON menu.menu_code = role_menu.menu_code
+            JOIN role_user ON role_menu.role_id = role_user.role_id
+        WHERE
+            role_user.x_number = #{xNumber}
+    </select>
+</mapper>

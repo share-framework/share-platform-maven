@@ -2,12 +2,18 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.andot.share.basic.component.utils.CurrentUserUtil;
+import org.andot.share.basic.dto.UserDto;
+import org.andot.share.basic.entity.User;
+import org.andot.share.basic.entity.UserDetail;
+import org.andot.share.basic.service.UserService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDto;
 import org.andot.share.basic.dto.RoleDto;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,6 +23,9 @@ import java.util.List;
 @RequestMapping("/user")
 @RestController
 public class UserController {
+
+    @Resource
+    private UserService userService;
 
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
@@ -37,9 +46,17 @@ public class UserController {
     }
 
     @ApiOperation("根据id获取数据")
-    @GetMapping("/{id}")
-    public CommonResult get(@PathVariable("id") Long id) {
-        return null;
+    @GetMapping("")
+    public CommonResult get() {
+        UserDto user = userService.getUser(CurrentUserUtil.getUserCode());
+        return CommonResult.success(user);
+    }
+
+    @ApiOperation("根据id获取数据")
+    @GetMapping("/info")
+    public CommonResult getDetailInfo() {
+        UserDetail userDetail = userService.getUserDetail(CurrentUserUtil.getUserCode());
+        return CommonResult.success(userDetail);
     }
 
     @ApiOperation("根据条件获取列表数据")

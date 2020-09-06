@@ -56,7 +56,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll();//.authenticated();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)
                 .authenticationEntryPoint(userUnAuthenticationHandler);
-        http.logout().logoutSuccessHandler(userLogoutSuccessHandler);
+        http.logout().logoutSuccessHandler(userLogoutSuccessHandler)
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .logoutUrl("/share/logout");
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(corsSecurityFilter, JwtAuthenticationFilter.class);
     }

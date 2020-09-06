@@ -1,6 +1,7 @@
 package org.andot.share.basic.service;
 
 import org.andot.share.basic.dto.MenuDto;
+import org.andot.share.basic.dto.MenuTreeDto;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface MenuService {
     boolean delMenuById(Long id);
 
     boolean delBatchMenuById(List<Long> id);
+
+    List<MenuTreeDto> getMenuTreeList(Long xnumber);
 }

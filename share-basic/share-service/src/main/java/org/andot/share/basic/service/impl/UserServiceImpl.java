@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
             return new XUserDetail(userDto, roles);
         } else {
-            throw new UsernameNotFoundException("用戶密碼錯誤");
+            throw new UsernameNotFoundException("用户密码错误");
         }
     }
 }

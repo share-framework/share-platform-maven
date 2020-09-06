@@ -13,6 +13,7 @@ import org.andot.share.basic.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,5 +50,11 @@ public class CommonController {
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
         accessToken.setToken(token);
         return CommonResult.success(accessToken, "登录成功");
+    }
+
+    @DeleteMapping("/logout")
+    public CommonResult logout() {
+
+        return CommonResult.success( "登录成功");
     }
 }

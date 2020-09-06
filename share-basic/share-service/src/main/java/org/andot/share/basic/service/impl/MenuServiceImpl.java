@@ -3,6 +3,7 @@ package org.andot.share.basic.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.andot.share.basic.dao.MenuMapper;
+import org.andot.share.basic.dto.MenuTreeDto;
 import org.andot.share.basic.entity.AnMenu;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.dto.MenuDto;
@@ -83,4 +84,9 @@ public class MenuServiceImpl implements MenuService {
         return menuDto;
     }
 
+    @Override
+    public List<MenuTreeDto> getMenuTreeList(Long xNumber) {
+        menuMapper.getMenuListByUserId(xNumber);
+        return null;
+    }
 }

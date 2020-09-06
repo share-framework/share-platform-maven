@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String token = JwtUtil.getTokenByHeader(httpServletRequest.getHeader("Authorization"));
+        String token = JwtUtil.getTokenByHeader(httpServletRequest.getHeader("X-Token"));
         if (!StringUtils.isEmpty(token)) {
             if (JwtUtil.isTokenExpired(token, shareValueComponent.getJwtSecret())) {
                 throw new TokenErrorServletException("登录信息已经失效，请重新登录");

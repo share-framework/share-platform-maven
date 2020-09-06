@@ -5,10 +5,16 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("菜單對象")
+import java.util.List;
+
+/**
+ * 菜单的树形结构
+ * @author andot
+ */
+@ApiModel("菜单的树形结构")
 @Setter
 @Getter
-public class MenuDto {
+public class MenuTreeDto {
     @ApiModelProperty("菜单名称")
     private String menuName;
     @ApiModelProperty("菜单地址")
@@ -25,4 +31,6 @@ public class MenuDto {
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
     private String orderCode;
+    @ApiModelProperty("子菜单列表")
+    private List<MenuTreeDto> children;
 }

@@ -2,7 +2,10 @@ package org.andot.share.basic.component.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.common.response.CommonResult;
+import org.andot.share.common.response.ResultCode;
+import org.andot.share.common.type.ErrorCodeType;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -43,6 +46,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.PROXY_AUTHENTICATION_REQUIRED)
     public CommonResult tokenNotFount(TokenErrorServletException e) {
         return CommonResult.failed(e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult serverError(UsernameNotFoundException ex) {
+        return CommonResult.uni(ErrorCodeType.USERNAME_OR_PASS_ERROR.intValue(), ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
