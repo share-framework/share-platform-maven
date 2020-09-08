@@ -3,6 +3,7 @@ package org.andot.share.basic.controller;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.andot.share.basic.component.utils.CurrentUserUtil;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.MenuDto;
@@ -80,5 +81,11 @@ public class MenuController {
     public CommonPage getPageList(@RequestBody PageDto<MenuDto> menuPage) {
         PageHelper.startPage(menuPage.getPage(), menuPage.getRows());
         return CommonPage.restPage(menuService.getMenuList(menuPage.getParams().getMenuName(), menuPage.getParams().getMenuUrl()));
+    }
+
+    @ApiOperation("加载树形菜单")
+    @PostMapping("/tree")
+    public CommonResult getTreeList() {
+        return CommonResult.success(menuService.getMenuTreeList(CurrentUserUtil.getUserCode()));
     }
 }

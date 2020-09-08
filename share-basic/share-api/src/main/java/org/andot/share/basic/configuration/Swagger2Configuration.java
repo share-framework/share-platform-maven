@@ -4,16 +4,18 @@ import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Swagger 2 配置类
@@ -29,11 +31,12 @@ public class Swagger2Configuration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.andot.share.api"))
+                .apis(RequestHandlerSelectors.basePackage("org.andot.share.basic"))
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(Lists.newArrayList(securityContext(), securityContext1()))
-                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey(), apiKey1()));
+                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(Lists.<SecurityScheme>newArrayList(apiKey()))
+                .globalOperationParameters(setHeaderToken());
     }
 
     private ApiInfo apiInfo() {
@@ -49,20 +52,22 @@ public class Swagger2Configuration {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("BearerToken", "Authorization", "header");
+        return new ApiKey("X-Token", "X-Token", "header");
     }
 
-    private ApiKey apiKey1() {
-        return new ApiKey("BearerToken1", "Authorization-x", "header");
+    /**
+     * JWT token
+     * @return
+     */
+    private List<Parameter> setHeaderToken() {
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<>();
+        tokenPar.name("X-Token").description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        pars.add(tokenPar.build());
+        return pars;
     }
 
     private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .forPaths(PathSelectors.regex("/.*"))
-                .build();
-    }
-
-    private SecurityContext securityContext1() {
         return SecurityContext.builder()
                 .forPaths(PathSelectors.regex("/.*"))
                 .build();

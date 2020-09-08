@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.andot.share.basic.dao.MenuMapper">
+
+    <resultMap id="menuMap" type="org.andot.share.basic.entity.AnMenu">
+        <id column="menu_id" property="menuId" javaType="long" jdbcType="BIGINT"></id>
+        <result column="menu_name" property="menuName" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_code" property="menuCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_url" property="menuUrl" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_type" property="menuType" javaType="int" jdbcType="INTEGER"></result>
+        <result column="parent_code" property="parentCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_icon" property="menuIcon" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="app_system_id" property="appSystemId" javaType="long" jdbcType="BIGINT"></result>
+        <result column="order_code" property="orderCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="disabled" property="disabled" javaType="boolean" jdbcType="TINYINT"></result>
+        <result column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
+        <result column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
+        <result column="delete_time" property="deleteTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
+        <result column="create_person" property="createPerson" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="update_person" property="updatePerson" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="delete_person" property="deletePerson" javaType="string" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="getMenuListByUserId" parameterType="long" resultMap="menuMap">
+        SELECT
+            an_menu.*
+        FROM
+            an_menu
+            JOIN role_menu ON an_menu.menu_code = role_menu.menu_code
+            JOIN role_user ON role_menu.role_id = role_user.role_id
+        WHERE
+            role_user.x_number = #{xNumber}
+    </select>
+</mapper>

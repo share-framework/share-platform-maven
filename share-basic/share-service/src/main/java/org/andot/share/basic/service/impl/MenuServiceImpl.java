@@ -11,7 +11,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -86,7 +88,30 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuTreeDto> getMenuTreeList(Long xNumber) {
-        menuMapper.getMenuListByUserId(xNumber);
-        return null;
+        List<AnMenu> menuList = menuMapper.getMenuListByUserId(xNumber);
+        Map<String, List<AnMenu>> menuListMap = menuList.stream().collect(Collectors.groupingBy(AnMenu::getParentCode));
+        return gen(menuListMap, "0");
+    }
+
+    private List<MenuTreeDto> gen(Map<String, List<AnMenu>> menuListMap, String parentCode){
+        List<MenuTreeDto> list = new LinkedList<>();
+        List<AnMenu> menuList = menuListMap.get(parentCode);
+        if(menuList != null) {
+            for (int i = 0; i < menuList.size(); i++) {
+                MenuTreeDto menuTreeDto = new MenuTreeDto();
+                if (menuListMap.get(menuList.get(i).getMenuCode()) != null && menuListMap.get(menuList.get(i).getMenuCode()).size() > 0) {
+                    menuTreeDto.setChildren(gen(menuListMap, menuList.get(i).getMenuCode()));
+                }
+                menuTreeDto.setMenuName(menuList.get(i).getMenuName());
+                menuTreeDto.setAppSystemId(menuList.get(i).getAppSystemId());
+                menuTreeDto.setMenuIcon(menuList.get(i).getMenuIcon());
+                menuTreeDto.setMenuParentCode(menuList.get(i).getParentCode());
+                menuTreeDto.setMenuType(menuList.get(i).getMenuType());
+                menuTreeDto.setMenuUrl(menuList.get(i).getMenuUrl());
+                menuTreeDto.setOrderCode(menuList.get(i).getOrderCode());
+                list.add(menuTreeDto);
+            }
+        }
+        return list;
     }
 }

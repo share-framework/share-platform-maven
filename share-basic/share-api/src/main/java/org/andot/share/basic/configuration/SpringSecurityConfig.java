@@ -2,6 +2,7 @@ package org.andot.share.basic.configuration;
 
 import org.andot.share.basic.component.UserAccessDecisionManager;
 import org.andot.share.basic.component.handler.UserAccessDeniedHandler;
+import org.andot.share.basic.component.handler.UserAuthenticationManager;
 import org.andot.share.basic.component.handler.UserLogoutSuccessHandler;
 import org.andot.share.basic.component.handler.UserUnAuthenticationHandler;
 import org.andot.share.basic.component.filter.CORSSecurityFilter;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -39,10 +41,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserAccessDecisionManager userAccessDecisionManager;
     @Resource
     private UserServiceImpl userService;
+    @Autowired
+    private UserAuthenticationManager userAuthenticationManager;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+        return new JwtAuthenticationFilter(userAuthenticationManager);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**", "/webjars/**", "/images/**",
                         "/doc.html", "/favicon.ico").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .anyRequest().permitAll();//.authenticated();
+                .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)
                 .authenticationEntryPoint(userUnAuthenticationHandler);
         http.logout().logoutSuccessHandler(userLogoutSuccessHandler)

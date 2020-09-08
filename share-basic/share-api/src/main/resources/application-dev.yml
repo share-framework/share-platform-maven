@@ -15,6 +15,12 @@ spring:
     hikari:
       pool-name: share-rbac-pool
 
+logging:
+  level:
+    com.baomidou.mybatisplus.samples.quickstart: debug
+
+mybatis-plus:
+  mapperLocations: classpath*:/mybatis/mapper/*.xml
 
 share:
   info: share-cloud

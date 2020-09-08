@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 public class BaseEntity implements Serializable {
-    private Boolean disabled;
+    private Boolean disabled = true;
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @TableField(fill = FieldFill.UPDATE)

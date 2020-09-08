@@ -59,6 +59,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult serverError(Exception ex) {
+        ex.printStackTrace();
         return CommonResult.failed(ex.getMessage());
     }
 }
