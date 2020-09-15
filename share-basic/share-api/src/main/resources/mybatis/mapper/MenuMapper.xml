@@ -12,7 +12,7 @@
         <result column="parent_code" property="parentCode" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_icon" property="menuIcon" javaType="string" jdbcType="VARCHAR"></result>
         <result column="app_system_id" property="appSystemId" javaType="long" jdbcType="BIGINT"></result>
-        <result column="order_code" property="orderCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="order_code" property="orderCode" javaType="int" jdbcType="INTEGER"></result>
         <result column="disabled" property="disabled" javaType="boolean" jdbcType="TINYINT"></result>
         <result column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
         <result column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>

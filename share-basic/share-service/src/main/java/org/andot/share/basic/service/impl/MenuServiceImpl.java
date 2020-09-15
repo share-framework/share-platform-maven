@@ -7,6 +7,7 @@ import org.andot.share.basic.dto.MenuTreeDto;
 import org.andot.share.basic.entity.AnMenu;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.dto.MenuDto;
+import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,7 +90,9 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuTreeDto> getMenuTreeList(Long xNumber) {
         List<AnMenu> menuList = menuMapper.getMenuListByUserId(xNumber);
-        Map<String, List<AnMenu>> menuListMap = menuList.stream().collect(Collectors.groupingBy(AnMenu::getParentCode));
+        Map<String, List<AnMenu>> menuListMap = menuList.stream()
+                .filter(menu -> ObjectUtil.isNotEmpty(menu))
+                .collect(Collectors.groupingBy(AnMenu::getParentCode));
         return gen(menuListMap, "0");
     }
 
@@ -102,13 +105,16 @@ public class MenuServiceImpl implements MenuService {
                 if (menuListMap.get(menuList.get(i).getMenuCode()) != null && menuListMap.get(menuList.get(i).getMenuCode()).size() > 0) {
                     menuTreeDto.setChildren(gen(menuListMap, menuList.get(i).getMenuCode()));
                 }
-                menuTreeDto.setMenuName(menuList.get(i).getMenuName());
+                menuTreeDto.setName(menuList.get(i).getMenuName());
                 menuTreeDto.setAppSystemId(menuList.get(i).getAppSystemId());
-                menuTreeDto.setMenuIcon(menuList.get(i).getMenuIcon());
+                menuTreeDto.setIcon(menuList.get(i).getMenuIcon());
                 menuTreeDto.setMenuParentCode(menuList.get(i).getParentCode());
-                menuTreeDto.setMenuType(menuList.get(i).getMenuType());
-                menuTreeDto.setMenuUrl(menuList.get(i).getMenuUrl());
-                menuTreeDto.setOrderCode(menuList.get(i).getOrderCode());
+                menuTreeDto.setType(menuList.get(i).getMenuType());
+                menuTreeDto.setUrl(menuList.get(i).getMenuUrl());
+                menuTreeDto.setSort(menuList.get(i).getOrderCode());
+                menuTreeDto.setId(menuList.get(i).getMenuCode());
+                menuTreeDto.setRedirect(menuList.get(i).getRedirect());
+                menuTreeDto.setComponent(menuList.get(i).getComponent());
                 list.add(menuTreeDto);
             }
         }

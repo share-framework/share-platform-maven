@@ -11,18 +11,24 @@ import lombok.Setter;
 public class MenuDto {
     @ApiModelProperty("菜单名称")
     private String menuName;
+    @ApiModelProperty("菜单id")
+    private String menuCode;
+    @ApiModelProperty("菜单id")
+    private String redirect;
+    @ApiModelProperty("菜单id")
+    private String component;
     @ApiModelProperty("菜单地址")
     private String menuUrl;
     @ApiModelProperty("菜单类型")
     private Integer menuType;
     @ApiModelProperty("菜单父id")
-    private Long menuParentId;
+    private String menuParentCode;
     @ApiModelProperty("菜单图标")
     private String menuIcon;
-    @ApiModelProperty("菜单名稱")
-    private String pageUrl;
     @ApiModelProperty("系统id")
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
     private String orderCode;
+    @ApiModelProperty("显隐性")
+    private Integer disabled;
 }

@@ -16,19 +16,27 @@ import java.util.List;
 @Getter
 public class MenuTreeDto {
     @ApiModelProperty("菜单名称")
-    private String menuName;
+    private String name;
+    @ApiModelProperty("菜单id")
+    private String id;
+    @ApiModelProperty("菜单id")
+    private String redirect;
+    @ApiModelProperty("菜单id")
+    private String component;
     @ApiModelProperty("菜单地址")
-    private String menuUrl;
+    private String url;
     @ApiModelProperty("菜单类型")
-    private Integer menuType;
+    private Integer type;
     @ApiModelProperty("菜单父id")
     private String menuParentCode;
     @ApiModelProperty("菜单图标")
-    private String menuIcon;
+    private String icon;
     @ApiModelProperty("系统id")
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
-    private String orderCode;
+    private Integer sort;
+    @ApiModelProperty("显隐性")
+    private Integer disabled;
     @ApiModelProperty("子菜单列表")
     private List<MenuTreeDto> children;
 }

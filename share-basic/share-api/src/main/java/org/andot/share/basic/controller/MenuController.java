@@ -84,7 +84,7 @@ public class MenuController {
     }
 
     @ApiOperation("加载树形菜单")
-    @PostMapping("/tree")
+    @GetMapping("/tree")
     public CommonResult getTreeList() {
         return CommonResult.success(menuService.getMenuTreeList(CurrentUserUtil.getUserCode()));
     }

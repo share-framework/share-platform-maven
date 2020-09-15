@@ -8,11 +8,13 @@ import lombok.EqualsAndHashCode;
 public class AnMenu extends BaseEntity {
     private Long menuId;
     private String menuName;
+    private String redirect;
+    private String component;
     private String menuCode;
     private String menuUrl;
     private Integer menuType;
     private String parentCode;
     private String menuIcon;
     private Long appSystemId;
-    private String orderCode;
+    private Integer orderCode;
 }
