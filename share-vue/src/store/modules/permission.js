@@ -21,18 +21,17 @@ function hasPermission(roles, route) {
  */
 export function generaMenu(routes, data) {
   data.forEach(item => {
-    console.log(item.url === '#'? item.id + '_key' : item.url)
     const menu = {
-      path: item.url === '#'? item.id + '_key' : item.url,
-      component: item.component === '#'? Layout :(resolve) => require([`@/views${item.component}`], resolve),
+      path: item.url === '#' ? item.id + '_key' : item.url,
+      component: item.component === '#' ? Layout : (resolve) => require([`@/views${item.component}`], resolve),
       hidden: item.disabled === 1,
       name: item.id,
       meta: { title: item.name, icon: item.icon, roles: ['admin'] },
       children: []
     }
-    /*if(item.component === '#'){
+    if (item.component === '#') {
       menu.redirect = item.redirect
-    }*/
+    }
     if (item.children) {
       generaMenu(menu.children, item.children)
     }
@@ -42,12 +41,12 @@ export function generaMenu(routes, data) {
 
 /**
  * Filter asynchronous routing tables by recursion
- * 根据权限过滤菜单
  * @param routes asyncRoutes
  * @param roles
  */
 export function filterAsyncRoutes(routes, roles) {
   const res = []
+
   routes.forEach(route => {
     const tmp = { ...route }
     if (hasPermission(roles, tmp)) {
@@ -57,6 +56,7 @@ export function filterAsyncRoutes(routes, roles) {
       res.push(tmp)
     }
   })
+
   return res
 }
 
@@ -80,14 +80,12 @@ const actions = {
       getAuthMenu(state.token).then(response => {
         let data = response
         if (response.code !== 200) {
-          alert(JSON.stringify('菜单数据加载异常'))
-          // throw new Error('菜单数据加载异常')
+          throw new Error('菜单数据加载异常')
         } else {
           data = response.data
           Object.assign(loadMenuData, data)
           const tempAsyncRoutes = Object.assign([], asyncRoutes)
           generaMenu(tempAsyncRoutes, loadMenuData)
-          console.log(tempAsyncRoutes)
           let accessedRoutes
           if (roles.includes('admin1')) {
             accessedRoutes = tempAsyncRoutes || []
@@ -97,7 +95,7 @@ const actions = {
           commit('SET_ROUTES', accessedRoutes)
           resolve(tempAsyncRoutes)
         }
-        //generaMenu(asyncRoutes, data)
+        // generaMenu(asyncRoutes, data)
       }).catch(error => {
         console.log(error)
       })

@@ -6,3 +6,11 @@ export function getAuthMenu() {
     method: 'GET'
   })
 }
+
+export function addMenu(data) {
+  return request({
+    url: '/menu',
+    method: 'POST',
+    data
+  })
+}

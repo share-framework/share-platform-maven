@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 export function login(data) {
+  console.log(1)
   return request({
     url: '/login',
     method: 'post',
@@ -8,7 +9,7 @@ export function login(data) {
   })
 }
 
-export function getInfo() {
+export function getInfoApi() {
   return request({
     url: '/user/info',
     method: 'get'

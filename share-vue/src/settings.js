@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'ShareCloud',
+  title: 'Share CLoud Template',
 
   /**
    * @type {boolean} true | false

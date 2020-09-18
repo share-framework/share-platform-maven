@@ -1,69 +1,76 @@
 <template>
   <div class="an-login">
-    <el-row>
-      <el-col :span="16">
-        <div :style="'background:url('+lg+') no-repeat; background-size: 100% 100%; width: 100%; height:'+height+'px;'"></div>
-      </el-col>
-      <el-col :span="8">
-        <div>
-          <div style="width: 100%; display: flex; justify-content: center; margin-top:30%;">
-            <img :src="logo" width="50%" height="80%">
-          </div>
-          <div style="width: 100%; display: flex; justify-content: center;">
-            <el-tabs v-model="activeName" @tab-click="tabSwitchClick" style="width:60%;">
-              <el-tab-pane label="账号登录" name="account">
-                <el-form style="width:100%" ref="loginForm" :model="loginForm" :rules="loginRules">
-                  <el-form-item>
-                    <el-input
-                      ref="number"
-                      v-model="loginForm.number"
-                      placeholder="请输入用戶名"
-                      prefix-icon="el-icon-user"
-                      name="number"
-                      type="text"
-                      tabindex="1"
-                      auto-complete="on"
-                    />
-                  </el-form-item>
-                  <el-form-item>
-                    <el-input
-                      :key="passwordType"
-                      ref="password"
-                      v-model="loginForm.password"
-                      placeholder="请输入密码"
-                      :type="passwordType"
-                      prefix-icon="el-icon-lock"
-                      name="password"
-                      tabindex="2"
-                      auto-complete="on"
-                      @keyup.enter.native="handleLogin"
-                      show-password
-                    />
-                  </el-form-item>
-                  <el-button style="width:100%" type="primary" :loading="loading" @click="handleLogin" >登录</el-button>
-                </el-form>
-              </el-tab-pane>
-              <el-tab-pane label="扫码登录" name="scan">扫码登录</el-tab-pane>
-            </el-tabs>
+    <el-container>
+      <el-main class="an-login-main">
+        <el-row>
+          <el-col :span="16">
+            <div :style="'background:url('+lg+') no-repeat; background-size: 100% 100%; width: 100%; height:'+height+'px;'"></div>
+          </el-col>
+          <el-col :span="8">
+            <div>
+              <div style="width: 100%; display: flex; justify-content: center; margin-top:30%;">
+                <img :src="logo" width="50%" height="80%">
+              </div>
+              <div style="width: 100%; display: flex; justify-content: center;">
+                <el-tabs v-model="activeName" @tab-click="tabSwitchClick" style="width:60%;">
+                  <el-tab-pane label="账号登录" name="account">
+                    <el-form style="width:100%" ref="loginForm" :model="loginForm" :rules="loginRules">
+                      <el-form-item>
+                        <el-input
+                          ref="number"
+                          v-model="loginForm.number"
+                          placeholder="请输入用戶名"
+                          prefix-icon="el-icon-user"
+                          name="number"
+                          type="text"
+                          tabindex="1"
+                          auto-complete="on"
+                        />
+                      </el-form-item>
+                      <el-form-item>
+                        <el-input
+                          :key="passwordType"
+                          ref="password"
+                          v-model="loginForm.password"
+                          placeholder="请输入密码"
+                          :type="passwordType"
+                          prefix-icon="el-icon-lock"
+                          name="password"
+                          tabindex="2"
+                          auto-complete="on"
+                          @keyup.enter.native="handleLogin"
+                          show-password
+                        />
+                      </el-form-item>
+                      <el-button style="width:100%" type="primary" :loading="loading" @click="handleLogin" >登录</el-button>
+                    </el-form>
+                  </el-tab-pane>
+                  <el-tab-pane label="扫码登录" name="scan">扫码登录</el-tab-pane>
+                </el-tabs>
 
-          </div>
-        </div>
-      </el-col>
-    </el-row>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
-
 <script>
-//import { validUsername } from '@/utils/validate'
-import lg from "@/assets/bg.jpg";
-import logo from "@/assets/logo.png";
+import { validUsername } from '@/utils/validate'
+import lg from '@/assets/bg.jpg';
+import logo from '@/assets/logo.png';
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      callback()
+      if (!validUsername(value)) {
+        callback(new Error('Please enter the correct user name'))
+      } else {
+        callback()
+      }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
@@ -75,7 +82,7 @@ export default {
     return {
       loginForm: {
         number: 10000,
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         number: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -100,7 +107,7 @@ export default {
   },
   methods: {
     showPwd() {
-      if (this.passwordType == 'password') {
+      if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
         this.passwordType = 'password'
@@ -130,12 +137,15 @@ export default {
     },
     tabSwitchClick() {
       console.log(this.activeName)
-      if(this.activeName == 'account'){
+      if (this.activeName === 'account') {
         this.activeName = 'scan'
-      }else{
+      } else {
         this.activeName = 'account'
       }
     }
+  },
+  mounted() {
+    this.height = document.body.clientHeight
   }
 }
 </script>
@@ -248,5 +258,10 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+}
+
+.an-login-main {
+  padding: 0;
+  height: 100%;
 }
 </style>

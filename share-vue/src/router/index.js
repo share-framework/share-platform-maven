@@ -25,11 +25,6 @@ import Layout from '@/layout'
   }
  */
 
-export const asyncRoutes = [
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
-
 /**
  * constantRoutes
  * a base page that does not have permission requirements
@@ -47,6 +42,7 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
+
   {
     path: '/',
     component: Layout,
@@ -55,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '仪表盘', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
 
@@ -81,7 +77,7 @@ export const constantRoutes = [
     ]
   },
 
-  /*{
+  {
     path: '/form',
     component: Layout,
     children: [
@@ -92,8 +88,14 @@ export const constantRoutes = [
         meta: { title: 'Form', icon: 'form' }
       }
     ]
-  },*/
+  }
+]
 
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
   {
     path: '/nested',
     component: Layout,
@@ -146,8 +148,7 @@ export const constantRoutes = [
       },
       {
         path: 'menu2',
-        component: () => import('@/views/system/form/index'),
-        name: 'Menu2',
+        component: () => import('@/views/nested/menu2/index'),
         meta: { title: 'menu2' }
       }
     ]
@@ -165,7 +166,7 @@ export const constantRoutes = [
   },
 
   // 404 page must be placed at the end !!!
-  //{ path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

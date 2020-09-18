@@ -1,12 +1,13 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, logout, getInfoApi } from '@/api/user'
+import { getToken, setToken, removeToken, setTokenPrefix } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    roles: []
   }
 }
 
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -34,8 +38,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ number: number, password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
+        commit('SET_TOKEN', data.prefix + ' ' + data.token)
         setToken(data.token)
+        setTokenPrefix(data.prefix)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,15 +51,22 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo().then(response => {
+      getInfoApi(state.token).then(response => {
         const { data } = response
 
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          reject('Verification failed, please Login again.')
+        }
+        data.roles = ['admin']
+        // eslint-disable-next-line no-unused-vars
+        const { roles, realName, avatar } = data
+
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('getInfo: roles must be a non-null array!')
         }
 
-        const { realName, avatar } = data
-
+        commit('SET_ROLES', roles)
         commit('SET_NAME', realName)
         commit('SET_AVATAR', avatar)
         resolve(data)

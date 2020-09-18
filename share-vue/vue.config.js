@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'ShareCloud' // page title
+const name = defaultSettings.title || 'Share Cloud Admin' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -27,26 +27,16 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV == 'development',
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: false, // 是否自动打开浏览器页面
-    host: '0.0.0.0',
+    open: true,
     overlay: {
       warnings: false,
       errors: true
     },
-    proxy: {
-      '/api': {
-        target: process.env.VUE_APP_BASE_API,
-        ws: true,
-        changeOrigin: true,  //是否跨域
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+    before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -87,6 +77,17 @@ module.exports = {
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]'
+      })
+      .end()
+
+    // set preserveWhitespace
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
       })
       .end()
 

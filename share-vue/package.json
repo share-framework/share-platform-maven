@@ -58,6 +58,5 @@
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
-  "license": "MIT",
-  "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js"
+  "license": "MIT"
 }
