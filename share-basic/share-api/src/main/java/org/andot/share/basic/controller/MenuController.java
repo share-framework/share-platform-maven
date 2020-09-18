@@ -86,6 +86,13 @@ public class MenuController {
     @ApiOperation("加载树形菜单")
     @GetMapping("/tree")
     public CommonResult getTreeList() {
-        return CommonResult.success(menuService.getMenuTreeList(CurrentUserUtil.getUserCode()));
+        return CommonResult.success(menuService.getMenuTreeList(CurrentUserUtil.getAppId(),
+                CurrentUserUtil.getUserCode()));
+    }
+
+    @ApiOperation("管理端-加载树形菜单")
+    @GetMapping("/manage/tree")
+    public CommonResult getManageTreeList(@RequestParam Long appId) {
+        return CommonResult.success(menuService.getManageMenuTreeList(appId));
     }
 }

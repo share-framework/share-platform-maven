@@ -36,7 +36,9 @@ public class MenuTreeDto {
     @ApiModelProperty("菜单代码")
     private Integer sort;
     @ApiModelProperty("显隐性")
-    private Integer disabled;
+    private Boolean disabled;
+    @ApiModelProperty("是否存在子节点")
+    private Boolean hashChildren;
     @ApiModelProperty("子菜单列表")
     private List<MenuTreeDto> children;
 }

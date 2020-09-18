@@ -88,8 +88,18 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuTreeDto> getMenuTreeList(Long xNumber) {
-        List<AnMenu> menuList = menuMapper.getMenuListByUserId(xNumber);
+    public List<MenuTreeDto> getMenuTreeList(Long appSystemId, Long xNumber) {
+        List<AnMenu> menuList = menuMapper.getMenuListByUserId(appSystemId, xNumber);
+        Map<String, List<AnMenu>> menuListMap = menuList.stream()
+                .filter(menu -> ObjectUtil.isNotEmpty(menu))
+                .collect(Collectors.groupingBy(AnMenu::getParentCode));
+        return gen(menuListMap, "0");
+    }
+
+    @Override
+    public List<MenuTreeDto> getManageMenuTreeList(Long appSystemId) {
+        List<AnMenu> menuList = menuMapper.selectList(new LambdaQueryWrapper<AnMenu>()
+                .eq(AnMenu::getAppSystemId, appSystemId));
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
                 .collect(Collectors.groupingBy(AnMenu::getParentCode));
@@ -104,6 +114,7 @@ public class MenuServiceImpl implements MenuService {
                 MenuTreeDto menuTreeDto = new MenuTreeDto();
                 if (menuListMap.get(menuList.get(i).getMenuCode()) != null && menuListMap.get(menuList.get(i).getMenuCode()).size() > 0) {
                     menuTreeDto.setChildren(gen(menuListMap, menuList.get(i).getMenuCode()));
+                    menuTreeDto.setHashChildren(menuTreeDto.getChildren().size()>0);
                 }
                 menuTreeDto.setName(menuList.get(i).getMenuName());
                 menuTreeDto.setAppSystemId(menuList.get(i).getAppSystemId());
@@ -115,6 +126,7 @@ public class MenuServiceImpl implements MenuService {
                 menuTreeDto.setId(menuList.get(i).getMenuCode());
                 menuTreeDto.setRedirect(menuList.get(i).getRedirect());
                 menuTreeDto.setComponent(menuList.get(i).getComponent());
+                menuTreeDto.setDisabled(menuList.get(i).getDisabled());
                 list.add(menuTreeDto);
             }
         }

@@ -39,7 +39,7 @@ public class JwtUtil {
         JwtBuilder jwtBuilder = new DefaultJwtBuilder().signWith(SignatureAlgorithm.HS256, secret);
         return jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .setId(userDetail.getXNumber())
-                .setIssuer("ipsos.cn")
+                .setIssuer("share.andot.org")
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .claim("username", userDetail.getUsername())
                 .claim("roles", userDetail.getRoles()).compact();

@@ -29,6 +29,6 @@ public class MenuDto {
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
     private String orderCode;
-    @ApiModelProperty("显隐性")
-    private Integer disabled;
+    @ApiModelProperty("显隐性 0 正常 1 禁用")
+    private Boolean disabled;
 }

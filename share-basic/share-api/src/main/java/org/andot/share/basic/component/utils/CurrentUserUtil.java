@@ -16,4 +16,10 @@ public class CurrentUserUtil {
         XUserDetail securityUserDetail = (XUserDetail) authentication.getPrincipal();
         return securityUserDetail.getUsername();
     }
+
+    public static Long getAppId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        XUserDetail securityUserDetail = (XUserDetail) authentication.getPrincipal();
+        return securityUserDetail.getUser().getAppId();
+    }
 }

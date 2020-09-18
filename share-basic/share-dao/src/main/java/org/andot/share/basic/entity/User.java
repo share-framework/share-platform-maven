@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 public class User extends BaseEntity {
     private Long userId;
     private Long xNumber;
+    private Long appId;
     private String phone;
     private String password;
     private String salt;

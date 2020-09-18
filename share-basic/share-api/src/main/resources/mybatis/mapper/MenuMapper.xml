@@ -29,7 +29,13 @@
             an_menu
             JOIN role_menu ON an_menu.menu_code = role_menu.menu_code
             JOIN role_user ON role_menu.role_id = role_user.role_id
-        WHERE
-            role_user.x_number = #{xNumber}
+        <where>
+            <if test="xNumber != null">
+                AND role_user.x_number = #{xNumber}
+            </if>
+            <if test="appSystemId != null">
+                AND an_menu.app_system_id = #{appSystemId}
+            </if>
+        </where>
     </select>
 </mapper>

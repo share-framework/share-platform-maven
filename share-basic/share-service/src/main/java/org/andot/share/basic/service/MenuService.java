@@ -27,5 +27,7 @@ public interface MenuService {
 
     boolean delBatchMenuById(List<Long> id);
 
-    List<MenuTreeDto> getMenuTreeList(Long xnumber);
+    List<MenuTreeDto> getMenuTreeList(Long appSystemId, Long xumber);
+
+    List<MenuTreeDto> getManageMenuTreeList(Long appSystemId);
 }

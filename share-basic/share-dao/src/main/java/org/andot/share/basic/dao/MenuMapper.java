@@ -13,5 +13,6 @@ public interface MenuMapper extends BaseMapper<AnMenu> {
      *
      * @return
      */
-    List<AnMenu> getMenuListByUserId(@Param("xNumber") Long xNumber);
+    List<AnMenu> getMenuListByUserId(@Param("appSystemId") Long appSystemId,
+                                     @Param("xNumber") Long xNumber);
 }

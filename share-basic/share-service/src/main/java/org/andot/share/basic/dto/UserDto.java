@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 public class UserDto {
     private Long xNumber;
+    private Long appId;
     private String phone;
     private String password;
     private Integer userType;
