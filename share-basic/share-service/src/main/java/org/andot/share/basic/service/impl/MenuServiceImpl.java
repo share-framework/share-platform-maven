@@ -92,7 +92,7 @@ public class MenuServiceImpl implements MenuService {
         List<AnMenu> menuList = menuMapper.getMenuListByUserId(appSystemId, xNumber);
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
-                .collect(Collectors.groupingBy(AnMenu::getParentCode));
+                .collect(Collectors.groupingBy(AnMenu::getMenuParentCode));
         return gen(menuListMap, "0");
     }
 
@@ -102,7 +102,7 @@ public class MenuServiceImpl implements MenuService {
                 .eq(AnMenu::getAppSystemId, appSystemId));
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
-                .collect(Collectors.groupingBy(AnMenu::getParentCode));
+                .collect(Collectors.groupingBy(AnMenu::getMenuParentCode));
         return gen(menuListMap, "0");
     }
 
@@ -119,11 +119,12 @@ public class MenuServiceImpl implements MenuService {
                 menuTreeDto.setName(menuList.get(i).getMenuName());
                 menuTreeDto.setAppSystemId(menuList.get(i).getAppSystemId());
                 menuTreeDto.setIcon(menuList.get(i).getMenuIcon());
-                menuTreeDto.setMenuParentCode(menuList.get(i).getParentCode());
+                menuTreeDto.setMenuParentCode(menuList.get(i).getMenuParentCode());
                 menuTreeDto.setType(menuList.get(i).getMenuType());
                 menuTreeDto.setUrl(menuList.get(i).getMenuUrl());
                 menuTreeDto.setSort(menuList.get(i).getOrderCode());
-                menuTreeDto.setId(menuList.get(i).getMenuCode());
+                menuTreeDto.setId(menuList.get(i).getMenuId());
+                menuTreeDto.setMenuCode(menuList.get(i).getMenuCode());
                 menuTreeDto.setRedirect(menuList.get(i).getRedirect());
                 menuTreeDto.setComponent(menuList.get(i).getComponent());
                 menuTreeDto.setDisabled(menuList.get(i).getDisabled());

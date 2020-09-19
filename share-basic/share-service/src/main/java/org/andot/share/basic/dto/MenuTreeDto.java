@@ -18,7 +18,9 @@ public class MenuTreeDto {
     @ApiModelProperty("菜单名称")
     private String name;
     @ApiModelProperty("菜单id")
-    private String id;
+    private Long id;
+    @ApiModelProperty("菜单code")
+    private String menuCode;
     @ApiModelProperty("菜单id")
     private String redirect;
     @ApiModelProperty("菜单id")

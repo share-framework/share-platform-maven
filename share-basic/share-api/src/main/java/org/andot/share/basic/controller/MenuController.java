@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /***
  * @author lucas
@@ -66,14 +68,22 @@ public class MenuController {
 
     @ApiOperation("根据id获取数据")
     @GetMapping("/{id}")
-    public CommonResult get(@PathVariable("id") Long id) {
+    public CommonResult<MenuDto> get(@PathVariable("id") Long id) {
         return CommonResult.success(menuService.getMenuInfoById(id));
     }
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
-    public CommonResult getList(MenuDto menuDto) {
+    public CommonResult<List<MenuDto>> getList(MenuDto menuDto) {
         return CommonResult.success(menuService.getMenuList(menuDto.getMenuName(), menuDto.getMenuUrl()));
+    }
+
+    @ApiOperation("根据条件获取列表数据 - 下拉框")
+    @GetMapping("/selector/list")
+    public CommonResult<Map<String, String>> getSelectorList(MenuDto menuDto) {
+        Map<String, String> menuMap = menuService.getMenuList(menuDto.getMenuName(), menuDto.getMenuUrl())
+                .stream().collect(Collectors.toMap(MenuDto::getMenuCode, MenuDto::getMenuName));
+        return CommonResult.success(menuMap);
     }
 
     @ApiOperation("根据条件获取分页列表数据")
