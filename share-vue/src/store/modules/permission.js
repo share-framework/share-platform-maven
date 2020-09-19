@@ -25,8 +25,8 @@ export function generaMenu(routes, data) {
       path: item.url === '#' ? item.id + '_key' : item.url,
       component: item.component === '#' ? Layout : (resolve) => require([`@/views${item.component}`], resolve),
       hidden: item.disabled === 1,
-      name: item.id,
-      meta: { title: item.name, icon: item.icon, roles: ['admin'] },
+      name: item.menuCode,
+      meta: { id: item.id, title: item.name, icon: item.icon, roles: ['admin'] },
       children: []
     }
     if (item.component === '#') {

@@ -25,16 +25,15 @@ export function addMenu(data) {
 
 export function updateMenu(id, data) {
   return request({
-    url: '/menu',
+    url: `/menu/${id}`,
     method: 'PUT',
     data
   })
 }
 
-export function delMenu(params) {
+export function delMenu(id) {
   return request({
-    url: '/menu',
-    method: 'DELETE',
-    params
+    url: `/menu/${id}`,
+    method: 'DELETE'
   })
 }
