@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserDto {
+public class UserDTO {
     private Long xNumber;
     private Long appId;
     private String phone;

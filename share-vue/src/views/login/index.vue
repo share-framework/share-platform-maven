@@ -59,8 +59,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import lg from '@/assets/bg.jpg';
-import logo from '@/assets/logo.png';
+import lg from '@/assets/bg.jpg'
+import logo from '@/assets/logo.png'
 
 export default {
   name: 'Login',

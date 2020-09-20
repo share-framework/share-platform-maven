@@ -7,7 +7,7 @@ import org.andot.share.common.domain.AccessToken;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.common.utils.JwtUtil;
-import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.RoleDTO;
 import org.andot.share.basic.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +44,7 @@ public class CommonController {
         AccessToken accessToken = new AccessToken();
         accessToken.setPrefix("Bearer");
         JwtUserDetail jwtUserDetail = new JwtUserDetail();
-        jwtUserDetail.setRoles(userDetail.getRoleList().stream().map(RoleDto::getRoleCode).collect(Collectors.toList()));
+        jwtUserDetail.setRoles(userDetail.getRoleList().stream().map(RoleDTO::getRoleCode).collect(Collectors.toList()));
         jwtUserDetail.setUsername(userDetail.getUser().getPhone());
         jwtUserDetail.setXNumber(userDetail.getUsername());
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());

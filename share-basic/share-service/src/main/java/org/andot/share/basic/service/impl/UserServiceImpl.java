@@ -11,8 +11,8 @@ import org.andot.share.basic.entity.Role;
 import org.andot.share.basic.entity.RoleUser;
 import org.andot.share.basic.entity.User;
 import org.andot.share.basic.entity.UserDetail;
-import org.andot.share.basic.dto.RoleDto;
-import org.andot.share.basic.dto.UserDto;
+import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String xNumber) {
         try {
-            UserDto user;
+            UserDTO user;
             if (xNumber.length() == 11) {
                 user = this.getUser(xNumber);
             } else {
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, xNumber));
             List<Long> roleIds = roleUserList.stream().map(RoleUser::getRoleId).collect(Collectors.toList());
-            List<RoleDto> roles = roleMapper.selectBatchIds(roleIds).stream().map(item -> RoleDto.builder()
+            List<RoleDTO> roles = roleMapper.selectBatchIds(roleIds).stream().map(item -> RoleDTO.builder()
                     .roleCode(item.getRoleCode()).roleId(item.getRoleId())
                     .roleName(item.getRoleName()).roleType(item.getRoleType()).build()).collect(Collectors.toList());
             return new XUserDetail(user, roles);
@@ -64,15 +64,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDto getUser(Long xNumber) {
-        UserDto userDto = new UserDto();
+    public UserDTO getUser(Long xNumber) {
+        UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getXNumber, xNumber)), userDto);
         return userDto;
     }
 
     @Override
-    public UserDto getUser(String phone) {
-        UserDto userDto = new UserDto();
+    public UserDTO getUser(String phone) {
+        UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getPhone, phone)), userDto);
         return userDto;
     }
@@ -80,15 +80,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public XUserDetail login(String number, String password) {
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getPhone, number).or().eq(User::getXNumber, number));
-        UserDto userDto = new UserDto();
+        UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(user, userDto);
         if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, user.getXNumber()));
             List<Long> roleIds = roleUserList.stream().map(RoleUser::getRoleId).collect(Collectors.toList());
-            List<RoleDto> roles = new ArrayList<>();
+            List<RoleDTO> roles = new ArrayList<>();
             if (roleIds.size() != 0) {
                 roles = roleMapper.selectList(new LambdaQueryWrapper<Role>().in(Role::getRoleId, roleIds))
-                        .stream().map(item -> RoleDto.builder()
+                        .stream().map(item -> RoleDTO.builder()
                                 .roleCode(item.getRoleCode()).roleId(item.getRoleId())
                                 .roleName(item.getRoleName()).roleType(item.getRoleType()).build()).collect(Collectors.toList());
             }

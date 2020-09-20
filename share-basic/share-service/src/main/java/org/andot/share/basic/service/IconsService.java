@@ -1,6 +1,5 @@
 package org.andot.share.basic.service;
 
-import org.andot.share.basic.dto.MenuDto;
 import org.andot.share.basic.entity.Icons;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

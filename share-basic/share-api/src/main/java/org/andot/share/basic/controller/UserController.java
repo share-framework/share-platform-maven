@@ -3,14 +3,13 @@ package org.andot.share.basic.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.basic.component.utils.CurrentUserUtil;
-import org.andot.share.basic.dto.UserDto;
-import org.andot.share.basic.entity.User;
+import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.entity.UserDetail;
 import org.andot.share.basic.service.UserService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.share.basic.dto.PageDto;
-import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.PageDTO;
+import org.andot.share.basic.dto.RoleDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -48,7 +47,7 @@ public class UserController {
     @ApiOperation("根据id获取数据")
     @GetMapping("")
     public CommonResult get() {
-        UserDto user = userService.getUser(CurrentUserUtil.getUserCode());
+        UserDTO user = userService.getUser(CurrentUserUtil.getUserCode());
         return CommonResult.success(user);
     }
 
@@ -61,13 +60,13 @@ public class UserController {
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
-    public CommonResult getList(RoleDto roleDto) {
+    public CommonResult getList(RoleDTO roleDto) {
         return null;
     }
 
     @ApiOperation("根据条件获取分页列表数据")
     @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDto<RoleDto> rolePage) {
+    public CommonPage getPageList(@RequestBody PageDTO<RoleDTO> rolePage) {
         return null;
     }
 }

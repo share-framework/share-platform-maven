@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.andot.share.basic.async.TestAsync;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.share.basic.dto.ActionDto;
-import org.andot.share.basic.dto.PageDto;
+import org.andot.share.basic.dto.ActionDTO;
+import org.andot.share.basic.dto.PageDTO;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +54,7 @@ public class ActionController {
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
-    public CommonResult getList(ActionDto actionDto) {
+    public CommonResult getList(ActionDTO actionDto) {
         this.test();
         return null;
     }
@@ -71,7 +71,7 @@ public class ActionController {
 
     @ApiOperation("根据条件获取分页列表数据")
     @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDto<ActionDto> actionPage) {
+    public CommonPage getPageList(@RequestBody PageDTO<ActionDTO> actionPage) {
         return null;
     }
 }

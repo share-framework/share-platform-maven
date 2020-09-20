@@ -1,10 +1,12 @@
 package org.andot.share.basic.service;
 
-import org.andot.share.basic.dto.MenuDto;
-import org.andot.share.basic.dto.MenuTreeDto;
+import org.andot.share.basic.dto.MenuDTO;
+import org.andot.share.basic.dto.MenuTreeDTO;
+import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,15 +19,15 @@ import java.util.List;
  */
 public interface MenuService {
 
-    MenuDto getMenuInfoById(Long menuId);
+    MenuDTO getMenuInfoById(Long menuId);
 
-    List<MenuDto> getMenuList(String menuName, String url);
-
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    boolean saveMenu(MenuDto menuDto);
+    List<MenuDTO> getMenuList(String menuName, String url);
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    boolean updateMenu(Long id, MenuDto menuDto);
+    boolean saveMenu(MenuDTO menuDto);
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    boolean updateMenu(Long id, MenuDTO menuDto);
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     boolean delMenuById(Long id);
@@ -33,7 +35,15 @@ public interface MenuService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     boolean delBatchMenuById(List<Long> id);
 
-    List<MenuTreeDto> getMenuTreeList(Long appSystemId, Long xumber);
+    List<MenuTreeDTO> getMenuTreeList(Long appSystemId, Long xumber);
 
-    List<MenuTreeDto> getManageMenuTreeList(Long appSystemId);
+    List<MenuTreeDTO> getManageMenuTreeList(Long appSystemId);
+
+    /**
+     * 查询当前系统的菜单和角色关系列表
+     * @param appSystemId 应用系统id
+     * @param roleId 角色id
+     * @return
+     */
+    HashMap getManageMenuList(Long appSystemId, Long roleId);
 }

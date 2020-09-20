@@ -1,7 +1,7 @@
 package org.andot.share.basic.service.impl;
 
 import org.andot.share.basic.entity.Organ;
-import org.andot.share.basic.dto.OrganDto;
+import org.andot.share.basic.dto.OrganDTO;
 import org.andot.share.basic.service.OrganService;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class OrganServiceImpl implements OrganService {
     }
 
     @Override
-    public List<OrganDto> getOrganTree(Long organId) {
+    public List<OrganDTO> getOrganTree(Long organId) {
         return null;
     }
 }

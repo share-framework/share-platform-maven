@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.andot.share.common.type.ErrorCodeType;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoField;
@@ -49,6 +50,7 @@ public class CommonPage<T> {
         result.setPageSize(pageInfo.getPageSize());
         result.setTotal(pageInfo.getTotal());
         result.setData(pageInfo.getList());
+        result.setCode(ErrorCodeType.SUCCESS.intValue());
         return result;
     }
 
@@ -65,6 +67,7 @@ public class CommonPage<T> {
         result.setPageSize(pageInfo.getPageSize());
         result.setTotal(pageInfo.getTotal());
         result.setData(pageInfo.getResult());
+        result.setCode(ErrorCodeType.SUCCESS.intValue());
         return result;
     }
 

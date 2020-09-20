@@ -4,8 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.share.basic.dto.PageDto;
-import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.PageDTO;
+import org.andot.share.basic.dto.RoleDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,13 +47,13 @@ public class ResourcesGroupsController {
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
-    public CommonResult getList(RoleDto roleDto) {
+    public CommonResult getList(RoleDTO roleDto) {
         return null;
     }
 
     @ApiOperation("根据条件获取分页列表数据")
     @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDto<RoleDto> rolePage) {
+    public CommonPage getPageList(@RequestBody PageDTO<RoleDTO> rolePage) {
         return null;
     }
 }

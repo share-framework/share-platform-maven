@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="3">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
         <el-button
+          :class="showDelBtn?'hidden':''"
            type="primary"
            size="small"
            icon="el-icon-circle-plus-outline"
            @click="add">新增</el-button>
-      </el-col>
-      <el-col :span="3" :hidden="showMoveBtn">
         <el-popover
+          :class="showDelBtn?'hidden':''"
           placement="bottom"
           width="240"
           v-model="allDialog.moveDialogVisible">
@@ -30,9 +30,8 @@
              size="small"
              icon="el-icon-truck">移动</el-button>
         </el-popover>
-      </el-col>
-      <el-col :span="3" :hidden="showDelBtn">
         <el-button
+          :class="showDelBtn?'hidden':''"
           title="删除菜单，可以删除多个"
            size="small"
            icon="el-icon-delete"
@@ -40,7 +39,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="24">
+      <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
         <el-table
           :data="menuData"
           style="width: 100%"
@@ -93,7 +92,7 @@
           <el-table-column
             label="是否显示">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.disabled==0?'显示':'隐藏' }}</span>
+              <span style="margin-left: 10px">{{ scope.row.disabled==1?'显示':'隐藏' }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -272,12 +271,13 @@ export default {
         component: '#',
         menuUrl: '',
         menuType: 1,
-        menuParentCode: this.multipleSelection[0].id,
+        menuParentCode: this.multipleSelection[0].menuCode,
         menuIcon: '',
         appSystemId: 1,
         orderCode: this.menuData[this.menuData.length - 1].orderCode,
         disabled: true
       }
+      this.menuParentName = this.multipleSelection[0].name
       this.method = 'add'
       this.multipleSelection = []
     },
@@ -298,7 +298,7 @@ export default {
       const that = this
       if (that.method === 'add') {
         this.menu.id = 0
-        this.menu.menuParentCode = this.menu.menuCode
+        this.menu.menuParentCode = this.multipleSelection[0].menuCode
         addMenu(this.menu).then(response => {
           const { code, data } = response
           if (code === 200) {
@@ -366,6 +366,7 @@ export default {
       } else {
         this.showMoveBtn = true
       }
+      console.log(val)
       if (val.length !== 0) {
         this.menu.id = val[val.length - 1].id
         this.menu.menuCode = val[val.length - 1].menuCode
@@ -438,8 +439,8 @@ export default {
 .line {
   text-align: center;
 }
-.el-row {
-  margin-bottom: 20px;
+.hidden {
+  display: none;
 }
 .el-select {
   width: 100%;

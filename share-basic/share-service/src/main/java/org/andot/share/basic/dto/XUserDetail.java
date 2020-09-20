@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
  */
 public class XUserDetail implements UserDetails {
 
-    private UserDto user;
-    private List<RoleDto> roleList;
+    private UserDTO user;
+    private List<RoleDTO> roleList;
 
-    public XUserDetail(UserDto user, List<RoleDto> roleList) {
+    public XUserDetail(UserDTO user, List<RoleDTO> roleList) {
         this.user = user;
         this.roleList = roleList;
     }
@@ -56,11 +56,11 @@ public class XUserDetail implements UserDetails {
         return this.user.getDisabled() != 0;
     }
 
-    public UserDto getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public List<RoleDto> getRoleList() {
+    public List<RoleDTO> getRoleList() {
         return roleList;
     }
 }

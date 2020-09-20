@@ -1,6 +1,9 @@
 package org.andot.share.basic.service;
 
-import org.andot.share.basic.dto.RoleDto;
+import org.andot.share.basic.dto.RoleDTO;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ public interface RoleService {
      * @param roleId
      * @return
      */
-    RoleDto getRoleById(Long roleId);
+    RoleDTO getRoleById(Long roleId);
 
     /**
      * 根据角色名称查询角色列表
@@ -27,11 +30,14 @@ public interface RoleService {
      * @param roleName
      * @return
      */
-    List<RoleDto> getRoleList(String roleName);
+    List<RoleDTO> getRoleList(String roleName);
 
-    boolean saveRole(RoleDto role);
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
+    boolean saveRole(RoleDTO role);
 
-    boolean updateRole(RoleDto role);
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
+    boolean updateRole(RoleDTO role);
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     boolean delRoleById(Long id);
 }

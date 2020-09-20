@@ -7,9 +7,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class RoleDto {
-    private Integer roleId;
+public class RoleDTO {
+    private Long roleId;
     private String roleName;
     private String roleCode;
     private Byte roleType;
+    private Boolean disabled;
 }

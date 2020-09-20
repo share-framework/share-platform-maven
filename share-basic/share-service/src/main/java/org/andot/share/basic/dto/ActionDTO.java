@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ActionDto {
+public class ActionDTO {
     private Integer actionId;
     private String actionName;
     private Byte actionType;

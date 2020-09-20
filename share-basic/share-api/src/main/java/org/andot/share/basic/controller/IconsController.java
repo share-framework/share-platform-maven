@@ -1,21 +1,14 @@
 package org.andot.share.basic.controller;
 
-import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.component.utils.CurrentUserUtil;
-import org.andot.share.basic.dto.PageDto;
 import org.andot.share.basic.entity.Icons;
 import org.andot.share.basic.service.IconsService;
-import org.andot.share.basic.service.IconsService;
-import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /***
  * 图标请求控制器

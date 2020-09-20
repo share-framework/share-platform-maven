@@ -6,8 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import org.andot.share.basic.component.utils.CurrentUserUtil;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.andot.share.basic.dto.MenuDto;
-import org.andot.share.basic.dto.PageDto;
+import org.andot.share.basic.dto.MenuDTO;
+import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.basic.service.MenuService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,7 @@ public class MenuController {
     private MenuService menuService;
 
     @PostMapping("")
-    public CommonResult add(@RequestBody MenuDto menuDto) {
+    public CommonResult add(@RequestBody MenuDTO menuDto) {
         if (menuService.saveMenu(menuDto)) {
             return CommonResult.success("保存成功");
         } else {
@@ -38,7 +38,7 @@ public class MenuController {
 
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody MenuDto menuDto) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody MenuDTO menuDto) {
         if (menuService.updateMenu(id, menuDto)) {
             return CommonResult.success("保存成功");
         } else {
@@ -68,29 +68,30 @@ public class MenuController {
 
     @ApiOperation("根据id获取数据")
     @GetMapping("/{id}")
-    public CommonResult<MenuDto> get(@PathVariable("id") Long id) {
+    public CommonResult<MenuDTO> get(@PathVariable("id") Long id) {
         return CommonResult.success(menuService.getMenuInfoById(id));
     }
 
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
-    public CommonResult<List<MenuDto>> getList(MenuDto menuDto) {
+    public CommonResult<List<MenuDTO>> getList(MenuDTO menuDto) {
         return CommonResult.success(menuService.getMenuList(menuDto.getMenuName(), menuDto.getMenuUrl()));
     }
 
     @ApiOperation("根据条件获取列表数据 - 下拉框")
     @GetMapping("/selector/list")
-    public CommonResult<Map<String, String>> getSelectorList(MenuDto menuDto) {
+    public CommonResult<Map<String, String>> getSelectorList(MenuDTO menuDto) {
         Map<String, String> menuMap = menuService.getMenuList(menuDto.getMenuName(), menuDto.getMenuUrl())
-                .stream().collect(Collectors.toMap(MenuDto::getMenuCode, MenuDto::getMenuName));
+                .stream().collect(Collectors.toMap(MenuDTO::getMenuCode, MenuDTO::getMenuName));
         return CommonResult.success(menuMap);
     }
 
     @ApiOperation("根据条件获取分页列表数据")
     @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDto<MenuDto> menuPage) {
+    public CommonPage getPageList(@RequestBody PageDTO<MenuDTO> menuPage) {
         PageHelper.startPage(menuPage.getPage(), menuPage.getRows());
-        return CommonPage.restPage(menuService.getMenuList(menuPage.getParams().getMenuName(), menuPage.getParams().getMenuUrl()));
+        return CommonPage.restPage(menuService.getMenuList(menuPage.getParam().getMenuName(),
+                menuPage.getParam().getMenuUrl()));
     }
 
     @ApiOperation("加载树形菜单")

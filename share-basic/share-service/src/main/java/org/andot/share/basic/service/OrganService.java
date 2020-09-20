@@ -1,7 +1,7 @@
 package org.andot.share.basic.service;
 
 import org.andot.share.basic.entity.Organ;
-import org.andot.share.basic.dto.OrganDto;
+import org.andot.share.basic.dto.OrganDTO;
 
 import java.util.List;
 
@@ -25,5 +25,5 @@ public interface OrganService {
 
     boolean delOrganById(Long id);
 
-    List<OrganDto> getOrganTree(Long organId);
+    List<OrganDTO> getOrganTree(Long organId);
 }

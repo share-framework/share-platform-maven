@@ -9,7 +9,7 @@
         <result column="menu_code" property="menuCode" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_url" property="menuUrl" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_type" property="menuType" javaType="int" jdbcType="INTEGER"></result>
-        <result column="parent_code" property="parentCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_parent_code" property="menuParentCode" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_icon" property="menuIcon" javaType="string" jdbcType="VARCHAR"></result>
         <result column="app_system_id" property="appSystemId" javaType="long" jdbcType="BIGINT"></result>
         <result column="order_code" property="orderCode" javaType="int" jdbcType="INTEGER"></result>
@@ -20,6 +20,14 @@
         <result column="create_person" property="createPerson" javaType="string" jdbcType="VARCHAR"></result>
         <result column="update_person" property="updatePerson" javaType="string" jdbcType="VARCHAR"></result>
         <result column="delete_person" property="deletePerson" javaType="string" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <resultMap id="menuRolePermission" type="org.andot.share.basic.dto.MenuPermissionDTO">
+        <id column="menu_id" property="menuId" javaType="long" jdbcType="BIGINT"></id>
+        <result column="role_menu_id" property="roleMenuId" javaType="long" jdbcType="BIGINT"></result>
+        <result column="menu_name" property="menuName" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_code" property="menuCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="menu_parent_code" property="menuParentCode" javaType="string" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <select id="getMenuListByUserId" parameterType="long" resultMap="menuMap">
@@ -35,6 +43,26 @@
             </if>
             <if test="appSystemId != null">
                 AND an_menu.app_system_id = #{appSystemId}
+            </if>
+            AND an_menu.disabled = 1
+        </where>
+    </select>
+
+    <select id="getMenuListByRoleId" parameterType="long" resultMap="menuRolePermission">
+        SELECT
+            m.menu_id,
+            m.menu_name,
+            m.menu_code,
+            m.menu_parent_code,
+            IFNULL(rm.role_menu_id, 0) AS role_menu_id
+        FROM an_menu AS m
+        LEFT JOIN role_menu AS rm ON m.menu_code = rm.menu_code
+        <where>
+            <if test="appSystemId != null">
+                AND m.app_system_id = #{appSystemId}
+            </if>
+            <if test="roleId != null">
+                AND rm.role_id = #{roleId}
             </if>
         </where>
     </select>
