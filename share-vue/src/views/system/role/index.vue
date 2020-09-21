@@ -107,6 +107,7 @@
     <el-dialog
       title="菜单权限分配"
       :visible.sync="menuPermissionDialogVisible"
+      @closed="reloadPage"
       width="50%">
       <el-tree
         :data="menuTreeData"
@@ -114,7 +115,9 @@
         node-key="menuId"
         :default-expanded-keys="[2, 3]"
         :default-checked-keys="defaultCheckedKeys"
-        :props="defaultProps">
+        :props="defaultProps"
+        @check="distributionPermission"
+      >
       </el-tree>
       <span slot="footer" class="dialog-footer">
           <el-button @click="menuPermissionDialogVisible = false">取 消</el-button>
@@ -125,7 +128,7 @@
 </template>
 
 <script>
-import { getRoleList, getRoleMenuList, addRole, updateRole, delRole } from '@/api/role'
+import { getRoleList, getRoleMenuList, addRole, updateRole, delRole, addRolePermission, delRolePermission } from '@/api/role'
 
 export default {
   data() {
@@ -340,8 +343,49 @@ export default {
         })
       })
     },
-    distributionPermission() {
-
+    distributionPermission(data) {
+      const that = this
+      if (!this.defaultCheckedKeys.includes(data.menuId)) {
+        addRolePermission({
+          roleId: this.role.roleId,
+          menuCode: data.menuCode
+        }).then(response => {
+          that.loadMenu()
+        }).catch(error => {
+          this.$notify({
+            title: '失败通知',
+            message: error,
+            type: 'error'
+          })
+        })
+      } else {
+        delRolePermission({
+          roleId: this.role.roleId,
+          menuCode: data.menuCode
+        }).then(response => {
+          that.loadMenu()
+        }).catch(error => {
+          this.$notify({
+            title: '失败通知',
+            message: error,
+            type: 'error'
+          })
+        })
+      }
+    },
+    reloadPage() {
+      this.$confirm('菜单已经修改是否需要重新刷新页面，让菜单重新加载?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        location.reload()
+      }).catch(() => {
+        this.$message({
+          type: 'warning',
+          message: '可能会影响左侧菜单使用体验！'
+        })
+      })
     }
   },
   mounted() {

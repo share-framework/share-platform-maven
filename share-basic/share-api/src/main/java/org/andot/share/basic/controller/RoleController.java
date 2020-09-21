@@ -102,4 +102,28 @@ public class RoleController {
         HashMap map = menuService.getManageMenuList(appId, roleId);
         return CommonResult.success(map);
     }
+
+    @ApiOperation("设置菜单角色权限")
+    @PostMapping("/menu")
+    public CommonResult setPermissionMenu(@RequestParam(value = "menuCode") String menuCode,
+                                          @RequestParam(value = "roleId") Long roleId){
+        boolean result = roleService.addMenuRolePermission(roleId, menuCode);
+        if (result) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.failed("设置权限失败，请重试！");
+        }
+    }
+
+    @ApiOperation("删除菜单角色权限")
+    @DeleteMapping("/menu")
+    public CommonResult delPermissionMenu(@RequestParam(value = "menuCode") String menuCode,
+                                          @RequestParam(value = "roleId") Long roleId){
+        boolean result = roleService.delMenuRolePermission(roleId, menuCode);
+        if (result) {
+            return CommonResult.success();
+        } else {
+            return CommonResult.failed("设置权限失败，请重试！");
+        }
+    }
 }

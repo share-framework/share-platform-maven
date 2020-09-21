@@ -50,3 +50,19 @@ export function delRole(id) {
     method: 'DELETE'
   })
 }
+
+export function addRolePermission(params) {
+  return request({
+    url: `/role/menu`,
+    method: 'POST',
+    params
+  })
+}
+
+export function delRolePermission(params) {
+  return request({
+    url: `/role/menu`,
+    method: 'DELETE',
+    params
+  })
+}

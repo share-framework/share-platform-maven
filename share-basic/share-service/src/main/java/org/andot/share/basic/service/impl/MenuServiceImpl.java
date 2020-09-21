@@ -113,11 +113,13 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public HashMap getManageMenuList(Long appSystemId, Long roleId) {
         // 分两个接口查询
+        List<MenuPermissionDTO> menuAllList = menuMapper.getMenuListByRoleId(appSystemId, null);
         List<MenuPermissionDTO> menuList = menuMapper.getMenuListByRoleId(appSystemId, roleId);
-        List<Long> menuIds = menuList.stream().filter(menuPermissionDTO ->
-                menuPermissionDTO.getRoleMenuId() != 0)
+        List<Long> menuIds = menuList.stream()
+                .filter(menuPermissionDTO -> !menuPermissionDTO.getMenuParentCode().equals("0"))
+                .filter(menuPermissionDTO -> menuPermissionDTO.getRoleMenuId() != 0)
                 .map(item -> item.getMenuId()).collect(Collectors.toList());
-        Map<String, List<MenuPermissionDTO>> menuListMap = menuList.stream()
+        Map<String, List<MenuPermissionDTO>> menuListMap = menuAllList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
                 .collect(Collectors.groupingBy(MenuPermissionDTO::getMenuParentCode));
         List<MenuTreeSelectorDTO> menuListSelector = genSelector(menuListMap, "0");

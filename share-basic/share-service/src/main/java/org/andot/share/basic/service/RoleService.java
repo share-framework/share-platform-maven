@@ -40,4 +40,10 @@ public interface RoleService {
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     boolean delRoleById(Long id);
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
+    boolean addMenuRolePermission(Long roleId, String menuCode);
+
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
+    boolean delMenuRolePermission(Long roleId, String menuCode);
 }
