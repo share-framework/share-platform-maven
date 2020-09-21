@@ -26,6 +26,4 @@ hs_err_pid*
 
 .idea
 
-/share-basic/share-service/target/
-/share-basic/share-dao/target/
-/share-basic/share-api/target/
+/*/*/target/
