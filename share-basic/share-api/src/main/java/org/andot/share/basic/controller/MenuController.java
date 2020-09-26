@@ -38,7 +38,8 @@ public class MenuController {
 
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody MenuDTO menuDto) {
+    public CommonResult update(@PathVariable("id") Long id,
+                               @RequestBody MenuDTO menuDto) {
         if (menuService.updateMenu(id, menuDto)) {
             return CommonResult.success("保存成功");
         } else {

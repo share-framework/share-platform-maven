@@ -18,4 +18,10 @@ public interface UserService {
     UserDTO getUser(String phone);
 
     XUserDetail login(String number, String password);
+
+    boolean updateUserDetail(UserDTO userDTO);
+
+    boolean disabledUser(Long xNumber);
+
+
 }

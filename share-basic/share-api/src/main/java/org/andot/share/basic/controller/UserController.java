@@ -27,26 +27,36 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation("更新数据")
-    @PutMapping("/{id}")
-    public CommonResult update(@PathVariable("id") Long id) {
-        return null;
+    @PutMapping("/{xNumber}")
+    public CommonResult update(@PathVariable("xNumber") Long xNumber,
+                               @RequestBody UserDTO userDTO) {
+        userDTO.setXNumber(xNumber);
+        if (userService.updateUserDetail(userDTO)) {
+            return CommonResult.success("更新成功");
+        } else {
+            return CommonResult.failed("更新失败，请重试！");
+        }
     }
 
-    @ApiOperation("删除数据")
-    @DeleteMapping("/{id}")
-    public CommonResult del(@PathVariable("id") Long id) {
-        return null;
+    @ApiOperation("禁用用户")
+    @DeleteMapping("/{xNumber}")
+    public CommonResult del(@PathVariable("xNumber") Long xNumber) {
+        if (userService.disabledUser(xNumber)) {
+            return CommonResult.success("禁用成功");
+        } else {
+            return CommonResult.failed("禁用失败，请重试！");
+        }
     }
 
-    @ApiOperation("批量删除数据")
+    @ApiOperation("批量删除禁用")
     @DeleteMapping("/dels")
     public CommonResult dels(@RequestBody List<Long> ids) {
         return null;
     }
 
     @ApiOperation("根据id获取数据")
-    @GetMapping("")
-    public CommonResult get() {
+    @GetMapping("/{xNumber}")
+    public CommonResult get(@PathVariable("xNumber") Long xNumber) {
         UserDTO user = userService.getUser(CurrentUserUtil.getUserCode());
         return CommonResult.success(user);
     }

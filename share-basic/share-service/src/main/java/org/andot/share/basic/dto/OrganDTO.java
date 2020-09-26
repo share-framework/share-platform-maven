@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 @Getter
 public class OrganDTO {
-    private Integer organId;
+    private Long organId;
     private String organName;
     private Byte organType;
     private Byte orderCode;

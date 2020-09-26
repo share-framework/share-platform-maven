@@ -15,13 +15,13 @@ import java.util.List;
  */
 public interface OrganService {
 
-    Organ getOrganById(Long roleId);
+    OrganDTO getOrganById(Long roleId);
 
-    List<Organ> getOrganList(String organName);
+    List<OrganDTO> getOrganList(String organName);
 
-    boolean saveOrgan(Organ role);
+    boolean saveOrgan(OrganDTO role);
 
-    boolean updateOrgan(Organ role);
+    boolean updateOrgan(OrganDTO role);
 
     boolean delOrganById(Long id);
 

@@ -97,4 +97,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("用户密码错误");
         }
     }
+
+    @Override
+    public boolean updateUserDetail(UserDTO userDTO) {
+        UserDetail userDetail = new UserDetail();
+        BeanUtils.copyProperties(userDTO, userDetail);
+        return userDeatilMapper.updateById(userDetail)>0;
+    }
+
+    @Override
+    public boolean disabledUser(Long xNumber) {
+        User user = new User();
+        user.setXNumber(xNumber);
+        user.setDisabled(true);
+        return userMapper.updateById(user)>0;
+    }
 }

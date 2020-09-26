@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Organ extends BaseEntity {
-    private Integer organId;
+    private Long organId;
     private String organName;
     private Byte organType;
     private Byte orderCode;
