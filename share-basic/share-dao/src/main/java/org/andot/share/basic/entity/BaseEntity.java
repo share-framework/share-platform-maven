@@ -11,14 +11,14 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
     private Boolean disabled = true;
     @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private Date createdTime;
     @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-    private Date deleteTime;
+    private Date updatedTime;
+    private Date deletedTime;
     @TableField(fill = FieldFill.INSERT)
-    private String createPerson;
+    private String createdPerson;
     @TableField(fill = FieldFill.UPDATE)
-    private String updatePerson;
-    private String deletePerson;
+    private String updatedPerson;
+    private String deletedPerson;
     private static final long serialVersionUID = 1L;
 }

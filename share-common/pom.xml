@@ -14,7 +14,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <dependencies>
+    <dependencies> 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
