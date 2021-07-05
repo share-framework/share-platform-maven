@@ -14,11 +14,22 @@
         <el-button type="primary" @click="send">发送</el-button>
       </div>
       <div>
-        <el-alert
-          v-for="title in titles"
-          :title="title"
-          type="error">
-        </el-alert>
+        <div style="width: 100%; display: flex;
+    justify-content: flex-start;">
+          <el-alert
+            v-for="title in titles"
+            :title="title"
+            type="error" style="width: 40%; margin-top: 20px;">
+          </el-alert>
+        </div>
+        <div style="width: 100%; display: flex;
+    justify-content: flex-end;">
+          <el-alert
+            v-for="title in metitles"
+            :title="title"
+            type="success" style="width: 40%; margin-top: 20px;">
+          </el-alert>
+        </div>
       </div>
     </div>
   </div>
@@ -55,7 +66,8 @@
               clientName: "line"
             }
           },
-          titles: []
+          titles: [],
+          metitles: []
         }
       },
       created(){
@@ -88,10 +100,15 @@
           console.log("WebSocket连接发生错误");
         },
         websocketonmessage(e){
+          console.log(e.data);
           const redata = JSON.parse(e.data);
           // 接收数据
           console.log(redata);
-          this.titles.push(redata.header.lineId + ": " + redata.body.content);
+          if (redata.header.lineId == this.toLineId) {
+            this.titles.push(redata.header.lineId + ": " + redata.body.content);
+          } else {
+            this.metitles.push(redata.header.lineId + ": " + redata.body.content);
+          }
         },
 
         send(){//数据发送
