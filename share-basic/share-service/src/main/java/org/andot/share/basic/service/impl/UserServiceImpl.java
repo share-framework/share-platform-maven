@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author andot
+ */
 @Slf4j
 @AllArgsConstructor
 @Service("userService")

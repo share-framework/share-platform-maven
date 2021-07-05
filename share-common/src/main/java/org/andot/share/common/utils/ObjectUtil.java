@@ -42,4 +42,17 @@ public class ObjectUtil {
         }
         return false;
     }
+
+    /**
+     * 判断是否为0
+     * @param number
+     * @return
+     */
+    public static boolean isZero(Number number){
+        if(number.equals(0)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

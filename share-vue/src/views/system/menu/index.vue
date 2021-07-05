@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row class="btn-group-row">
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        <!-- :class="showDelBtn?'hidden':''" -->
         <el-button
-          :class="showDelBtn?'hidden':''"
            type="primary"
            size="small"
            icon="el-icon-circle-plus-outline"
@@ -251,15 +251,18 @@ export default {
       this.btnReadonly = true
       if (this.multipleSelection.length === 0) {
         this.multipleSelection[0] = {
-          id: '0'
+          id: '0',
+          menuCode: 'root',
+          name: '顶级菜单'
         }
         this.$message({
           message: '不选择父级菜单，默认为顶级菜单',
           type: 'warning'
         })
+        this.menuParentName = "顶级菜单"
         setTimeout(() => {
           this.dialogVisible = true
-        }, 1000)
+        }, 800)
       } else {
         this.dialogVisible = true
       }
@@ -298,7 +301,7 @@ export default {
       const that = this
       if (that.method === 'add') {
         this.menu.id = 0
-        this.menu.menuParentCode = this.multipleSelection[0].menuCode
+        debugger
         addMenu(this.menu).then(response => {
           const { code, data } = response
           if (code === 200) {
@@ -444,6 +447,9 @@ export default {
 }
 .el-select {
   width: 100%;
+}
+.btn-group-row {
+  height: 40px;
 }
 </style>
 

@@ -1,0 +1,110 @@
+<template>
+  <div>
+    <div style="height: 400px;">
+      <div style="width: 100%;">
+
+      </div>
+      <div>
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入内容"
+          v-model="msg.body.content">
+        </el-input>
+        <el-button type="primary" @click="send">发送</el-button>
+      </div>
+      <div>
+        <el-alert
+          v-for="title in titles"
+          :title="title"
+          type="error">
+        </el-alert>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+    export default {
+      name: "LineChat",
+      props: {
+        toLineId: {
+          type: String,
+          required: true
+        },
+      },
+      data() {
+        return {
+          websocket: null,
+          msg: {
+            header: {
+              lineId: "",
+              toLineId: "",
+              msgType: 1
+            },
+            body: {
+              id: 1,
+              title: "2323",
+              content: "",
+              format: "",
+              extra: ""
+            },
+            footer: {
+              version: "1.0.0",
+              timestamp: 3231212121323,
+              clientName: "line"
+            }
+          },
+          titles: []
+        }
+      },
+      created(){
+        //页面刚进入时开启长连接
+        this.initWebSocket()
+      },
+      destroyed: function() {
+        //页面销毁时关闭长连接
+        this.websocketclose();
+      },
+      mounted() {
+        this.msg.header.toLineId = this.toLineId;
+        this.msg.header.lineId = this.$store.state.app.lineId;
+      },
+      methods: {
+        initWebSocket(){
+          console.log(this.$store.state.app.lineId)
+          this.websocket = new WebSocket("ws://127.0.0.1:8001/ws/conn?lineId="+this.$store.state.app.lineId);
+          this.websocket.onopen = this.websocketonopen;
+
+          this.websocket.onerror = this.websocketonerror;
+
+          this.websocket.onmessage = this.websocketonmessage;
+          this.websocket.onclose = this.websocketclose;
+        },
+        websocketonopen() {
+          console.log("WebSocket连接成功");
+        },
+        websocketonerror(e) { //错误
+          console.log("WebSocket连接发生错误");
+        },
+        websocketonmessage(e){
+          const redata = JSON.parse(e.data);
+          // 接收数据
+          console.log(redata);
+          this.titles.push(redata.header.lineId + ": " + redata.body.content);
+        },
+
+        send(){//数据发送
+          this.websocket.send(JSON.stringify(this.msg));
+        },
+
+        websocketclose(e){ //关闭
+          console.log("connection closed (" + e.code + ")");
+        },
+      },
+    }
+</script>
+
+<style scoped>
+
+</style>
