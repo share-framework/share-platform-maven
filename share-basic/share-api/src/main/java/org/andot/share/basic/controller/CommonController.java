@@ -47,6 +47,7 @@ public class CommonController {
         jwtUserDetail.setRoles(userDetail.getRoleList().stream().map(RoleDTO::getRoleCode).collect(Collectors.toList()));
         jwtUserDetail.setUsername(userDetail.getUser().getPhone());
         jwtUserDetail.setXNumber(userDetail.getUsername());
+        accessToken.setData(jwtUserDetail);
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
         accessToken.setToken(token);
         return CommonResult.success(accessToken, "登录成功");
@@ -55,6 +56,6 @@ public class CommonController {
     @DeleteMapping("/logout")
     public CommonResult logout() {
 
-        return CommonResult.success( "登录成功");
+        return CommonResult.success( "退出成功");
     }
 }

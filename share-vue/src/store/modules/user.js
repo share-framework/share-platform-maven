@@ -1,12 +1,14 @@
 import { login, logout, getInfoApi } from '@/api/user'
 import { getToken, setToken, removeToken, setTokenPrefix } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import Cookies from 'js-cookie'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
     avatar: '',
+    xNumber: '',
     roles: []
   }
 }
@@ -28,6 +30,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  X_NUMBER: (state, xNumber) => {
+    state.xNumber = xNumber
   }
 }
 
@@ -39,6 +44,7 @@ const actions = {
       login({ number: number, password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.prefix + ' ' + data.token)
+        Cookies.set('xNumber', data.data.xnumber)
         setToken(data.token)
         setTokenPrefix(data.prefix)
         resolve()
@@ -59,7 +65,7 @@ const actions = {
         }
         data.roles = ['admin']
         // eslint-disable-next-line no-unused-vars
-        const { roles, realName, avatar } = data
+        const { roles, realName, avatar, xnumber } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -69,6 +75,7 @@ const actions = {
         commit('SET_ROLES', roles)
         commit('SET_NAME', realName)
         commit('SET_AVATAR', avatar)
+        commit('X_NUMBER', xnumber)
         resolve(data)
       }).catch(error => {
         reject(error)

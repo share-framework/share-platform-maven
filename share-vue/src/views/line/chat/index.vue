@@ -2,28 +2,28 @@
   <div class="chat">
     <div style="display: flex; width: 98%; height: calc(100vh - 100px); margin: 10px; border-radius: 10px; overflow: hidden;
 border: 1px solid #DCDFE6; ">
-      <div style="width: 360px;  height: calc(100vh - 100px); display: flex; justify-content: space-around; background-color: #409EFF;">
+      <div style="width: 360px;  height: calc(100vh - 100px); display: flex; justify-content: space-around;">
 
-        <div style="width: 60px; height: calc(100vh - 100px); justify-content: flex-start; background-color: #001528;">
-          <div style="width: 60px; height: 30px; text-align: center; background-color: brown;">
+        <div style="width: 60px; height: calc(100vh - 100px); justify-content: flex-start;">
+          <div style="width: 60px; height: 30px; display: flex; justify-content: space-evenly; align-items: center;">
             <i class="el-icon-circle-close"></i>
             <i class="el-icon-remove-outline"></i>
             <i class="el-icon-circle-plus-outline"></i>
           </div>
-          <div style="width: 60px; height: 60px; display: flex; justify-content: center; background-color: brown;">
+          <div style="width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;">
             <div style="width: 40px; height: 40px; border-radius: 5px; overflow: hidden; background-color: #001528;">
 
             </div>
           </div>
-          <div style="width: 60px; height: 60px; text-align: center; font-size: 30px; background-color: brown;">
+          <div style="width: 60px; height: 60px; font-size: 30px; display: flex; justify-content: center;  align-items: center;">
             <i class="el-icon-chat-dot-round"></i>
           </div>
-          <div style="width: 60px; height: 60px; text-align: center; font-size: 30px; background-color: brown;">
+          <div style="width: 60px; height: 60px; font-size: 30px; display: flex; justify-content: center;  align-items: center;">
             <i class="el-icon-user"></i>
           </div>
         </div>
 
-        <div style="width: 300px;  height: calc(100vh - 100px); justify-content: flex-end; background-color: #409EFF;">
+        <div style="width: 300px;  height: calc(100vh - 100px); justify-content: flex-end;">
           <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px;">
             <el-input
               placeholder="请输入好友昵称或者备注"
@@ -53,12 +53,12 @@ border: 1px solid #DCDFE6; ">
           </ul>
         </div>
       </div>
-      <div style="width: calc(100% - 360px);  height: calc(100vh - 100px); background-color: aquamarine;">
-        <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px; background-color: burlywood;">
+      <div style="width: calc(100% - 360px);  height: calc(100vh - 100px);">
+        <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px;">
           {{username}}
         </div>
 
-        <line-chat v-if="isLogin" :to-line-id="toLineId"></line-chat>
+        <line-chat :to-line-id="toLineId"></line-chat>
       </div>
     </div>
     <input v-model="lineId" >

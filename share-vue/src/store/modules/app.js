@@ -44,7 +44,7 @@ const actions = {
   },
   lineId({ commit }, msg) {
     commit('LINE_ID', msg.lineId)
-    //Cookies.set('lineId', lineId)
+    Cookies.set('lineId', lineId)
   }
 }
 
