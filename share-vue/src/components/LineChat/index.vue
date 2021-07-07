@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="height: 400px;">
-      <div style="width: 100%; height: 60vh; overflow-y: auto;">
+      <div style="width: 100%; height: 58vh; overflow-y: auto;">
         <div style="width: 100%; display: flex; justify-content: flex-start;" v-for="title in titles">
           <el-alert
 
@@ -18,16 +18,48 @@
           </el-alert>
         </div>
       </div>
-      <div style="width: 100%; height: 18vh; position: relative;">
+      <div style="width: 100%; height: 5vh; line-height: 5vh;
+      text-align: center; display: flex; justify-content: flex-start;
+        border-top: 1px solid rgba(56,56,56,0.17);">
+        <div class="msg-btn">
+          <i class="el-icon-microphone"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-phone-outline"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-video-camera"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-picture-outline-round"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-paperclip"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-location-outline"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-wind-power"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-chat-line-square"></i>
+        </div>
+        <div class="msg-btn">
+          <i class="el-icon-warning-outline"></i>
+        </div>
+      </div>
+      <div style="width: 100%; height: 26%; position: relative;">
         <el-input
           type="textarea"
           placeholder="请输入内容"
           :rows="6"
+          resize="none"
           v-model="message">
         </el-input>
-        <el-button type="primary" @click="send" style="position: absolute;
-    bottom: -6px;
-    right: 2px;">发送</el-button>
+        <el-button type="primary" @click="send" size="mini" round style="position: absolute;
+    bottom: 2vh;
+    right: 10px;">发  送</el-button>
       </div>
     </div>
   </div>
@@ -72,6 +104,7 @@
       created(){
         //页面刚进入时开启长连接
         this.initWebSocket()
+        this.message = '&#128512;'
       },
       destroyed: function() {
         //页面销毁时关闭长连接
@@ -124,5 +157,13 @@
 </script>
 
 <style scoped>
-
+  .msg-btn {
+    width: 10vh;
+    height: 5vh;
+    font-size: 24px;
+  }
+  .msg-btn:hover {
+    background-color: #e8f3fe;
+    color: coral;
+  }
 </style>
