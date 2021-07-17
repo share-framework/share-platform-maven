@@ -14,7 +14,7 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
             <div style="width: 40px; height: 40px; border-radius: 5px; overflow: hidden;">
               <div class="demo-basic--circle">
                 <div class="block">
-                  <el-avatar shape="square" :size="50" src="https://img0.baidu.com/it/u=3311900507,1448170316&fm=26&fmt=auto&gp=0.jpg"></el-avatar>
+                  <el-avatar shape="square" :size="50" src="https://img1.baidu.com/it/u=420549850,1059016251&fm=26&fmt=auto&gp=0.jpg"></el-avatar>
                 </div>
               </div>
             </div>
@@ -37,27 +37,27 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
           <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px;">
             <el-input
               placeholder="请输入好友昵称或者备注"
-              v-model="input4" size="mini" style="width: 80%;">
+              v-model="input4" size="mini" style="width: 80%; margin-top: 2px;">
               <i slot="prefix" class="el-input__icon el-icon-search"></i>
             </el-input>
-            <div>
-
+            <div style="width: 15%; height: 30px; font-size: 20px; line-height: 30px; text-align: left;">
+              <i class="el-icon-zoom-in"> </i>
             </div>
           </div>
           <el-scrollbar style="height: 98%;">
             <ul class="infinite-list" v-infinite-scroll="load" style="padding: 0px; margin: 0px">
-              <li v-for="i in count" class="infinite-list-item" @click="inuser(i, '好吃的汉堡' + i)">
+              <li v-for="i in count" :class="(parseInt(toLineId)  -   10000) == (i-1) ? 'infinite-list-item-select': 'infinite-list-item'" @click="inUser(i, '郝金鑫' + i)">
                 <div style="width: 100%; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
-                  <div style="width: 40px; height: 40px; border-radius: 5px; overflow: hidden; background-color: #fbfcfd;">
+                  <div style="width: 40px; height: 40px; border-radius: 5px; overflow: hidden;">
                     <div class="demo-basic--circle">
                       <div class="block">
-                        <el-avatar shape="square" :size="50" src="https://img1.baidu.com/it/u=420549850,1059016251&fm=26&fmt=auto&gp=0.jpg"></el-avatar>
-                      </div>
+                        <el-avatar shape="square" :size="50" src="https://img0.baidu.com/it/u=3311900507,1448170316&fm=26&fmt=auto&gp=0.jpg"></el-avatar>
+                        </div>
                     </div>
                   </div>
                   <div style="width: calc(100% - 40px); height: 60px;">
                     <div style="padding: 14px;">
-                      <span>好吃的汉堡 {{i}}</span>
+                      <span>郝金鑫 {{i}}</span>
                       <div class="bottom clearfix">
                         <time class="time">2021-07-05 23:29:27</time>
                       </div>
@@ -71,7 +71,7 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
       </div>
       <!--右侧-->
       <div style="width: calc(100% - 360px);  height: calc(100vh - 100px);">
-        <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px;">
+        <div style=" width: 100%; height: 50px; padding: 10px; display: flex; justify-content: space-between; text-align: center; line-height: 20px;  border-bottom: 1px solid rgba(56,56,56,0.17);">
           {{username}}
         </div>
 
@@ -126,10 +126,11 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
         load () {
           this.count = 100
         },
-        inuser (lineId, name) {
-          this.toLineId = 10000 + lineId;
-          this.username = name
-          this.isLogin = true;
+        inUser (lineId, name) {
+          this.toLineId = (10000 + lineId - 1) + "";
+          console.log("=========");
+          console.log(this.toLineId);
+          this.username = name;
         },
         login () {
           this.$store.commit('app/LINE_ID', { lineId: this.lineId})
@@ -138,6 +139,9 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
             type: 'success'
           });
         }
+      },
+      created() {
+        this.toLineId = "10000";
       }
     }
 </script>
@@ -152,8 +156,16 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
     align-items: center;
     justify-content: space-around;
     height: 60px;
-    background-color: #fbfcfd;
-    color: #7dbcfc;
+    background-color: #f6f9fe;
+    padding: 0px!important;
+  }
+
+  .infinite-list-item-select {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 60px;
+    background-color: #eeeef1;
     padding: 0px!important;
   }
 

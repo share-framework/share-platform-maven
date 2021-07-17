@@ -1,23 +1,26 @@
 <template>
   <div>
     <div style="height: 400px;">
-      <div style="width: 100%; height: 58vh; overflow-y: auto;">
-        <div style="width: 100%; display: flex; justify-content: flex-start;" v-for="title in titles">
-          <el-alert
-
-            :title="title"
-            type="error" style="width: 40%; margin-top: 20px;">
-          </el-alert>
-        </div>
-        <div style="width: 100%; display: flex;
-    justify-content: flex-end;" v-for="title in metitles">
-          <el-alert
-
-            :title="title"
-            type="success" style="width: 40%; margin-top: 20px;">
-          </el-alert>
-        </div>
+      <el-scrollbar style="height: 98%;" up >
+        <div style="width: 100%; height: 58vh;">
+          <div v-for="title in titles">
+            <div v-if="title.position == 0" style="width: 100%; display: flex; justify-content: flex-start;">
+              <el-alert
+                :title="title.content"
+                type="error"
+                style="width: 40%; margin-top: 20px;">
+              </el-alert>
+            </div>
+            <div v-else style="width: 100%; display: flex; justify-content: flex-end;">
+              <el-alert
+                :title="title.content"
+                type="success"
+                style="width: 40%; margin-top: 20px;">
+              </el-alert>
+            </div>
+          </div>
       </div>
+      </el-scrollbar>
       <div style="width: 100%; height: 5vh; line-height: 5vh;
       text-align: center; display: flex; justify-content: flex-start;
         border-top: 1px solid rgba(56,56,56,0.17);">
@@ -97,60 +100,78 @@
             }
           },
           titles: [],
-          metitles: [],
-          message: undefined
+          message: undefined,
         }
       },
       created(){
+        console.log(process.env.VUE_APP_WEB_SOCKET_API)
+        console.log(this.websocket)
+        console.log(this.toLineId)
+        // 如果发现websocket不为空，先关闭，再建立连接
+        if (this.websocket != null) {
+          this.webSocketOnClose();
+        }
         //页面刚进入时开启长连接
         this.initWebSocket()
         this.message = '&#128512;'
       },
       destroyed: function() {
         //页面销毁时关闭长连接
-        this.websocketclose();
+        this.webSocketOnClose();
       },
       mounted() {
+        this.titles =  [];
+        this.metitles = [];
         this.msg.header.toLineId = this.toLineId;
         this.msg.header.lineId = this.$store.state.user.xNumber;
       },
       methods: {
         initWebSocket(){
           console.log(this.$store.state.user)
-          this.websocket = new WebSocket("ws://127.0.0.1:8001/ws/conn?lineId="+this.$store.state.user.xNumber);
-          this.websocket.onopen = this.websocketonopen;
+          this.websocket = new WebSocket(process.env.VUE_APP_WEB_SOCKET_API + "?lineId=" + this.$store.state.user.xNumber);
+          this.websocket.onopen = this.webSocketOnOpen;
 
-          this.websocket.onerror = this.websocketonerror;
+          this.websocket.onerror = this.webSocketOnError;
 
-          this.websocket.onmessage = this.websocketonmessage;
-          this.websocket.onclose = this.websocketclose;
+          this.websocket.onmessage = this.webSocketOnMessage;
         },
-        websocketonopen() {
+        webSocketOnOpen() {
           console.log("WebSocket连接成功");
         },
-        websocketonerror(e) { //错误
+        webSocketOnError(e) {
           console.log("WebSocket连接发生错误");
+          console.log(e);
         },
-        websocketonmessage(e){
+        webSocketOnMessage(e){
+          console.log("webSocketOnMessage");
           console.log(e.data);
           const redata = JSON.parse(e.data);
           // 接收数据
           console.log(redata);
+          console.log(this.toLineId);
           if (redata.header.lineId == this.toLineId) {
-            this.titles.push(redata.header.lineId + ": " + redata.body.content);
+            this.titles.push({
+              position: 0,
+              content: this.msg.header.lineId + ": " + this.msg.body.content
+            });
           } else {
-            this.metitles.push(redata.header.lineId + ": " + redata.body.content);
           }
         },
         send(){
+          console.log("send");
           //数据发送
           this.msg.body.content = this.message
+          this.titles.push({
+            position: 1,
+            content: this.msg.header.lineId + ": " + this.msg.body.content
+          });
           this.websocket.send(JSON.stringify(this.msg));
           this.message = undefined
         },
 
-        websocketclose(e){ //关闭
-          console.log("connection closed (" + e.code + ")");
+        webSocketOnClose(e){ //关闭
+          console.log(e)
+          console.log("connection closed");
         },
       },
     }
