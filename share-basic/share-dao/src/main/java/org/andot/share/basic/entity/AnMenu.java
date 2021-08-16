@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 菜单数据实体类
+ * @author andot
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class AnMenu extends BaseEntity {

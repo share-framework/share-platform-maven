@@ -44,7 +44,7 @@
             <if test="appSystemId != null">
                 AND an_menu.app_system_id = #{appSystemId}
             </if>
-            AND an_menu.disabled = 1
+            AND an_menu.disabled = 0
         </where>
     </select>
 
@@ -64,6 +64,7 @@
             <if test="roleId != null">
                 AND rm.role_id = #{roleId}
             </if>
+            AND m.disabled = 0
         </where>
     </select>
 </mapper>

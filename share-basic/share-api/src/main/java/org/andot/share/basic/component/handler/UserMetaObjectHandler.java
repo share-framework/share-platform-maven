@@ -11,17 +11,22 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
+/**
+ * 字段自动填充
+ * <a href="https://mp.baomidou.com/guide/auto-fill-metainfo.html">查看</a>
+ * @author andot
+ */
 @Component
 public class UserMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.fillStrategy(metaObject, "createTime", Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        this.fillStrategy(metaObject, "createPerson", CurrentUserUtil.getUserName());
+        this.fillStrategy(metaObject, "createdTime", Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        this.fillStrategy(metaObject, "createdPerson", CurrentUserUtil.getUserName());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.fillStrategy(metaObject, "updateTime", Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        this.fillStrategy(metaObject, "updatePerson", CurrentUserUtil.getUserName());
+        this.fillStrategy(metaObject, "updatedTime", Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        this.fillStrategy(metaObject, "updatedPerson", CurrentUserUtil.getUserName());
     }
 }

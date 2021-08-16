@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 public class MenuTreeDTO {
     @ApiModelProperty("菜单名称")
-    private String name;
+    private String menuName;
     @ApiModelProperty("菜单id")
     private Long id;
     @ApiModelProperty("菜单code")
@@ -37,7 +37,7 @@ public class MenuTreeDTO {
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
     private Integer sort;
-    @ApiModelProperty("显隐性 1显示 0不显示")
+    @ApiModelProperty("禁用 1 禁用 0 启用")
     private Boolean disabled;
     @ApiModelProperty("是否存在子节点")
     private Boolean hashChildren;

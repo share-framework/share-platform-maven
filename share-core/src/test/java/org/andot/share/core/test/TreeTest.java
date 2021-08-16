@@ -1,7 +1,6 @@
 package org.andot.share.core.test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TreeTest {
     public static void main(String[] args) {
@@ -16,11 +15,6 @@ public class TreeTest {
         node20.setLeft(node30);
         node21.setLeft(node31);
         node21.setRight(node32);
-//        sequence(node1);
-//        frontSequence(node1);
-//        centerSequence(node1);
-//        backSequence(node1);
-//        frontSequenceByStack(node1);
         backSequenceByStack(node1);
         Collections.sort(new ArrayList<>());
     }

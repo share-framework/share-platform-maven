@@ -9,6 +9,7 @@ import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.andot.share.basic.entity.AnMenu;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.dto.MenuDTO;
+import org.andot.share.common.type.ConstantType;
 import org.andot.share.common.utils.JSONObject;
 import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
@@ -97,17 +98,18 @@ public class MenuServiceImpl implements MenuService {
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
                 .collect(Collectors.groupingBy(AnMenu::getMenuParentCode));
-        return gen(menuListMap, "0");
+        return gen(menuListMap, ConstantType.MENU_ROOT_CODE);
     }
 
     @Override
     public List<MenuTreeDTO> getManageMenuTreeList(Long appSystemId) {
         List<AnMenu> menuList = menuMapper.selectList(new LambdaQueryWrapper<AnMenu>()
-                .eq(AnMenu::getAppSystemId, appSystemId));
+                .eq(AnMenu::getAppSystemId, appSystemId)
+                .eq(AnMenu::getDisabled, false));
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
                 .collect(Collectors.groupingBy(AnMenu::getMenuParentCode));
-        return gen(menuListMap, "0");
+        return gen(menuListMap, ConstantType.MENU_ROOT_CODE);
     }
 
     @Override
@@ -116,13 +118,13 @@ public class MenuServiceImpl implements MenuService {
         List<MenuPermissionDTO> menuAllList = menuMapper.getMenuListByRoleId(appSystemId, null);
         List<MenuPermissionDTO> menuList = menuMapper.getMenuListByRoleId(appSystemId, roleId);
         List<Long> menuIds = menuList.stream()
-                .filter(menuPermissionDTO -> !menuPermissionDTO.getMenuParentCode().equals("0"))
+                .filter(menuPermissionDTO -> !menuPermissionDTO.getMenuParentCode().equals(ConstantType.MENU_ROOT_CODE))
                 .filter(menuPermissionDTO -> menuPermissionDTO.getRoleMenuId() != 0)
                 .map(item -> item.getMenuId()).collect(Collectors.toList());
         Map<String, List<MenuPermissionDTO>> menuListMap = menuAllList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
                 .collect(Collectors.groupingBy(MenuPermissionDTO::getMenuParentCode));
-        List<MenuTreeSelectorDTO> menuListSelector = genSelector(menuListMap, "0");
+        List<MenuTreeSelectorDTO> menuListSelector = genSelector(menuListMap, ConstantType.MENU_ROOT_CODE);
         JSONObject result = new JSONObject();
         result.put("menuList", menuListSelector);
         result.put("menuIds", menuIds);
@@ -145,7 +147,7 @@ public class MenuServiceImpl implements MenuService {
                     menuTreeDto.setChildren(gen(menuListMap, menuList.get(i).getMenuCode()));
                     menuTreeDto.setHashChildren(menuTreeDto.getChildren().size()>0);
                 }
-                menuTreeDto.setName(menuList.get(i).getMenuName());
+                menuTreeDto.setMenuName(menuList.get(i).getMenuName());
                 menuTreeDto.setAppSystemId(menuList.get(i).getAppSystemId());
                 menuTreeDto.setIcon(menuList.get(i).getMenuIcon());
                 menuTreeDto.setMenuParentCode(menuList.get(i).getMenuParentCode());
