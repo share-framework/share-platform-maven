@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 角色数据实体
+ * @author andot
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Role extends BaseEntity {
@@ -13,4 +17,5 @@ public class Role extends BaseEntity {
     private String roleName;
     private String roleCode;
     private Byte roleType;
+    private Integer roleOrder;
 }

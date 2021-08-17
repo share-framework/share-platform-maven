@@ -72,7 +72,10 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public boolean delMenuById(Long id) {
-        return menuMapper.deleteById(id) > 0;
+        AnMenu anMenu = new AnMenu();
+        anMenu.setMenuId(id);
+        anMenu.setDisabled(true);
+        return menuMapper.updateById(anMenu)>0;
     }
 
     @Transactional

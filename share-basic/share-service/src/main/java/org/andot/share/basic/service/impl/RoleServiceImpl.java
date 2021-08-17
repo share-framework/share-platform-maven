@@ -46,6 +46,7 @@ public class RoleServiceImpl implements RoleService {
                 .roleId(role.getRoleId())
                 .roleName(role.getRoleName())
                 .roleType(role.getRoleType())
+                .roleOrder(role.getRoleOrder())
                 .disabled(role.getDisabled())
                 .build()).collect(Collectors.toList());
     }

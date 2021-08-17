@@ -81,7 +81,8 @@
           <el-table-column
             prop="menuName"
             :show-overflow-tooltip="true"
-            label="菜单名称">
+            min-width="150"
+            label=" 菜单名称">
             <template slot-scope="scope">
               <i :class="scope.row.icon"></i>
               <i> </i>
@@ -118,7 +119,7 @@
             align="center"
             label="状态">
             <template slot-scope="scope">
-              <i v-if="scope.row.disabled==1" class="status-info status-danger" title="禁用"></i>
+              <i v-if="scope.row.disabled==1" class="status-info status-danger" title="停用"></i>
               <i v-else  class="status-info status-success" title="启用"></i>
             </template>
           </el-table-column>
@@ -131,13 +132,13 @@
                          type="text"
                          icon="el-icon-edit"
                          @click="handleSee(scope.row)"
-                         v-hasPermi="['system:menu:edit']"
+                         v-hasPermi="['system:menu:see']"
               >查看</el-button>
               <el-button size="mini"
                          type="text"
                          icon="el-icon-edit"
                          @click="handleUpdate(scope.row)"
-                         v-hasPermi="['system:menu:edit']"
+                         v-hasPermi="['system:menu:update']"
               >修改</el-button>
               <el-button
                 size="mini"
@@ -215,7 +216,7 @@
                 <el-option label="普通类型" :value="1"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="是否显示">
+            <el-form-item label="禁用状态">
               <el-switch v-model="menu.disabled" :disabled="seeShow"></el-switch>
             </el-form-item>
           </el-form>
@@ -258,7 +259,7 @@ export default {
         menuIcon: 'el-icon-question',
         appSystemId: 1,
         orderCode: 0,
-        disabled: true
+        disabled: false
       },
       rules: {
         menuName: [
@@ -339,7 +340,7 @@ export default {
         menuIcon: undefined,
         appSystemId: 1,
         orderCode: this.menuData[this.menuData.length - 1].orderCode,
-        disabled: true
+        disabled: false
       }
       this.menuParentName = this.multipleSelection[0].menuName
       this.method = 'add'
@@ -459,7 +460,7 @@ export default {
       this.menu.appSystemId = row.appSystemId
       this.menu.component = row.component
       this.menu.menuParentCode = row.menuParentCode
-      this.menu.menuName = row.name
+      this.menu.menuName = row.menuName
       this.menu.redirect = row.redirect
       this.menu.appSystemId = row.appSystemId
       this.menu.menuIcon = row.icon

@@ -1,10 +1,8 @@
 package org.andot.share.basic.controller;
 
 import com.github.pagehelper.PageHelper;
-import io.jsonwebtoken.lang.Collections;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.service.RoleService;
 import org.andot.share.common.response.CommonPage;
@@ -15,7 +13,6 @@ import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.swing.plaf.ListUI;
 import java.util.HashMap;
 import java.util.List;
 

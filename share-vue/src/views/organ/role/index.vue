@@ -25,10 +25,8 @@
       <el-col :span="24">
         <el-table
           :data="roleData"
-          stripe
           fit
-          @selection-change="handleSelectionChange"
-          style="width: 100%">
+          @selection-change="handleSelectionChange">
           <el-table-column
             fixed
             prop="roleId"
@@ -46,14 +44,50 @@
           <el-table-column
             prop="roleType"
             label="角色类型">
+            <template slot-scope="scope">
+              {{roleTypeMap[scope.row.roleType]}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="roleOrder"
+            align="center"
+            label="角色序号">
+          </el-table-column>
+          <el-table-column
+            prop="disabled"
+            align="center"
+            label="禁用状态">
+            <template slot-scope="scope">
+              <i v-if="scope.row.disabled==1" class="status-info status-danger" title="停用"></i>
+              <i v-else  class="status-info status-success" title="启用"></i>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
-            width="100">
+            min-width="100">
             <template slot-scope="scope">
-              <el-button @click="see(scope.row)" type="text" size="small">查看</el-button>
-              <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
+              <div v-if="scope.row.roleType != 1">
+                <el-button size="mini"
+                           type="text"
+                           icon="el-icon-edit"
+                           @click="handleSee(scope.row)"
+                           v-hasPermi="['organ:role:see']"
+                >查看</el-button>
+                <el-button size="mini"
+                           type="text"
+                           icon="el-icon-edit"
+                           @click="handleUpdate(scope.row)"
+                           v-hasPermi="['organ:role:update']"
+                >修改</el-button>
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="handleDelete(scope.row)"
+                  v-hasPermi="['organ:role:remove']"
+                >删除</el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -78,7 +112,7 @@
       :visible.sync="dialogVisible"
       width="50%"
       class="log-form">
-      <div style="height: 180px; overflow-x: auto;">
+      <div>
         <el-form ref="menuForm" :show="false" :rules="rules" :model="role" label-width="80px">
           <el-form-item label="角色名称" prop="menuName">
             <el-input v-model="role.roleName" :readonly="seeShow"></el-input>
@@ -88,14 +122,35 @@
           </el-form-item>
           <el-form-item label="角色类型">
             <el-select v-model="role.roleType" placeholder="请选择系统" :disabled="seeShow" class="el-select">
-              <el-option label="超级管理员" :value="1"></el-option>
-              <el-option label="管理员" :value="2"></el-option>
-              <el-option label="普通用户" :value="3"></el-option>
+              <el-option v-for="roleType in roleTypes" :key="roleType.id"
+                         :label="roleType.name" :value="roleType.id"></el-option>
             </el-select>
           </el-form-item>
-          <!--<el-form-item label="是否显示">
+          <el-form-item label="角色序号">
+            <el-input-number v-model="role.roleOrder"
+                             controls-position="right" :min="1" :disabled="seeShow"></el-input-number>
+          </el-form-item>
+          <el-form-item label="禁用状态">
             <el-switch v-model="role.disabled" :disabled="seeShow"></el-switch>
-          </el-form-item>-->
+          </el-form-item>
+          <el-form-item label="菜单权限">
+            <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
+            <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
+            <el-checkbox v-model="role.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
+            <el-tree
+              class="tree-border"
+              :data="menuOptions"
+              show-checkbox
+              ref="menu"
+              node-key="id"
+              :check-strictly="!role.menuCheckStrictly"
+              empty-text="加载中，请稍后"
+              :props="defaultProps"
+            ></el-tree>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="role.memo" type="textarea" placeholder="请输入内容"></el-input>
+          </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer" :style="'display:' + (btnReadonly?'block':'none')">
@@ -149,8 +204,12 @@ export default {
         roleId: 0,
         roleName: '',
         roleCode: '',
+        roleOrder: 1,
         roleType: 0,
-        disabled: true
+        disabled: false,
+        memo: undefined,
+        menuCheckStrictly: true,
+        deptCheckStrictly: true
       },
       rules: {
         roleName: [
@@ -177,7 +236,28 @@ export default {
       defaultProps: {
         label: 'menuName'
       },
-      defaultCheckedKeys: []
+      defaultCheckedKeys: [],
+      roleTypes: [{
+        id: 1,
+        name: '超级管理员'
+      }, {
+        id: 2,
+        name: '管理员'
+      }, {
+        id: 3,
+        name: '普通用户'
+      }],
+      roleTypeMap: {
+        1: '超级管理员',
+        2: '管理员',
+        3: '普通用户',
+      },
+      // 菜单列表
+      menuOptions: [],
+      // 部门列表
+      deptOptions: [],
+      menuExpand: false,
+      menuNodeAll: false
     }
   },
   methods: {
@@ -212,22 +292,27 @@ export default {
         roleName: '',
         roleCode: '',
         roleType: 3,
-        disabled: true
+        roleOrder: 1,
+        disabled: false,
+        memo: undefined
       }
       this.method = 'add'
     },
-    see(row) {
+    handleSee(row) {
       this.seeShow = true
       this.btnReadonly = false
       this.propCopy(row)
       this.dialogVisible = true
     },
-    edit(row) {
+    handleUpdate(row) {
       this.seeShow = false
       this.btnReadonly = true
       this.propCopy(row)
       this.dialogVisible = true
       this.method = 'edit'
+    },
+    handleDelete(row) {
+
     },
     enterHandler() {
       const that = this
@@ -386,7 +471,37 @@ export default {
           message: '可能会影响左侧菜单使用体验！'
         })
       })
-    }
+    },
+    // 树权限（展开/折叠）
+    handleCheckedTreeExpand(value, type) {
+      if (type == 'menu') {
+        let treeList = this.menuOptions;
+        for (let i = 0; i < treeList.length; i++) {
+          this.$refs.menu.store.nodesMap[treeList[i].id].expanded = value;
+        }
+      } else if (type == 'dept') {
+        let treeList = this.deptOptions;
+        for (let i = 0; i < treeList.length; i++) {
+          this.$refs.dept.store.nodesMap[treeList[i].id].expanded = value;
+        }
+      }
+    },
+    // 树权限（全选/全不选）
+    handleCheckedTreeNodeAll(value, type) {
+      if (type == 'menu') {
+        this.$refs.menu.setCheckedNodes(value ? this.menuOptions: []);
+      } else if (type == 'dept') {
+        this.$refs.dept.setCheckedNodes(value ? this.deptOptions: []);
+      }
+    },
+    // 树权限（父子联动）
+    handleCheckedTreeConnect(value, type) {
+      if (type == 'menu') {
+        this.form.menuCheckStrictly = value ? true: false;
+      } else if (type == 'dept') {
+        this.form.deptCheckStrictly = value ? true: false;
+      }
+    },
   },
   mounted() {
     this.load(this.roleBodyParam)

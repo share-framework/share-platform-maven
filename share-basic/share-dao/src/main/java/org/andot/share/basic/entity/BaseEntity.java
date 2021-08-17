@@ -23,4 +23,8 @@ public class BaseEntity implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
     private String updatedPerson;
     private static final long serialVersionUID = 1L;
+    /**
+     * 备注
+     */
+    private String memo;
 }
