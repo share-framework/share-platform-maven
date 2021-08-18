@@ -118,19 +118,19 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public HashMap getManageMenuList(Long appSystemId, Long roleId) {
         // 分两个接口查询
-        List<MenuPermissionDTO> menuAllList = menuMapper.getMenuListByRoleId(appSystemId, null);
+        List<AnMenu> menuAllList = menuMapper.selectList(new LambdaQueryWrapper<>());
         List<MenuPermissionDTO> menuList = menuMapper.getMenuListByRoleId(appSystemId, roleId);
-        List<Long> menuIds = menuList.stream()
+        List<String> menuCodes = menuList.stream()
                 .filter(menuPermissionDTO -> !menuPermissionDTO.getMenuParentCode().equals(ConstantType.MENU_ROOT_CODE))
                 .filter(menuPermissionDTO -> menuPermissionDTO.getRoleMenuId() != 0)
-                .map(item -> item.getMenuId()).collect(Collectors.toList());
-        Map<String, List<MenuPermissionDTO>> menuListMap = menuAllList.stream()
+                .map(MenuPermissionDTO::getMenuCode).collect(Collectors.toList());
+        Map<String, List<AnMenu>> menuListMap = menuAllList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
-                .collect(Collectors.groupingBy(MenuPermissionDTO::getMenuParentCode));
-        List<MenuTreeSelectorDTO> menuListSelector = genSelector(menuListMap, ConstantType.MENU_ROOT_CODE);
+                .collect(Collectors.groupingBy(AnMenu::getMenuParentCode));
+        List<MenuTreeDTO> menuListSelector = gen(menuListMap, ConstantType.MENU_ROOT_CODE);
         JSONObject result = new JSONObject();
         result.put("menuList", menuListSelector);
-        result.put("menuIds", menuIds);
+        result.put("menuCodes", menuCodes);
         return result;
     }
 

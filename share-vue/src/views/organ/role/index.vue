@@ -139,44 +139,24 @@
             <el-checkbox v-model="role.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
             <el-tree
               class="tree-border"
-              :data="menuOptions"
+              :data="menuTreeData"
               show-checkbox
               ref="menu"
-              node-key="id"
+              node-key="menuCode"
+              :default-checked-keys="defaultCheckedKeys"
               :check-strictly="!role.menuCheckStrictly"
               empty-text="加载中，请稍后"
               :props="defaultProps"
             ></el-tree>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="role.memo" type="textarea" placeholder="请输入内容"></el-input>
+            <el-input v-model="role.memo" :disabled="seeShow" type="textarea" placeholder="请输入内容"></el-input>
           </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer" :style="'display:' + (btnReadonly?'block':'none')">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="enterHandler">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog
-      title="菜单权限分配"
-      :visible.sync="menuPermissionDialogVisible"
-      @closed="reloadPage"
-      width="50%">
-      <el-tree
-        :data="menuTreeData"
-        show-checkbox
-        node-key="menuId"
-        :default-expanded-keys="[2, 3]"
-        :default-checked-keys="defaultCheckedKeys"
-        :props="defaultProps"
-        @check="distributionPermission"
-      >
-      </el-tree>
-      <span slot="footer" class="dialog-footer">
-          <el-button @click="menuPermissionDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="menuPermissionDialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -232,10 +212,12 @@ export default {
       allDialog: {
         moveDialogVisible: false
       },
+      // 菜单列表
       menuTreeData: [],
       defaultProps: {
         label: 'menuName'
       },
+      // 默认选中菜单
       defaultCheckedKeys: [],
       roleTypes: [{
         id: 1,
@@ -252,8 +234,6 @@ export default {
         2: '管理员',
         3: '普通用户',
       },
-      // 菜单列表
-      menuOptions: [],
       // 部门列表
       deptOptions: [],
       menuExpand: false,
@@ -302,7 +282,10 @@ export default {
       this.seeShow = true
       this.btnReadonly = false
       this.propCopy(row)
+      console.log(row)
       this.dialogVisible = true
+      this.role.roleId = row.roleId
+      this.loadMenu();
     },
     handleUpdate(row) {
       this.seeShow = false
@@ -310,12 +293,15 @@ export default {
       this.propCopy(row)
       this.dialogVisible = true
       this.method = 'edit'
+      this.role.roleId = row.roleId
+      this.loadMenu();
     },
     handleDelete(row) {
 
     },
     enterHandler() {
       const that = this
+      this.role.menuCodes = this.getMenuAllCheckedKeys()
       if (that.method === 'add') {
         this.role.roleId = 0
         addRole(this.role).then(response => {
@@ -411,7 +397,6 @@ export default {
       this.role = row
     },
     loadMenu() {
-      this.menuPermissionDialogVisible = true
       const that = this
       getRoleMenuList({
         appId: 1,
@@ -419,7 +404,7 @@ export default {
       }).then(response => {
         const { data } = response
         that.menuTreeData = data.menuList
-        that.defaultCheckedKeys = data.menuIds
+        that.defaultCheckedKeys = data.menuCodes
       }).catch(error => {
         this.$notify({
           title: '失败通知',
@@ -475,9 +460,9 @@ export default {
     // 树权限（展开/折叠）
     handleCheckedTreeExpand(value, type) {
       if (type == 'menu') {
-        let treeList = this.menuOptions;
+        let treeList = this.menuTreeData;
         for (let i = 0; i < treeList.length; i++) {
-          this.$refs.menu.store.nodesMap[treeList[i].id].expanded = value;
+          this.$refs.menu.store.nodesMap[treeList[i].menuCode].expanded = value;
         }
       } else if (type == 'dept') {
         let treeList = this.deptOptions;
@@ -489,7 +474,7 @@ export default {
     // 树权限（全选/全不选）
     handleCheckedTreeNodeAll(value, type) {
       if (type == 'menu') {
-        this.$refs.menu.setCheckedNodes(value ? this.menuOptions: []);
+        this.$refs.menu.setCheckedNodes(value ? this.menuTreeData: []);
       } else if (type == 'dept') {
         this.$refs.dept.setCheckedNodes(value ? this.deptOptions: []);
       }
@@ -497,10 +482,19 @@ export default {
     // 树权限（父子联动）
     handleCheckedTreeConnect(value, type) {
       if (type == 'menu') {
-        this.form.menuCheckStrictly = value ? true: false;
+        this.role.menuCheckStrictly = value ? true: false;
       } else if (type == 'dept') {
-        this.form.deptCheckStrictly = value ? true: false;
+        this.role.deptCheckStrictly = value ? true: false;
       }
+    },
+    // 所有菜单节点数据
+    getMenuAllCheckedKeys() {
+      // 目前被选中的菜单节点
+      let checkedKeys = this.$refs.menu.getCheckedKeys();
+      // 半选中的菜单节点
+      let halfCheckedKeys = this.$refs.menu.getHalfCheckedKeys();
+      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+      return checkedKeys;
     },
   },
   mounted() {

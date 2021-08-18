@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,7 @@ public class RoleServiceImpl implements RoleService {
                 .roleType(role.getRoleType())
                 .roleOrder(role.getRoleOrder())
                 .disabled(role.getDisabled())
+                .memo(role.getMemo())
                 .build()).collect(Collectors.toList());
     }
 
@@ -55,14 +57,26 @@ public class RoleServiceImpl implements RoleService {
     public boolean saveRole(RoleDTO roleDTO) {
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
-        return roleMapper.insert(role)>0;
+        if (roleMapper.insert(role)>0) {
+            List<String> menuCodes = roleDTO.getMenuCodes();
+            this.replaceRoleMenu(menuCodes, role.getRoleId());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean updateRole(RoleDTO roleDTO) {
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
-        return roleMapper.updateById(role)>0;
+        if (roleMapper.updateById(role)>0) {
+            List<String> menuCodes = roleDTO.getMenuCodes();
+            this.replaceRoleMenu(menuCodes, role.getRoleId());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @SneakyThrows
@@ -87,5 +101,21 @@ public class RoleServiceImpl implements RoleService {
         return roleMenuMapper.delete(new LambdaQueryWrapper<RoleMenu>()
                 .eq(RoleMenu::getMenuCode, menuCode)
                 .eq(RoleMenu::getRoleId, roleId))>0;
+    }
+
+    /**
+     * 重建角色、菜单映射关系
+     * @param menuCodes 菜单编码列表
+     * @param roleId 角色id
+     */
+    private void replaceRoleMenu (List<String> menuCodes, Long roleId) {
+        List<RoleMenu> roleMenus = new ArrayList<>(menuCodes.size());
+        for (String menuCode : menuCodes) {
+            RoleMenu roleMenu = new RoleMenu();
+            roleMenu.setMenuCode(menuCode);
+            roleMenu.setRoleId(roleId);
+            roleMenus.add(roleMenu);
+        }
+        roleMenuMapper.replace(roleMenus);
     }
 }

@@ -46,14 +46,9 @@ public class MenuElementController {
     }
 
     @ApiOperation("根据条件获取列表数据")
-    @GetMapping("/list")
+    @GetMapping("/all")
     public CommonResult getList(RoleDTO roleDto) {
-        return null;
-    }
 
-    @ApiOperation("根据条件获取分页列表数据")
-    @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDTO<RoleDTO> rolePage) {
         return null;
     }
 }
