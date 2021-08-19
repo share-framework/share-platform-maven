@@ -97,6 +97,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuTreeDTO> getMenuTreeList(Long appSystemId, Long xNumber) {
+        if (ConstantType.GOD_USER_NUMBER.equals(xNumber)) {
+            xNumber = null;
+        }
         List<AnMenu> menuList = menuMapper.getMenuListByUserId(appSystemId, xNumber);
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))
@@ -116,10 +119,10 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public HashMap getManageMenuList(Long appSystemId, Long roleId) {
+    public HashMap getManageMenuList(Long appSystemId, String roleCode) {
         // 分两个接口查询
         List<AnMenu> menuAllList = menuMapper.selectList(new LambdaQueryWrapper<>());
-        List<MenuPermissionDTO> menuList = menuMapper.getMenuListByRoleId(appSystemId, roleId);
+        List<MenuPermissionDTO> menuList = menuMapper.getMenuListByRoleCode(appSystemId, roleCode);
         List<String> menuCodes = menuList.stream()
                 .filter(menuPermissionDTO -> !menuPermissionDTO.getMenuParentCode().equals(ConstantType.MENU_ROOT_CODE))
                 .filter(menuPermissionDTO -> menuPermissionDTO.getRoleMenuId() != 0)

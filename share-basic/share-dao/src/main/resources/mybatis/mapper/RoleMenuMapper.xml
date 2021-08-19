@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.andot.share.basic.dao.RoleMenuMapper">
     <insert id="replace">
-        REPLACE INTO role_menu (menu_code, role_id)
+        REPLACE INTO role_menu (menu_code, role_code)
         VALUES
         <trim suffixOverrides=",">
         <foreach collection="roleMenus" item="roleMenu">
-            ( #{roleMenu.menuCode}, #{roleMenu.roleId} ),
+            ( #{roleMenu.menuCode}, #{roleMenu.roleCode} ),
         </foreach>
         </trim>
     </insert>

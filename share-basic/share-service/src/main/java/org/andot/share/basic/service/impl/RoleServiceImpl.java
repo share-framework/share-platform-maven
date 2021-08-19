@@ -12,6 +12,7 @@ import org.andot.share.basic.service.RoleService;
 import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class RoleServiceImpl implements RoleService {
                 .roleOrder(role.getRoleOrder())
                 .disabled(role.getDisabled())
                 .memo(role.getMemo())
+                .menuCheckStrictly(true)
                 .build()).collect(Collectors.toList());
     }
 
@@ -58,8 +60,10 @@ public class RoleServiceImpl implements RoleService {
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
         if (roleMapper.insert(role)>0) {
-            List<String> menuCodes = roleDTO.getMenuCodes();
-            this.replaceRoleMenu(menuCodes, role.getRoleId());
+            if (!CollectionUtils.isEmpty(roleDTO.getMenuCodes())) {
+                List<String> menuCodes = roleDTO.getMenuCodes();
+                this.replaceRoleMenu(menuCodes, role.getRoleCode());
+            }
             return true;
         } else {
             return false;
@@ -71,8 +75,10 @@ public class RoleServiceImpl implements RoleService {
         Role role = new Role();
         BeanUtils.copyProperties(roleDTO, role);
         if (roleMapper.updateById(role)>0) {
-            List<String> menuCodes = roleDTO.getMenuCodes();
-            this.replaceRoleMenu(menuCodes, role.getRoleId());
+            if (!CollectionUtils.isEmpty(roleDTO.getMenuCodes())) {
+                List<String> menuCodes = roleDTO.getMenuCodes();
+                this.replaceRoleMenu(menuCodes, role.getRoleCode());
+            }
             return true;
         } else {
             return false;
@@ -85,35 +91,37 @@ public class RoleServiceImpl implements RoleService {
         if (id == 1) {
            throw new OperationNotSupportedException("超级管理员不允许删除！");
         }
+        Role role = roleMapper.selectById(id);
+        roleMenuMapper.delete(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleCode, role.getRoleCode()));
         return roleMapper.deleteById(id)>0;
     }
 
     @Override
-    public boolean addMenuRolePermission(Long roleId, String menuCode) {
+    public boolean addMenuRolePermission(String roleCode, String menuCode) {
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setMenuCode(menuCode);
-        roleMenu.setRoleId(roleId);
+        roleMenu.setRoleCode(roleCode);
         return roleMenuMapper.insert(roleMenu)>0;
     }
 
     @Override
-    public boolean delMenuRolePermission(Long roleId, String menuCode) {
+    public boolean delMenuRolePermission(String roleCode, String menuCode) {
         return roleMenuMapper.delete(new LambdaQueryWrapper<RoleMenu>()
                 .eq(RoleMenu::getMenuCode, menuCode)
-                .eq(RoleMenu::getRoleId, roleId))>0;
+                .eq(RoleMenu::getRoleCode, roleCode))>0;
     }
 
     /**
      * 重建角色、菜单映射关系
      * @param menuCodes 菜单编码列表
-     * @param roleId 角色id
+     * @param roleCode 角色code
      */
-    private void replaceRoleMenu (List<String> menuCodes, Long roleId) {
+    private void replaceRoleMenu (List<String> menuCodes, String roleCode) {
         List<RoleMenu> roleMenus = new ArrayList<>(menuCodes.size());
         for (String menuCode : menuCodes) {
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setMenuCode(menuCode);
-            roleMenu.setRoleId(roleId);
+            roleMenu.setRoleCode(roleCode);
             roleMenus.add(roleMenu);
         }
         roleMenuMapper.replace(roleMenus);

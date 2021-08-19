@@ -42,8 +42,8 @@ public interface MenuService {
     /**
      * 查询当前系统的菜单和角色关系列表
      * @param appSystemId 应用系统id
-     * @param roleId 角色id
+     * @param roleCode 角色code
      * @return
      */
-    HashMap getManageMenuList(Long appSystemId, Long roleId);
+    HashMap getManageMenuList(Long appSystemId, String roleCode);
 }

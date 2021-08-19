@@ -95,16 +95,16 @@ public class RoleController {
     @ApiOperation("获取角色权限菜单")
     @GetMapping("/menu")
     public CommonResult getPermissionMenu(@RequestParam(value = "appId") Long appId,
-                                          @RequestParam(value = "roleId") Long roleId){
-        HashMap map = menuService.getManageMenuList(appId, roleId);
+                                          @RequestParam(value = "roleCode") String roleCode){
+        HashMap map = menuService.getManageMenuList(appId, roleCode);
         return CommonResult.success(map);
     }
 
     @ApiOperation("设置菜单角色权限")
     @PostMapping("/menu")
     public CommonResult setPermissionMenu(@RequestParam(value = "menuCode") String menuCode,
-                                          @RequestParam(value = "roleId") Long roleId){
-        boolean result = roleService.addMenuRolePermission(roleId, menuCode);
+                                          @RequestParam(value = "roleCode") String roleCode){
+        boolean result = roleService.addMenuRolePermission(roleCode, menuCode);
         if (result) {
             return CommonResult.success();
         } else {
@@ -115,8 +115,8 @@ public class RoleController {
     @ApiOperation("删除菜单角色权限")
     @DeleteMapping("/menu")
     public CommonResult delPermissionMenu(@RequestParam(value = "menuCode") String menuCode,
-                                          @RequestParam(value = "roleId") Long roleId){
-        boolean result = roleService.delMenuRolePermission(roleId, menuCode);
+                                          @RequestParam(value = "roleId") String roleCode){
+        boolean result = roleService.delMenuRolePermission(roleCode, menuCode);
         if (result) {
             return CommonResult.success();
         } else {

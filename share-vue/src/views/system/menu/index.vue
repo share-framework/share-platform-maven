@@ -171,6 +171,11 @@
             <el-form-item label="父级菜单">
               <el-input v-model="menuParentName" disabled></el-input>
             </el-form-item>
+            <el-form-item label="菜单类型">
+              <el-radio v-model="menu.menuType" :label="1">目录</el-radio>
+              <el-radio v-model="menu.menuType" :label="2">菜单</el-radio>
+              <el-radio v-model="menu.menuType" :label="3">按钮</el-radio>
+            </el-form-item>
             <el-form-item label="菜单名称" prop="menuName">
               <el-input v-model="menu.menuName" :readonly="seeShow"></el-input>
             </el-form-item>
@@ -209,11 +214,6 @@
             <el-form-item label="所属系统">
               <el-select v-model="menu.appSystemId" placeholder="请选择系统" :disabled="seeShow" class="el-select">
                 <el-option label="Share核心" :value="1"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="菜单类型">
-              <el-select v-model="menu.menuType" placeholder="请选择类型" :disabled="seeShow" class="el-select">
-                <el-option label="普通类型" :value="1"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="禁用状态">

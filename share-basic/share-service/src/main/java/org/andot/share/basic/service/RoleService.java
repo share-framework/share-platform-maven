@@ -39,11 +39,11 @@ public interface RoleService {
     boolean updateRole(RoleDTO role);
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
-    boolean delRoleById(Long id);
+    boolean delRoleById(Long roleCode);
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
-    boolean addMenuRolePermission(Long roleId, String menuCode);
+    boolean addMenuRolePermission(String roleCode, String menuCode);
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
-    boolean delMenuRolePermission(Long roleId, String menuCode);
+    boolean delMenuRolePermission(String roleCode, String menuCode);
 }

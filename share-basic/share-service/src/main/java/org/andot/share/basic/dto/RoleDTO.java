@@ -24,4 +24,5 @@ public class RoleDTO {
     private Boolean disabled;
     private String memo;
     private List<String> menuCodes;
+    private Boolean menuCheckStrictly;
 }

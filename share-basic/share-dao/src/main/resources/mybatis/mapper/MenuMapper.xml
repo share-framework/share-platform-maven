@@ -36,7 +36,7 @@
         FROM
             an_menu
             JOIN role_menu ON an_menu.menu_code = role_menu.menu_code
-            JOIN role_user ON role_menu.role_id = role_user.role_id
+            JOIN role_user ON role_menu.role_code = role_user.role_code
         <where>
             <if test="xNumber != null">
                 AND role_user.x_number = #{xNumber}
@@ -48,7 +48,7 @@
         </where>
     </select>
 
-    <select id="getMenuListByRoleId" parameterType="long" resultMap="menuRolePermission">
+    <select id="getMenuListByRoleCode" parameterType="long" resultMap="menuRolePermission">
         SELECT
             m.menu_id,
             m.menu_name,
@@ -61,8 +61,8 @@
             <if test="appSystemId != null">
                 AND m.app_system_id = #{appSystemId}
             </if>
-            <if test="roleId != null">
-                AND rm.role_id = #{roleId}
+            <if test="roleCode != null">
+                AND rm.role_code = #{roleCode}
             </if>
             AND m.disabled = 0
         </where>

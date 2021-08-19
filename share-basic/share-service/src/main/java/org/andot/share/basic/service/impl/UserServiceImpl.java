@@ -50,10 +50,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user = this.getUser(Long.parseLong(xNumber));
             }
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, xNumber));
-            List<Long> roleIds = roleUserList.stream().map(RoleUser::getRoleId).collect(Collectors.toList());
-            List<RoleDTO> roles = roleMapper.selectBatchIds(roleIds).stream().map(item -> RoleDTO.builder()
-                    .roleCode(item.getRoleCode()).roleId(item.getRoleId())
-                    .roleName(item.getRoleName()).roleType(item.getRoleType()).build()).collect(Collectors.toList());
+            List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
+            LambdaQueryWrapper<Role> roleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            roleLambdaQueryWrapper.in(Role::getRoleCode, roleCodes);
+            List<RoleDTO> roles = roleMapper.selectList(roleLambdaQueryWrapper)
+                    .stream().map(item -> RoleDTO.builder()
+                            .roleCode(item.getRoleCode())
+                            .roleId(item.getRoleId())
+                            .roleName(item.getRoleName())
+                            .roleType(item.getRoleType()).build())
+                    .collect(Collectors.toList());
             return new XUserDetail(user, roles);
         } catch (Exception ex) {
             log.error("考虑用户编号恶意攻击问题，" + ex.getMessage());
@@ -87,13 +93,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         BeanUtils.copyProperties(user, userDto);
         if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, user.getXNumber()));
-            List<Long> roleIds = roleUserList.stream().map(RoleUser::getRoleId).collect(Collectors.toList());
+            List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
             List<RoleDTO> roles = new ArrayList<>();
-            if (roleIds.size() != 0) {
-                roles = roleMapper.selectList(new LambdaQueryWrapper<Role>().in(Role::getRoleId, roleIds))
+            if (roleCodes.size() != 0) {
+                roles = roleMapper.selectList(new LambdaQueryWrapper<Role>().in(Role::getRoleCode, roleCodes))
                         .stream().map(item -> RoleDTO.builder()
-                                .roleCode(item.getRoleCode()).roleId(item.getRoleId())
-                                .roleName(item.getRoleName()).roleType(item.getRoleType()).build()).collect(Collectors.toList());
+                                .roleCode(item.getRoleCode())
+                                .roleId(item.getRoleId())
+                                .roleName(item.getRoleName())
+                                .roleType(item.getRoleType()).build())
+                        .collect(Collectors.toList());
             }
             return new XUserDetail(userDto, roles);
         } else {

@@ -29,6 +29,7 @@ export function generaMenu(routes, data) {
       meta: { id: item.id, title: item.menuName, icon: item.icon, roles: ['admin'] },
       children: []
     }
+    console.log(menu)
     if (item.component === '#') {
       menu.redirect = item.redirect
     }
