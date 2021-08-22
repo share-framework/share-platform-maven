@@ -31,6 +31,11 @@
             <groupId>org.andot.share</groupId>
             <version>${share.version}</version>
         </dependency>
+        <dependency>
+            <artifactId>share-core</artifactId>
+            <groupId>org.andot.share</groupId>
+            <version>${share.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

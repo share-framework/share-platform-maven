@@ -12,9 +12,11 @@ import '@/styles/share.scss' // share css
 import App from './App'
 import store from './store'
 import router from './router'
+import {msgSuccess, msgError, msgInfo} from '@/utils/notify'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import directive from '@/directive' // directive
 
 /**
  * If you don't want to use mock-server
@@ -33,8 +35,15 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
+// 自定义 指令
+Vue.use(directive)
 
 Vue.config.productionTip = false
+
+Vue.prototype.msgSuccess = msgSuccess
+Vue.prototype.msgError = msgError
+Vue.prototype.msgInfo = msgInfo
+
 
 new Vue({
   el: '#app',

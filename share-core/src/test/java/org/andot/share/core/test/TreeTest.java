@@ -16,7 +16,6 @@ public class TreeTest {
         node21.setLeft(node31);
         node21.setRight(node32);
         backSequenceByStack(node1);
-        Collections.sort(new ArrayList<>());
     }
 
 

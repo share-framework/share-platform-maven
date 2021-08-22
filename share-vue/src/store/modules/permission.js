@@ -47,7 +47,7 @@ export function generaMenu(routes, data) {
  */
 export function filterAsyncRoutes(routes, roles) {
   const res = []
-
+  debugger
   routes.forEach(route => {
     const tmp = { ...route }
     if (hasPermission(roles, tmp)) {
@@ -63,13 +63,17 @@ export function filterAsyncRoutes(routes, roles) {
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  permissions: []
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
+  },
+  SET_PERM: (state, permissions) => {
+    state.permissions = constantRoutes.concat(permissions)
   }
 }
 
@@ -88,7 +92,7 @@ const actions = {
           const tempAsyncRoutes = Object.assign([], asyncRoutes)
           generaMenu(tempAsyncRoutes, loadMenuData)
           let accessedRoutes
-          if (roles.includes('admin1')) {
+          if (roles.includes('admin')) {
             accessedRoutes = tempAsyncRoutes || []
           } else {
             accessedRoutes = filterAsyncRoutes(tempAsyncRoutes, roles)

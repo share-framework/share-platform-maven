@@ -9,7 +9,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     xNumber: '',
-    roles: []
+    roles: [],
+    permissions: []
   }
 }
 
@@ -30,6 +31,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PERM: (state, permissions) => {
+    state.permissions = permissions
   },
   X_NUMBER: (state, xNumber) => {
     state.xNumber = xNumber
@@ -65,13 +69,14 @@ const actions = {
         }
         data.roles = ['admin']
         // eslint-disable-next-line no-unused-vars
-        const { roles, realName, avatar, xnumber } = data
+        const { roles, realName, avatar, xnumber, permissions } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
+        commit('SET_PERM', permissions)
         commit('SET_ROLES', roles)
         commit('SET_NAME', realName)
         commit('SET_AVATAR', avatar)

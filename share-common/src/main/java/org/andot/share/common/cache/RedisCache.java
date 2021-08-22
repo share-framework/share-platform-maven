@@ -1,14 +1,23 @@
 package org.andot.share.common.cache;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author andot
+ */
+@RequiredArgsConstructor
 @Component
 public class RedisCache extends AbstractCache {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate redisTemplate;
+
+    @Override
+    public RedisTemplate getRedis() {
+        return redisTemplate;
+    }
 
     @Override
     public String getDataFotString(String key) {

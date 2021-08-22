@@ -3,10 +3,8 @@ package org.andot.share.basic.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.andot.share.basic.dao.RoleMapper;
-import org.andot.share.basic.dao.RoleUserMapper;
-import org.andot.share.basic.dao.UserDeatilMapper;
-import org.andot.share.basic.dao.UserMapper;
+import org.andot.share.basic.dao.*;
+import org.andot.share.basic.dto.MenuPermissionDTO;
 import org.andot.share.basic.entity.Role;
 import org.andot.share.basic.entity.RoleUser;
 import org.andot.share.basic.entity.User;
@@ -39,6 +37,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleUserMapper roleUserMapper;
     private final RoleMapper roleMapper;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final MenuMapper menuMapper;
 
     @Override
     public UserDetails loadUserByUsername(String xNumber) {
@@ -60,7 +59,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                             .roleName(item.getRoleName())
                             .roleType(item.getRoleType()).build())
                     .collect(Collectors.toList());
-            return new XUserDetail(user, roles);
+            List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
+            return new XUserDetail(user, roles, menuPermissionList);
         } catch (Exception ex) {
             log.error("考虑用户编号恶意攻击问题，" + ex.getMessage());
             throw new UsernameNotFoundException("用户编号传输错误");
@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, user.getXNumber()));
             List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
             List<RoleDTO> roles = new ArrayList<>();
+            List<MenuPermissionDTO> menuPermissionList = new ArrayList<>();
             if (roleCodes.size() != 0) {
                 roles = roleMapper.selectList(new LambdaQueryWrapper<Role>().in(Role::getRoleCode, roleCodes))
                         .stream().map(item -> RoleDTO.builder()
@@ -103,8 +104,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 .roleName(item.getRoleName())
                                 .roleType(item.getRoleType()).build())
                         .collect(Collectors.toList());
+                menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
             }
-            return new XUserDetail(userDto, roles);
+            return new XUserDetail(userDto, roles, menuPermissionList);
         } else {
             throw new UsernameNotFoundException("用户密码错误");
         }

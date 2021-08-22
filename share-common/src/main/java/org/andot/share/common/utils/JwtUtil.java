@@ -42,7 +42,8 @@ public class JwtUtil {
                 .setIssuer("share.andot.org")
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .claim("username", userDetail.getUsername())
-                .claim("roles", userDetail.getRoles()).compact();
+                .claim("roles", userDetail.getRoles())
+                .claim("permissions", userDetail.getPermissions()).compact();
     }
 
     /**
@@ -58,6 +59,7 @@ public class JwtUtil {
         jwtUserDetail.setXNumber(claims.getId());
         jwtUserDetail.setUsername(claims.get("username").toString());
         jwtUserDetail.setRoles((List<String>) claims.get("roles"));
+        jwtUserDetail.setPermissions((List<String>) claims.get("permissions"));
         return jwtUserDetail;
     }
 

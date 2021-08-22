@@ -154,13 +154,20 @@
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <el-row>
+      <el-col :span="24">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="1"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="roleBodyParam.total">
+        </el-pagination>
+      </el-col>
+    </el-row>
 
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -244,14 +251,14 @@ export default {
       }
     };
   },
-  /*created() {
+  created() {
     this.getList();
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
   },
   methods: {
-    /!** 查询字典类型列表 *!/
+    /** 查询字典类型列表 */
     getList() {
       this.loading = true;
       listType(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
@@ -277,18 +284,18 @@ export default {
       };
       this.resetForm("form");
     },
-    /!** 搜索按钮操作 *!/
+    /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /!** 重置按钮操作 *!/
+    /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    /!** 新增按钮操作 *!/
+    /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
@@ -300,7 +307,7 @@ export default {
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
-    /!** 修改按钮操作 *!/
+    /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const dictId = row.dictId || this.ids
@@ -310,7 +317,7 @@ export default {
         this.title = "修改字典类型";
       });
     },
-    /!** 提交按钮 *!/
+    /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -330,7 +337,7 @@ export default {
         }
       });
     },
-    /!** 删除按钮操作 *!/
+    /** 删除按钮操作 */
     handleDelete(row) {
       const dictIds = row.dictId || this.ids;
       this.$confirm('是否确认删除字典编号为"' + dictIds + '"的数据项?', "警告", {
@@ -344,7 +351,7 @@ export default {
         this.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /!** 导出按钮操作 *!/
+    /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有类型数据项?', "警告", {
@@ -359,12 +366,12 @@ export default {
         this.exportLoading = false;
       }).catch(() => {});
     },
-    /!** 刷新缓存按钮操作 *!/
+    /** 刷新缓存按钮操作 */
     handleRefreshCache() {
       refreshCache().then(() => {
         this.msgSuccess("刷新成功");
       });
     }
-  }*/
+  }
 };
 </script>

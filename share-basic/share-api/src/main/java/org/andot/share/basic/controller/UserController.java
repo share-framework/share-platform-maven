@@ -2,7 +2,7 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.component.utils.CurrentUserUtil;
+import org.andot.share.basic.components.utils.CurrentUserUtil;
 import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.entity.UserDetail;
 import org.andot.share.basic.service.UserService;

@@ -25,4 +25,13 @@ public interface MenuMapper extends BaseMapper<AnMenu> {
      */
     List<MenuPermissionDTO> getMenuListByRoleCode(@Param("appSystemId") Long appSystemId,
                                      @Param("roleCode") String roleCode);
+
+    /**
+     *
+     * @param appSystemId
+     * @param roleCodes
+     * @return
+     */
+    List<MenuPermissionDTO> getMenuListByRoleCodes(@Param("appSystemId") Long appSystemId,
+                                     @Param("roleCodes") List<String> roleCodes);
 }

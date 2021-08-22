@@ -1,5 +1,6 @@
 package org.andot.share.common.cache;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +9,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public abstract class AbstractCache {
+
+    /**
+     *
+     * @return
+     */
+    public abstract <T> T getRedis();
 
     public abstract String getDataFotString(String key);
     public abstract Number getDataFotNumber(String key);

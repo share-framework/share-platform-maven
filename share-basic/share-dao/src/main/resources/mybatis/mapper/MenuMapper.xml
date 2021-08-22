@@ -45,6 +45,7 @@
                 AND an_menu.app_system_id = #{appSystemId}
             </if>
             AND an_menu.disabled = 0
+            AND an_menu.menu_type != 3
         </where>
     </select>
 
@@ -65,6 +66,30 @@
                 AND rm.role_code = #{roleCode}
             </if>
             AND m.disabled = 0
+            AND m.menu_type != 3
+        </where>
+    </select>
+
+    <select id="getMenuListByRoleCodes" resultMap="menuRolePermission">
+        SELECT
+        m.menu_id,
+        m.menu_name,
+        m.menu_code,
+        m.menu_parent_code,
+        IFNULL(rm.role_menu_id, 0) AS role_menu_id
+        FROM an_menu AS m
+        LEFT JOIN role_menu AS rm ON m.menu_code = rm.menu_code
+        <where>
+            <if test="appSystemId != null">
+                AND m.app_system_id = #{appSystemId}
+            </if>
+            <if test="roleCodes != null and roleCodes.size() > 0">
+                <foreach collection="roleCodes" item="roleCode" open=" AND rm.role_code = (" separator="," close=") ">
+                    #{roleCode}
+                </foreach>
+            </if>
+            AND m.disabled = 0
+            AND m.menu_type = 3
         </where>
     </select>
 </mapper>

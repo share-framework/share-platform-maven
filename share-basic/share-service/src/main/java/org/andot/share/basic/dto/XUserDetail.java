@@ -1,5 +1,7 @@
 package org.andot.share.basic.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,17 +11,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ *
  * @author Andot
  */
+@AllArgsConstructor
+@Getter
 public class XUserDetail implements UserDetails {
 
     private UserDTO user;
     private List<RoleDTO> roleList;
+    private List<MenuPermissionDTO> menuDTOList;
 
-    public XUserDetail(UserDTO user, List<RoleDTO> roleList) {
-        this.user = user;
-        this.roleList = roleList;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -54,13 +56,5 @@ public class XUserDetail implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.user.getDisabled() != 0;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public List<RoleDTO> getRoleList() {
-        return roleList;
     }
 }

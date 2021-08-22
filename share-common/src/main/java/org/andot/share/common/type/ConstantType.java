@@ -16,4 +16,6 @@ public class ConstantType {
 
     public static final String GOD_ROLE_CODE = "ADMIN";
 
+    public static final String DICT_KEY = "dict_";
+
 }
