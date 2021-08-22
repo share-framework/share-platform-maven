@@ -1,6 +1,7 @@
 package org.andot.share.basic.service;
 
 import org.andot.share.basic.dto.MenuDTO;
+import org.andot.share.basic.dto.MenuPermissionDTO;
 import org.andot.share.basic.dto.MenuTreeDTO;
 import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.springframework.transaction.annotation.Propagation;
@@ -46,4 +47,13 @@ public interface MenuService {
      * @return
      */
     HashMap getManageMenuList(Long appSystemId, String roleCode);
+
+
+    /**
+     *
+     * @param appSystemId
+     * @param roles
+     * @return
+     */
+    List<String> getMenuCodeListByRoleCodes (Long appSystemId, List<String> roles);
 }

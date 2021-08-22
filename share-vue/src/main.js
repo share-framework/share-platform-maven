@@ -13,6 +13,7 @@ import App from './App'
 import store from './store'
 import router from './router'
 import {msgSuccess, msgError, msgInfo} from '@/utils/notify'
+import {parseTime, formatTime} from '@/utils'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -43,6 +44,8 @@ Vue.config.productionTip = false
 Vue.prototype.msgSuccess = msgSuccess
 Vue.prototype.msgError = msgError
 Vue.prototype.msgInfo = msgInfo
+Vue.prototype.parseTime = parseTime
+Vue.prototype.formatTime = formatTime
 
 
 new Vue({

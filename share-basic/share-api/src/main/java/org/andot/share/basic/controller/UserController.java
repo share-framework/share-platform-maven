@@ -5,15 +5,18 @@ import io.swagger.annotations.ApiOperation;
 import org.andot.share.basic.components.utils.CurrentUserUtil;
 import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.entity.UserDetail;
+import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.service.UserService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.basic.dto.RoleDTO;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author lucas
@@ -25,6 +28,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private MenuService menuService;
 
     @ApiOperation("更新数据")
     @PutMapping("/{xNumber}")
@@ -65,6 +70,12 @@ public class UserController {
     @GetMapping("/info")
     public CommonResult getDetailInfo() {
         UserDetail userDetail = userService.getUserDetail(CurrentUserUtil.getUserCode());
+        if (!CollectionUtils.isEmpty(CurrentUserUtil.userDetail().getRoleList())) {
+            List<String> roles = CurrentUserUtil.userDetail().getRoleList().stream()
+                    .map(RoleDTO::getRoleCode).collect(Collectors.toList());
+            userDetail.setPermissions(menuService.getMenuCodeListByRoleCodes(CurrentUserUtil.getAppId(), roles));
+
+        }
         return CommonResult.success(userDetail);
     }
 

@@ -134,12 +134,6 @@
                          @click="handleSee(scope.row)"
                          v-hasPermi="['system:menu:see']"
               >查看</el-button>
-              <el-button size="mini"
-                         type="text"
-                         icon="el-icon-edit"
-                         @click="handleUpdate(scope.row)"
-                         v-hasPermi="['system:menu:update']"
-              >修改</el-button>
               <el-button
                 size="mini"
                 type="text"
@@ -147,6 +141,12 @@
                 @click="handleAdd(scope.row)"
                 v-hasPermi="['system:menu:add']"
               >新增</el-button>
+              <el-button size="mini"
+                         type="text"
+                         icon="el-icon-edit"
+                         @click="handleUpdate(scope.row)"
+                         v-hasPermi="['system:menu:update']"
+              >修改</el-button>
               <el-button
                 size="mini"
                 type="text"

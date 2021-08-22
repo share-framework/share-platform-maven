@@ -63,17 +63,13 @@ export function filterAsyncRoutes(routes, roles) {
 
 const state = {
   routes: [],
-  addRoutes: [],
-  permissions: []
+  addRoutes: []
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
-  },
-  SET_PERM: (state, permissions) => {
-    state.permissions = constantRoutes.concat(permissions)
   }
 }
 

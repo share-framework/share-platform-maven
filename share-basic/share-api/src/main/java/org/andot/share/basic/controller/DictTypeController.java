@@ -68,8 +68,8 @@ public class DictTypeController {
         return CommonResult.success(dictTypeService.getDictTypeById(dictId));
     }
 
-    @PreAuthorize("@share.hasPermission('dict:type:list')")
-    @GetMapping("/table")
+    @PreAuthorize("@share.hasPermission('dict:type:table')")
+    @PostMapping("/table")
     public CommonPage list(@Validated @RequestBody PageDTO<DictType> dictTypePageDTO) {
         List<DictType> list = dictTypeService.getDictTypeList(dictTypePageDTO.getParam());
         return CommonPage.restPage(list);

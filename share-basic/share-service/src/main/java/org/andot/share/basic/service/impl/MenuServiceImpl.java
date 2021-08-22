@@ -15,11 +15,9 @@ import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -135,6 +133,16 @@ public class MenuServiceImpl implements MenuService {
         result.put("menuList", menuListSelector);
         result.put("menuCodes", menuCodes);
         return result;
+    }
+
+    @Override
+    public List<String> getMenuCodeListByRoleCodes(Long appSystemId, List<String> roles) {
+        List<MenuPermissionDTO> menuPermissionDTOS = menuMapper.getMenuListByRoleCodes(appSystemId, roles);
+        if (CollectionUtils.isEmpty(menuPermissionDTOS)) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return menuPermissionDTOS.stream().map(MenuPermissionDTO::getMenuCode).collect(Collectors.toList());
+        }
     }
 
     /**

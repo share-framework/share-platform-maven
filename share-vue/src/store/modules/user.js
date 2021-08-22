@@ -75,12 +75,11 @@ const actions = {
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
-        commit('SET_PERM', permissions)
         commit('SET_ROLES', roles)
         commit('SET_NAME', realName)
         commit('SET_AVATAR', avatar)
         commit('X_NUMBER', xnumber)
+        commit('SET_PERM', permissions)
         resolve(data)
       }).catch(error => {
         reject(error)

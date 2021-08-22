@@ -13,6 +13,7 @@ import org.andot.share.basic.dto.RoleDTO;
 import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
+import org.andot.share.common.type.ConstantType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -104,7 +105,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 .roleName(item.getRoleName())
                                 .roleType(item.getRoleType()).build())
                         .collect(Collectors.toList());
-                menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
+                if (roles.contains(ConstantType.GOD_ROLE_CODE)) {
+                    MenuPermissionDTO menuPermissionDTO = new MenuPermissionDTO();
+                    menuPermissionDTO.setMenuCode("*:*:*");
+                    menuPermissionDTO.setMenuId(0L);
+                    menuPermissionList.add(menuPermissionDTO);
+                } else {
+                    menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
+                }
             }
             return new XUserDetail(userDto, roles, menuPermissionList);
         } else {
