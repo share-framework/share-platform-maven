@@ -32,14 +32,11 @@ public class DictDataServiceImpl implements DictDataService {
         if (StringUtils.isEmpty(dictData.getDictType())) {
             lambdaQueryWrapper.like(DictData::getDictType, dictData.getDictType());
         }
-        if (StringUtils.isEmpty(dictData.getDictCode())) {
-            lambdaQueryWrapper.like(DictData::getDictCode, dictData.getDictCode());
+        if (StringUtils.isEmpty(dictData.getDataLabel())) {
+            lambdaQueryWrapper.like(DictData::getDataLabel, dictData.getDataLabel());
         }
-        if (StringUtils.isEmpty(dictData.getDictLabel())) {
-            lambdaQueryWrapper.like(DictData::getDictLabel, dictData.getDictLabel());
-        }
-        if (StringUtils.isEmpty(dictData.getDictValue())) {
-            lambdaQueryWrapper.like(DictData::getDictValue, dictData.getDictValue());
+        if (StringUtils.isEmpty(dictData.getDataValue())) {
+            lambdaQueryWrapper.like(DictData::getDataValue, dictData.getDataValue());
         }
         return dictDataMapper.selectList(lambdaQueryWrapper);
     }

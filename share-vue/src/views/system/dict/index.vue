@@ -31,9 +31,9 @@
         >
           <el-option
             v-for="dict in statusOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
+            :key="dict.dataValue"
+            :label="dict.dataLabel"
+            :value="dict.dataValue"
           />
         </el-select>
       </el-form-item>
@@ -209,6 +209,7 @@
 
 <script>
 import { getTypeList, getType, delType, addType, updateType, exportType, refreshCache } from "@/api/system/dict";
+import { getDicts } from "@/api/system/dict/data";
 
 export default {
   name: "Dict",
@@ -270,9 +271,9 @@ export default {
   },
   created() {
     this.load();
-    /*this.getDicts("sys_normal_disable").then(response => {
+    getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
-    });*/
+    });
   },
   methods: {
     handleSizeChange(val) {

@@ -189,7 +189,7 @@
 </template>
 
 <script>
-import { listData, getData, delData, addData, updateData, exportData } from "@/api/system/dict/data";
+import { listData, getData, delData, addData, updateData, exportData, getDicts } from "@/api/system/dict/data";
 import { listType, getType } from "@/api/system/dict/index";
 
 export default {
@@ -253,8 +253,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        dictName: undefined,
-        dictType: undefined,
+        dataName: undefined,
+        dataType: undefined,
         status: undefined
       },
       // 表单参数
@@ -273,14 +273,15 @@ export default {
       }
     };
   },
- /* created() {
+  created() {
     const dictId = this.$route.params && this.$route.params.dictId;
-    this.getType(dictId);
-    this.getTypeList();
-    this.getDicts("sys_normal_disable").then(response => {
+    /*this.getType(dictId);
+    this.getTypeList();*/
+    getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
   },
+  /*
   methods: {
     /!** 查询字典类型详细 *!/
     getType(dictId) {

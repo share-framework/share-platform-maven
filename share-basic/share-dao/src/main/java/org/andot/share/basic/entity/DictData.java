@@ -13,16 +13,16 @@ public class DictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */
-    private Long dictCode;
+    private Long id;
 
     /** 字典排序 */
-    private Long dictSort;
+    private Long dataSort;
 
     /** 字典标签 */
-    private String dictLabel;
+    private String dataLabel;
 
     /** 字典键值 */
-    private String dictValue;
+    private String dataValue;
 
     /** 字典类型 */
     private String dictType;
