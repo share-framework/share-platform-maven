@@ -1,5 +1,6 @@
 package org.andot.share.basic.controller;
 
+import org.andot.share.basic.annotation.PageStart;
 import org.andot.share.basic.dto.DictTypeDTO;
 import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.basic.entity.DictType;
@@ -69,6 +70,7 @@ public class DictTypeController {
     }
 
     @PreAuthorize("@share.hasPermission('dict:type:table')")
+    @PageStart
     @PostMapping("/table")
     public CommonPage list(@Validated @RequestBody PageDTO<DictType> dictTypePageDTO) {
         List<DictType> list = dictTypeService.getDictTypeList(dictTypePageDTO.getParam());

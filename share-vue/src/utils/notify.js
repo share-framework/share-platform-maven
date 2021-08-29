@@ -1,8 +1,8 @@
 export function msgSuccess (message) {
   this.$notify({
-    title: '错误通知',
+    title: '成功通知',
     message: message,
-    type: 'error'
+    type: 'success'
   })
 }
 
@@ -16,8 +16,8 @@ export function msgError (message) {
 
 export function msgInfo (message) {
   this.$notify({
-    title: '错误通知',
+    title: '提醒',
     message: message,
-    type: 'error'
+    type: 'waring'
   })
 }

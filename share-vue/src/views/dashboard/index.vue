@@ -21,7 +21,7 @@
 
       <el-col :span="6">
         <div class="grid-content bg-purple">
-
+          <el-button type="primary" @click="init">主要按钮</el-button>
         </div>
       </el-col>
     </el-row>
@@ -40,6 +40,24 @@ export default {
       'name',
       'roles'
     ])
+  },
+  methods: {
+    init () {
+      const { spawn } = require('child_process');
+      const ls = spawn('ls', ['-lh', '/usr']);
+
+      ls.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+      });
+
+      ls.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+      });
+
+      ls.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+      });
+    }
   }
 }
 </script>

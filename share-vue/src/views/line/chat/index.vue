@@ -1,7 +1,7 @@
 <template>
   <div class="chat">
     <div style="display: flex; width: 98%; height: calc(100vh - 80px); margin: 10px; border-radius: 10px; overflow: hidden;
-border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb(0 0 0 / 8%);">
+border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 #DCDFE6;">
       <div style="width: 360px;  height: calc(100vh - 100px); display: flex; justify-content: space-around;">
         <!--菜单栏-->
         <div style="width: 60px; height: calc(100vh - 100px); justify-content: flex-start;">
@@ -45,8 +45,10 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
             </div>
           </div>
           <el-scrollbar style="height: 98%;">
-            <ul class="infinite-list" v-infinite-scroll="load" style="padding: 0px; margin: 0px">
-              <li v-for="i in count" :class="(parseInt(toLineId)  -   10000) == (i-1) ? 'infinite-list-item-select': 'infinite-list-item'" @click="inUser(i, '郝金鑫' + i)">
+            <ul class="infinite-list" v-infinite-scroll="load">
+              <li v-for="friend in friendList"
+                  :class="friend.xnumber == lineId ? 'infinite-list-item-select': 'infinite-list-item'"
+                  @click="inUser(friend.xnumber, friend.realName)">
                 <div style="width: 100%; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
                   <div style="width: 40px; height: 40px; border-radius: 5px; overflow: hidden;">
                     <div class="demo-basic--circle">
@@ -57,7 +59,7 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
                   </div>
                   <div style="width: calc(100% - 40px); height: 60px;">
                     <div style="padding: 14px;">
-                      <span>郝金鑫 {{i}}</span>
+                      <span>{{friend.realName}}</span>
                       <div class="bottom clearfix">
                         <time class="time">2021-07-05 23:29:27</time>
                       </div>
@@ -75,7 +77,7 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
           {{username}}
         </div>
 
-        <line-chat :to-line-id="toLineId"></line-chat>
+        <line-chat v-if="toLineId != ''" :to-line-id="toLineId"></line-chat>
       </div>
     </div>
     <!--<input v-model="lineId" >
@@ -84,66 +86,76 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
 </template>
 
 <script>
+  import { getFriendList } from '@/api/hr/firend'
   import LineChat from '@/components/LineChat'
-    export default {
-      name: "chat",
-      components: {
-        "line-chat": LineChat
-      },
-      data () {
-        return {
-          count: 0,
-
-          input4: '',
-          username: '',
-          msg: {
-            header: {
-              lineId: "",
-              toLineId: "",
-              msgType: 1
-            },
-            body: {
-              id: 1,
-              title: "2323",
-              content: "",
-              format: "",
-              extra: ""
-            },
-            footer: {
-              version: "1.0.0",
-              timestamp: 3231212121323,
-              clientName: "line"
-            }
+  export default {
+    name: "chat",
+    components: {
+      "line-chat": LineChat
+    },
+    data () {
+      return {
+        count: 0,
+        input4: '',
+        username: '',
+        friendList: [],
+        msg: {
+          header: {
+            lineId: "",
+            toLineId: "",
+            msgType: 1
           },
-          re_msg: '',
-          ws: undefined,
-          toLineId: "",
-          lineId: "10000",
-          isLogin: false
-        }
-      },
-      methods: {
-        load () {
-          this.count = 100
+          body: {
+            id: 1,
+            title: "2323",
+            content: "",
+            format: "",
+            extra: ""
+          },
+          footer: {
+            version: "1.0.0",
+            timestamp: 3231212121323,
+            clientName: "line"
+          }
         },
-        inUser (lineId, name) {
-          this.toLineId = (10000 + lineId - 1) + "";
-          console.log("=========");
-          console.log(this.toLineId);
-          this.username = name;
-        },
-        login () {
-          this.$store.commit('app/LINE_ID', { lineId: this.lineId})
-          this.$message({
-            message: '登录成功！',
-            type: 'success'
-          });
-        }
-      },
-      created() {
-        this.toLineId = "10000";
+        re_msg: '',
+        ws: undefined,
+        toLineId: "",
+        lineId: "10000",
+        isLogin: false
       }
+    },
+    methods: {
+      load () {
+        this.count = 100
+      },
+      inUser (lineId, name) {
+        this.toLineId = lineId+"";
+        console.log("=========");
+        console.log(this.toLineId);
+        this.username = name;
+      },
+      login () {
+        this.$message({
+          message: '登录成功！',
+          type: 'success'
+        });
+      }
+    },
+    created() {
+      this.lineId = this.$store.state.user.xNumber;
+      getFriendList({}).then(response => {
+        const { data } = response
+        this.friendList = data
+      }).catch(error => {
+        this.$notify({
+          title: '失败通知',
+          message: error,
+          type: 'error'
+        })
+      })
     }
+  }
 </script>
 
 <style scoped>
@@ -151,7 +163,10 @@ border: 1px solid #DCDFE6; background-color: #f6f9fe; box-shadow: 0 0 14px 0 rgb
     width: 100%;
     height: 90vh;
   }
+
   .infinite-list .infinite-list-item {
+    padding: 0px;
+    margin: 0px;
     display: flex;
     align-items: center;
     justify-content: space-around;

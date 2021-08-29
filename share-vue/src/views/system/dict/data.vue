@@ -125,19 +125,13 @@
       </el-table-column>
     </el-table>
 
-    <el-row>
-      <el-col :span="24">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="1"
-          :page-sizes="[10, 20, 50, 100]"
-          :page-size="10"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="roleBodyParam.total">
-        </el-pagination>
-      </el-col>
-    </el-row>
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
 
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -189,8 +183,8 @@
 </template>
 
 <script>
-import { listData, getData, delData, addData, updateData, exportData, getDicts } from "@/api/system/dict/data";
-import { listType, getType } from "@/api/system/dict/index";
+import { listData, getData, delData, addData, updateData, exportData } from "@/api/system/dict/data";
+import { getTypeList, getType } from "@/api/system/dict";
 
 export default {
   name: "Data",
@@ -253,8 +247,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        dataName: undefined,
-        dataType: undefined,
+        dictName: undefined,
+        dictType: undefined,
         status: undefined
       },
       // 表单参数
@@ -275,15 +269,14 @@ export default {
   },
   created() {
     const dictId = this.$route.params && this.$route.params.dictId;
-    /*this.getType(dictId);
-    this.getTypeList();*/
-    getDicts("sys_normal_disable").then(response => {
+    this.getType(dictId);
+    this.getTypeList();
+    this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
   },
-  /*
   methods: {
-    /!** 查询字典类型详细 *!/
+    /** 查询字典类型详细 */
     getType(dictId) {
       getType(dictId).then(response => {
         this.queryParams.dictType = response.data.dictType;
@@ -291,13 +284,13 @@ export default {
         this.getList();
       });
     },
-    /!** 查询字典类型列表 *!/
+    /** 查询字典类型列表 */
     getTypeList() {
-      listType().then(response => {
+      getTypeList().then(response => {
         this.typeOptions = response.rows;
       });
     },
-    /!** 查询字典数据列表 *!/
+    /** 查询字典数据列表 */
     getList() {
       this.loading = true;
       listData(this.queryParams).then(response => {
@@ -325,18 +318,18 @@ export default {
       };
       this.resetForm("form");
     },
-    /!** 搜索按钮操作 *!/
+    /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
     },
-    /!** 重置按钮操作 *!/
+    /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
       this.queryParams.dictType = this.defaultDictType;
       this.handleQuery();
     },
-    /!** 新增按钮操作 *!/
+    /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
@@ -349,7 +342,7 @@ export default {
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
-    /!** 修改按钮操作 *!/
+    /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const dictCode = row.dictCode || this.ids
@@ -359,7 +352,7 @@ export default {
         this.title = "修改字典数据";
       });
     },
-    /!** 提交按钮 *!/
+    /** 提交按钮 */
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -379,7 +372,7 @@ export default {
         }
       });
     },
-    /!** 删除按钮操作 *!/
+    /** 删除按钮操作 */
     handleDelete(row) {
       const dictCodes = row.dictCode || this.ids;
       this.$confirm('是否确认删除字典编码为"' + dictCodes + '"的数据项?', "警告", {
@@ -393,7 +386,7 @@ export default {
         this.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /!** 导出按钮操作 *!/
+    /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
       this.$confirm('是否确认导出所有数据项?', "警告", {
@@ -408,6 +401,6 @@ export default {
         this.exportLoading = false;
       }).catch(() => {});
     }
-  }*/
+  }
 };
 </script>

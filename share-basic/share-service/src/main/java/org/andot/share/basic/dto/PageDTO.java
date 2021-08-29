@@ -5,10 +5,14 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * 分页对象
+ * @author andot
+ */
 @Setter
 @Getter
 public class PageDTO<T> {
-    private int page = 1;
-    private int rows = 10;
+    private Integer page = 1;
+    private Integer rows = 10;
     private T param;
 }

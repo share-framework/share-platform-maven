@@ -42,6 +42,6 @@ public class CheckDatabaseStarter implements InitializingBean, ServletContextAwa
         } catch (SQLException sqlException) {
             throw new RuntimeException("请检查数据库连接:"+sqlException.getMessage());
         }
-        log.error("数据库连接成功！");
+        log.info("数据库连接成功！");
     }
 }

@@ -228,9 +228,9 @@
         center
         show-icon>
       </el-alert>
-      <span slot="footer" class="dialog-footer" :style="'display:' + (btnReadonly?'block':'none')">
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="enterHandler">确 定</el-button>
+        <el-button type="primary" @click="enterHandler" v-if="btnReadonly">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -276,10 +276,10 @@ export default {
       menuParentName: '顶级菜单',
       btnReadonly: true,
       seeShow: false,
-      method: '',
-      iconsData: [],
       showMoveBtn: true,
       showDelBtn: true,
+      method: '',
+      iconsData: [],
       allDialog: {
         moveDialogVisible: false
       }

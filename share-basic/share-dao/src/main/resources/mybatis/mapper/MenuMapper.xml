@@ -35,8 +35,10 @@
             an_menu.*
         FROM
             an_menu
+        <if test="xNumber != null">
             JOIN role_menu ON an_menu.menu_code = role_menu.menu_code
             JOIN role_user ON role_menu.role_code = role_user.role_code
+        </if>
         <where>
             <if test="xNumber != null">
                 AND role_user.x_number = #{xNumber}

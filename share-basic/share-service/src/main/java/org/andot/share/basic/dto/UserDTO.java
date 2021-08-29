@@ -3,6 +3,10 @@ package org.andot.share.basic.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author andot
+ */
 @Setter
 @Getter
 public class UserDTO {

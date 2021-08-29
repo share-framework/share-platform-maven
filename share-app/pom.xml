@@ -20,6 +20,7 @@
         <module>share-app-oa</module>
         <module>share-app-mall</module>
         <module>share-app-search</module>
+        <module>share-app-im</module>
     </modules>
 
     <properties>
@@ -36,18 +37,13 @@
         </dependency>
         <dependency>
             <groupId>org.andot.share.basic</groupId>
-            <artifactId>share-api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.andot.share.basic</groupId>
             <artifactId>share-service</artifactId>
             <version>1.0.0</version>
         </dependency>
+
         <dependency>
-            <groupId>org.andot.share.basic</groupId>
-            <artifactId>share-dao</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -4,6 +4,8 @@ import org.andot.share.basic.entity.UserDetail;
 import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.dto.XUserDetail;
 
+import java.util.List;
+
 public interface UserService {
     /**
      * 根据 x number 获取用户信息
@@ -22,6 +24,13 @@ public interface UserService {
     boolean updateUserDetail(UserDTO userDTO);
 
     boolean disabledUser(Long xNumber);
+
+    /**
+     * 根据条件查询用户列表
+     * @param userDTO
+     * @return
+     */
+    List<UserDetail> getUserList(UserDTO userDTO);
 
 
 }

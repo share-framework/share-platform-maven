@@ -3,17 +3,17 @@
     <div style="height: 400px;">
       <el-scrollbar style="height: 98%;" up >
         <div style="width: 100%; height: 58vh;">
-          <div v-for="title in titles">
-            <div v-if="title.position == 0" style="width: 100%; display: flex; justify-content: flex-start;">
+          <div v-for="msg in msgList">
+            <div v-if="msg.position == 0" style="width: 100%; display: flex; justify-content: flex-start;">
               <el-alert
-                :title="title.content"
+                :title="msg.content"
                 type="error"
                 style="width: 40%; margin-top: 20px;">
               </el-alert>
             </div>
             <div v-else style="width: 100%; display: flex; justify-content: flex-end;">
               <el-alert
-                :title="title.content"
+                :title="msg.content"
                 type="success"
                 style="width: 40%; margin-top: 20px;">
               </el-alert>
@@ -58,7 +58,7 @@
           placeholder="请输入内容"
           :rows="6"
           resize="none"
-          v-model="message">
+          v-model="sendContent">
         </el-input>
         <el-button type="primary" @click="send" size="mini" round style="position: absolute;
     bottom: 2vh;
@@ -99,31 +99,26 @@
               clientName: "line"
             }
           },
-          titles: [],
-          message: undefined,
+          sendContent: undefined,
+          msgList: []
         }
       },
       created(){
         console.log(process.env.VUE_APP_WEB_SOCKET_API)
         console.log(this.websocket)
-        console.log(this.toLineId)
+        console.log("toLineId:"+this.toLineId)
+        this.msg.header.lineId = this.$store.state.user.xNumber;
+        this.msg.header.toLineId = this.toLineId;
         // 如果发现websocket不为空，先关闭，再建立连接
         if (this.websocket != null) {
           this.webSocketOnClose();
         }
         //页面刚进入时开启长连接
         this.initWebSocket()
-        this.message = '&#128512;'
       },
       destroyed: function() {
         //页面销毁时关闭长连接
         this.webSocketOnClose();
-      },
-      mounted() {
-        this.titles =  [];
-        this.metitles = [];
-        this.msg.header.toLineId = this.toLineId;
-        this.msg.header.lineId = this.$store.state.user.xNumber;
       },
       methods: {
         initWebSocket(){
@@ -150,23 +145,24 @@
           console.log(redata);
           console.log(this.toLineId);
           if (redata.header.lineId == this.toLineId) {
-            this.titles.push({
+            this.msgList.push({
               position: 0,
-              content: this.msg.header.lineId + ": " + this.msg.body.content
+              content: redata.header.lineId + ": " + redata.body.content
             });
           } else {
+            this.msgList.push({
+              position: 1,
+              content: this.msg.header.lineId + ": " + this.msg.body.content
+            });
           }
         },
         send(){
           console.log("send");
           //数据发送
-          this.msg.body.content = this.message
-          this.titles.push({
-            position: 1,
-            content: this.msg.header.lineId + ": " + this.msg.body.content
-          });
+          this.msg.body.content = this.sendContent
+          console.log(this.msg)
           this.websocket.send(JSON.stringify(this.msg));
-          this.message = undefined
+          this.sendContent = undefined
         },
 
         webSocketOnClose(e){ //关闭

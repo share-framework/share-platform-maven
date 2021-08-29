@@ -20,8 +20,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,20 +54,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, xNumber));
             List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
-            LambdaQueryWrapper<Role> roleLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            roleLambdaQueryWrapper.in(Role::getRoleCode, roleCodes);
-            List<RoleDTO> roles = roleMapper.selectList(roleLambdaQueryWrapper)
-                    .stream().map(item -> RoleDTO.builder()
-                            .roleCode(item.getRoleCode())
-                            .roleId(item.getRoleId())
-                            .roleName(item.getRoleName())
-                            .roleType(item.getRoleType()).build())
-                    .collect(Collectors.toList());
-            List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
-            return new XUserDetail(user, roles, menuPermissionList);
+            if (!CollectionUtils.isEmpty(roleCodes)) {
+                LambdaQueryWrapper<Role> roleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                roleLambdaQueryWrapper.in(Role::getRoleCode, roleCodes);
+                List<RoleDTO> roles = roleMapper.selectList(roleLambdaQueryWrapper)
+                        .stream().map(item -> RoleDTO.builder()
+                                .roleCode(item.getRoleCode())
+                                .roleId(item.getRoleId())
+                                .roleName(item.getRoleName())
+                                .roleType(item.getRoleType()).build())
+                        .collect(Collectors.toList());
+                List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
+                return new XUserDetail(user, roles, menuPermissionList);
+            }
+            throw new UsernameNotFoundException("请为用户设置角色！");
         } catch (Exception ex) {
             log.error("考虑用户编号恶意攻击问题，" + ex.getMessage());
-            throw new UsernameNotFoundException("用户编号传输错误");
+            throw new UsernameNotFoundException("用户错误：" + ex.getMessage());
         }
     }
 
@@ -92,6 +98,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getPhone, number).or().eq(User::getXNumber, number));
         UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(user, userDto);
+        // TODO
+        userDto.setAppId(1L);
         if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, user.getXNumber()));
             List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
@@ -133,5 +141,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setXNumber(xNumber);
         user.setDisabled(true);
         return userMapper.updateById(user)>0;
+    }
+
+    @Override
+    public List<UserDetail> getUserList(UserDTO userParam) {
+        LambdaQueryWrapper<UserDetail> queryWrapper = new LambdaQueryWrapper<>();
+        List<UserDetail> userDetailList = userDeatilMapper.selectList(queryWrapper);
+        return userDetailList;
     }
 }

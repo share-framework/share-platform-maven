@@ -39,7 +39,8 @@ public class CommonController {
     public CommonResult login(@RequestBody LoginParam loginParam,
                               HttpServletRequest request) {
         XUserDetail userDetail = userService.login(loginParam.getNumber(), loginParam.getPassword());
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetail.getUsername(), userDetail.getPassword(), userDetail.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetail.getUsername(), userDetail.getPassword(), userDetail.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         AccessToken accessToken = new AccessToken();
@@ -48,6 +49,7 @@ public class CommonController {
         jwtUserDetail.setRoles(userDetail.getRoleList().stream().map(RoleDTO::getRoleCode).collect(Collectors.toList()));
         jwtUserDetail.setUsername(userDetail.getUser().getPhone());
         jwtUserDetail.setXNumber(userDetail.getUsername());
+        jwtUserDetail.setAppId(userDetail.getUser().getAppId());
         jwtUserDetail.setPermissions(userDetail.getMenuDTOList().stream().map(MenuPermissionDTO::getMenuCode).collect(Collectors.toList()));
         accessToken.setData(jwtUserDetail);
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());

@@ -21,6 +21,7 @@ public class JwtUserDetail {
     private List<String> roles;
 
     private String xNumber;
+    private Long appId;
 
     private String username;
 

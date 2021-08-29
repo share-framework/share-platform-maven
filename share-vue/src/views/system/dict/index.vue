@@ -114,12 +114,12 @@
 
     <el-table v-loading="loading" :data="typeData" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="字典编号" align="center" prop="dictId" />
+      <el-table-column label="字典编号" align="center" prop="id" />
       <el-table-column label="字典名称" align="center" prop="dictName" :show-overflow-tooltip="true" />
       <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
         <template slot-scope="scope">
-          <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
-            <span>{{ scope.row.dictType }}</span>
+          <router-link :to="'/dict/data/manage?id=' + scope.row.id" class="link-type">
+            <span style="color: #1c84c6;">{{ scope.row.dictType }}</span>
           </router-link>
         </template>
       </el-table-column>
@@ -129,13 +129,16 @@
           <i v-else  class="status-info status-success" title="启用"></i>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
+      <el-table-column label="备注" align="center" prop="memo" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作"
+                       align="center"
+                       width="260"
+                       class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -172,7 +175,7 @@
           :page-sizes="[10, 20, 50, 100]"
           :page-size="10"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="typeBodyParam.total">
+          :total="total">
         </el-pagination>
       </el-col>
     </el-row>
@@ -181,26 +184,30 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="type" :model="type" :rules="rules" label-width="80px">
         <el-form-item label="字典名称" prop="dictName">
-          <el-input v-model="type.dictName" placeholder="请输入字典名称" />
+          <el-input v-model="type.dictName" :readonly="seeShow" placeholder="请输入字典名称" />
         </el-form-item>
         <el-form-item label="字典类型" prop="dictType">
-          <el-input v-model="type.dictType" placeholder="请输入字典类型" />
+          <el-input v-model="type.dictType" :readonly="seeShow" placeholder="请输入字典类型" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="type.status">
             <el-radio
               v-for="dict in statusOptions"
-              :key="dict.dictValue"
-              :label="dict.dictValue"
-            >{{dict.dictLabel}}</el-radio>
+              :key="dict.dataValue"
+              :label="dict.dataValue"
+              :disabled="seeShow"
+            >{{dict.dataLabel}}</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="禁用状态" prop="status">
+          <el-switch v-model="type.disabled" :disabled="seeShow"></el-switch>
+        </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="type.remark" type="textarea" placeholder="请输入内容"></el-input>
+          <el-input v-model="type.memo" type="textarea" :disabled="seeShow" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm" v-if="btnReadonly">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -255,8 +262,11 @@ export default {
         dictName: undefined,
         dictType: undefined,
         status: undefined,
-        remark: undefined
+        memo: undefined,
+        disabled: 0
       },
+      seeShow: false,
+      btnReadonly: true,
       typeData: [],
       // 表单校验
       rules: {
@@ -292,7 +302,7 @@ export default {
         const { data, total } = response
         this.typeData = data
         console.log(this.typeData)
-        this.typeBodyParam.total = total
+        this.total = total
         this.loading = false;
       }).catch(error => {
         this.msgError(error)
@@ -307,13 +317,14 @@ export default {
     // 表单重置
     reset() {
       this.type = {
-        dictId: undefined,
-        dictName: undefined,
+        id: undefined,
+        dataName: undefined,
+        dataValue: undefined,
         dictType: undefined,
-        status: "0",
+        status: 0,
+        disabled: 0,
         remark: undefined
       };
-      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -323,13 +334,14 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.dateRange = [];
-      this.resetForm("queryForm");
       this.handleQuery();
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
+      this.seeShow = false
+      this.btnReadonly = true
       this.title = "添加字典类型";
     },
     // 多选框选中数据
@@ -339,16 +351,20 @@ export default {
       this.multiple = !selection.length
     },
     handleSee (row) {
-      getType(row.dictId).then(response => {
+      this.seeShow = true
+      this.btnReadonly = false
+      getType(row.id).then(response => {
         this.type = response.data;
         this.open = true;
       });
+      this.dialogVisible = true
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const dictId = row.dictId || this.ids
-      getType(dictId).then(response => {
+      this.seeShow = false
+      this.btnReadonly = true
+      getType(row.id).then(response => {
         this.type = response.data;
         this.open = true;
         this.title = "修改字典类型";
@@ -356,9 +372,13 @@ export default {
     },
     /** 提交按钮 */
     submitForm: function() {
-      this.$refs["form"].validate(valid => {
+      console.log(this.type)
+      return
+      this.$refs["type"].validate(valid => {
         if (valid) {
-          if (this.type.dictId != undefined) {
+          this.type.status = this.type.status == 0;
+          this.type.disabled = this.type.disabled == 0;
+          if (this.type.id != undefined) {
             updateType(this.type).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
@@ -376,7 +396,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const dictIds = row.dictId || this.ids;
+      const dictIds = row.id || this.ids;
       this.$confirm('是否确认删除字典编号为"' + dictIds + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
