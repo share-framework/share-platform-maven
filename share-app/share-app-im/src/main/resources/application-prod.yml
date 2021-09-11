@@ -1,10 +1,12 @@
 server:
-  port: 9001
+  port: 9901
+  servlet:
+    context-path: /api
 
 line:
   server:
     host: 127.0.0.1
-    port: 9000
+    port: 9900
     path: /ws/conn
   reconnect:
     count: 3

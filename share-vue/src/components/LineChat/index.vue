@@ -136,6 +136,7 @@
         webSocketOnError(e) {
           console.log("WebSocket连接发生错误");
           console.log(e);
+          this.initWebSocket();
         },
         webSocketOnMessage(e){
           console.log("webSocketOnMessage");
@@ -168,6 +169,7 @@
         webSocketOnClose(e){ //关闭
           console.log(e)
           console.log("connection closed");
+          this.initWebSocket();
         },
       },
     }
