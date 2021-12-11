@@ -2,12 +2,16 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.andot.share.basic.entity.MenuElement;
+import org.andot.share.basic.entity.PageElement;
+import org.andot.share.basic.service.PageElementService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.basic.dto.RoleDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /***
@@ -21,10 +25,26 @@ import java.util.List;
 @RestController
 public class PageElementController {
 
+    @Resource
+    private PageElementService pageElementService;
+
+    @PostMapping("")
+    public CommonResult add(@RequestBody PageElement pageElement) {
+        if (pageElementService.savePageElement(pageElement)) {
+            return CommonResult.success("保存成功");
+        } else {
+            return CommonResult.failed("保存失败，请重试！");
+        }
+    }
+
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
-    public CommonResult update(@PathVariable("id") Long id) {
-        return null;
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody PageElement pageElement) {
+        if (pageElementService.updatePageElement(id, pageElement)) {
+            return CommonResult.success("保存成功");
+        } else {
+            return CommonResult.failed("保存失败，请重试！");
+        }
     }
 
     @ApiOperation("删除数据")

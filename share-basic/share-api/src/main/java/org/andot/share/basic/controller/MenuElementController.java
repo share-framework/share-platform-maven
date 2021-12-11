@@ -2,12 +2,12 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.common.response.CommonPage;
+import org.andot.share.basic.entity.MenuElement;
+import org.andot.share.basic.service.MenuElementService;
 import org.andot.share.common.response.CommonResult;
-import org.andot.share.basic.dto.PageDTO;
-import org.andot.share.basic.dto.RoleDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /***
@@ -21,34 +21,52 @@ import java.util.List;
 @RestController
 public class MenuElementController {
 
+    @Resource
+    private MenuElementService menuElementService;
+
+    @PostMapping("")
+    public CommonResult add(@RequestBody MenuElement menuElement) {
+        if (menuElementService.saveMenuElement(menuElement)) {
+            return CommonResult.success("保存成功");
+        } else {
+            return CommonResult.failed("保存失败，请重试！");
+        }
+    }
+
     @ApiOperation("更新数据")
     @PutMapping("/{id}")
-    public CommonResult update(@PathVariable("id") Long id) {
-        return null;
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody MenuElement menuElement) {
+        if (menuElementService.updateMenuElement(id, menuElement)) {
+            return CommonResult.success("保存成功");
+        } else {
+            return CommonResult.failed("保存失败，请重试！");
+        }
     }
 
     @ApiOperation("删除数据")
     @DeleteMapping("/{id}")
     public CommonResult del(@PathVariable("id") Long id) {
-        return null;
+        if (menuElementService.delMenuElementById(id)) {
+            return CommonResult.success("删除成功");
+        } else {
+            return CommonResult.failed("删除失败，请重试！");
+        }
     }
 
     @ApiOperation("批量删除数据")
     @DeleteMapping("/dels")
     public CommonResult dels(@RequestBody List<Long> ids) {
-        return null;
+        if (menuElementService.delBatchMenuElementById(ids)) {
+            return CommonResult.success("删除成功");
+        } else {
+            return CommonResult.failed("删除失败，请重试！");
+        }
     }
 
     @ApiOperation("根据id获取数据")
     @GetMapping("/{id}")
     public CommonResult get(@PathVariable("id") Long id) {
-        return null;
+        return CommonResult.success(menuElementService.getMenuElementList(id));
     }
 
-    @ApiOperation("根据条件获取列表数据")
-    @GetMapping("/all")
-    public CommonResult getList(RoleDTO roleDto) {
-
-        return null;
-    }
 }
