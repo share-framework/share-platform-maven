@@ -9,12 +9,17 @@ import java.util.List;
 
 /**
  *
+ * @author andot
  */
 @Service("resourcesGroupsService")
 @RequiredArgsConstructor
 public class ResourcesGroupsServiceImpl implements ResourcesGroupsService {
+
+
+
     @Override
-    public List<ResourcesGroups> getResourcesGroupsList(Long menuId) {
+    public List<ResourcesGroups> getResourcesGroupsList(Long groupId) {
+
         return null;
     }
 

@@ -16,7 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PageElementServiceImpl implements PageElementService {
     @Override
-    public List<PageElement> getPageElementList(Long menuId) {
+    public List<PageElement> getPageElementList(Long pageId) {
+
         return null;
     }
 

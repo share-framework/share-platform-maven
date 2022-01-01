@@ -15,12 +15,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /***
- * 组织机构控制器
+ * 菜单元素控制器
  * @author andot
- * @date 2019-1-17 16:03:09
+ * @date 2021-12-12 11:44:02
  * @since 1.0
  */
-@Api(tags = "组织机构API", description = "组织机构控制器")
+@Api(tags = "菜单元素API", description = "菜单元素控制器")
 @RequestMapping("/page/element")
 @RestController
 public class PageElementController {
