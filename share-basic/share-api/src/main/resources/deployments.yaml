@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null #1643358900000
+  labels:
+    app: share-web-api
+  name: share-web-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: share-web-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: share-web-api
+    spec:
+      containers:
+      - image: andot/share-web-api:1.0.7
+        name: share-web-api
+        resources: {}
+        args: ["--spring.profiles.active=dev"]
+        imagePullPolicy: Always
+status: {}
+

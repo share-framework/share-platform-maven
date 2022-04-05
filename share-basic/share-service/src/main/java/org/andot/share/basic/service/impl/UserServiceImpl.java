@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public XUserDetail login(String number, String password) {
-        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getPhone, number).or().eq(User::getXNumber, number));
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getPhone, number).or().eq(User::getXNumber, number).last("LIMIT 1"));
         UserDTO userDto = new UserDTO();
         BeanUtils.copyProperties(user, userDto);
         // TODO

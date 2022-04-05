@@ -64,7 +64,7 @@
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>3.0.1</version>
+            <version>3.0.3</version>
         </dependency>
 
         <dependency>
@@ -81,6 +81,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.andot.share.basic.ShareBasicApplication</mainClass>
+                    <arguments>
+                        <argument>–parameters</argument>
+                    </arguments>
                 </configuration>
                 <executions>
                     <execution>

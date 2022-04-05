@@ -1,12 +1,11 @@
 package org.andot.share.common.utils;
 
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.andot.share.common.domain.JwtUserDetail;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;
+import org.andot.share.common.exception.TokenExpiredRuntimeException;
 
 import java.util.*;
 
@@ -15,13 +14,14 @@ import java.util.*;
  *
  * @author lucas
  */
+@Slf4j
 public class JwtUtil {
 
     /**
      * 去掉Token的固定头 <code>Bearer </code>
      *
-     * @param authorization
-     * @return
+     * @param authorization token
+     * @return del head token
      */
     public static String getTokenByHeader(String authorization) {
         return Optional.ofNullable(authorization).map(token -> token.replace("Bearer ", "")).orElse("");
@@ -65,9 +65,18 @@ public class JwtUtil {
 
 
     public static boolean isTokenExpired(String token, String secret) {
-        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        Date date = claims.getExpiration();
-        return date.before(new Date());
+        try {
+            Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            Date date = claims.getExpiration();
+            return date.before(new Date());
+        } catch (Exception exception) {
+            if (exception instanceof ExpiredJwtException) {
+                log.error("token is expired, ", exception);
+                throw new TokenExpiredRuntimeException("登录已失效，请重新登录！", exception);
+            }
+            log.error("token if expired error, ", exception);
+            throw new RuntimeException("请重新登录重试！", exception);
+        }
     }
 
 }
