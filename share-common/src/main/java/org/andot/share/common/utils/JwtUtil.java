@@ -3,7 +3,6 @@ package org.andot.share.common.utils;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.common.domain.JwtUserDetail;
-import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;
 import org.andot.share.common.exception.TokenExpiredRuntimeException;
 
