@@ -28,3 +28,17 @@
 ### Document
 
 [Click Me see detail book](https://andotorg.gitbook.io/share)
+
+## if mysql insert chinese display ?????
+
+> set mysql char encode
+
+```
+[client]
+default-character-set=utf8mb4
+[mysql]
+default-character-set=utf8mb4
+[mysqld]
+character_set_server=utf8mb4
+collation-server=utf8mb4_general_ci
+```
