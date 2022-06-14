@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mms
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 50736
+ Source Server Version : 50731
  Source Host           : localhost:3306
  Source Schema         : share-rbac
 
  Target Server Type    : MySQL
- Target Server Version : 50736
+ Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 10/05/2022 23:12:10
+ Date: 18/05/2022 23:20:41
 */
 
 SET NAMES utf8mb4;
@@ -88,7 +88,7 @@ CREATE TABLE `an_menu` (
   `updated_person` varchar(255) DEFAULT NULL COMMENT '更新人',
   `memo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COMMENT='菜单表\r\n';
 
 -- ----------------------------
 -- Records of an_menu
@@ -128,6 +128,8 @@ INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `compone
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (48, '删除类型', 'dict:type:remove', NULL, '#', NULL, 3, 'm_dict_manage', NULL, NULL, 1, NULL, 0, '2021-08-29 07:35:51', NULL, '10000', NULL, NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (49, '查看类型', 'dict:type:see', NULL, '#', NULL, 3, 'm_dict_manage', NULL, NULL, 1, NULL, 0, '2021-08-29 07:36:07', NULL, '10000', NULL, NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (50, '数据管理', 'm_dict_data', '/dict/data/manage', '/system/dict/data', NULL, 2, 'm_dict_manage', NULL, NULL, 1, 5, 0, '2021-08-29 09:13:01', '2021-08-29 09:28:50', '10000', '10000', NULL);
+INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (51, '插件市场', 'plugin-market', '/plugin/market', '/system/plugin/index', NULL, 2, 'm_sys', 'el-icon-s-grid', NULL, 1, 3, 0, '2022-05-10 15:17:29', '2022-05-10 15:19:31', '10000', '10000', NULL);
+INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (52, '合格', 'app_manage', '/system/app', '/system/app/index', NULL, 2, 'm_sys', 'el-icon-menu', NULL, 1, NULL, 0, '2022-05-15 07:39:00', '2022-05-15 15:30:00', '10000', '10000', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -775,7 +777,7 @@ CREATE TABLE `role` (
 BEGIN;
 INSERT INTO `role` (`role_id`, `role_name`, `role_type`, `role_code`, `role_order`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (1, '上帝管理员', 1, 'ADMIN', 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `role` (`role_id`, `role_name`, `role_type`, `role_code`, `role_order`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (2, '测试用户', 3, 'TEST_USER', 2, 1, NULL, '2021-08-19 15:34:34', NULL, '10000', 'lihlhklk');
-INSERT INTO `role` (`role_id`, `role_name`, `role_type`, `role_code`, `role_order`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (3, '公司管理员', 2, 'COM_ADMIN', 3, 0, NULL, '2021-08-29 09:37:18', NULL, '10000', NULL);
+INSERT INTO `role` (`role_id`, `role_name`, `role_type`, `role_code`, `role_order`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (3, '?????', 2, 'COM_ADMIN', 3, 0, NULL, '2022-05-10 15:17:59', NULL, '10000', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -807,7 +809,7 @@ CREATE TABLE `role_menu` (
   `menu_code` varchar(64) DEFAULT NULL COMMENT '菜单标识',
   PRIMARY KEY (`role_menu_id`) USING BTREE,
   UNIQUE KEY `menuroleid` (`menu_code`,`role_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8mb4 COMMENT='角色用户关系表\r\n';
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8mb4 COMMENT='角色用户关系表\r\n';
 
 -- ----------------------------
 -- Records of role_menu
@@ -817,37 +819,38 @@ INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (80, '
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (77, 'COM_ADMIN', 'btn_hr_role_add');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (78, 'COM_ADMIN', 'btn_hr_role_see');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (79, 'COM_ADMIN', 'btn_hr_role_update');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (270, 'COM_ADMIN', 'dict:data:delete');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (274, 'COM_ADMIN', 'dict:data:list');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (271, 'COM_ADMIN', 'dict:data:see');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (272, 'COM_ADMIN', 'dict:data:table');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (268, 'COM_ADMIN', 'dict:type:add');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (275, 'COM_ADMIN', 'dict:type:query');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (276, 'COM_ADMIN', 'dict:type:remove');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (277, 'COM_ADMIN', 'dict:type:see');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (273, 'COM_ADMIN', 'dict:type:table');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (269, 'COM_ADMIN', 'dict:type:update');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (296, 'COM_ADMIN', 'dict:data:delete');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (300, 'COM_ADMIN', 'dict:data:list');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (297, 'COM_ADMIN', 'dict:data:see');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (298, 'COM_ADMIN', 'dict:data:table');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (294, 'COM_ADMIN', 'dict:type:add');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (301, 'COM_ADMIN', 'dict:type:query');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (302, 'COM_ADMIN', 'dict:type:remove');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (303, 'COM_ADMIN', 'dict:type:see');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (299, 'COM_ADMIN', 'dict:type:table');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (295, 'COM_ADMIN', 'dict:type:update');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (126, 'COM_ADMIN', 'external');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (278, 'COM_ADMIN', 'm_dict_data');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (267, 'COM_ADMIN', 'm_dict_manage');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (263, 'COM_ADMIN', 'm_hr');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (282, 'COM_ADMIN', 'm_hr_depart');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (304, 'COM_ADMIN', 'm_dict_data');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (293, 'COM_ADMIN', 'm_dict_manage');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (289, 'COM_ADMIN', 'm_hr');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (309, 'COM_ADMIN', 'm_hr_depart');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (6, 'COM_ADMIN', 'm_hr_organ');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (283, 'COM_ADMIN', 'm_hr_post');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (279, 'COM_ADMIN', 'm_hr_role');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (284, 'COM_ADMIN', 'm_line');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (285, 'COM_ADMIN', 'm_line_chat');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (286, 'COM_ADMIN', 'm_mark');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (287, 'COM_ADMIN', 'm_mark_label');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (264, 'COM_ADMIN', 'm_menu');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (310, 'COM_ADMIN', 'm_hr_post');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (306, 'COM_ADMIN', 'm_hr_role');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (311, 'COM_ADMIN', 'm_line');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (312, 'COM_ADMIN', 'm_line_chat');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (313, 'COM_ADMIN', 'm_mark');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (314, 'COM_ADMIN', 'm_mark_label');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (290, 'COM_ADMIN', 'm_menu');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (2, 'COM_ADMIN', 'm_organ_user');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (262, 'COM_ADMIN', 'm_sys');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (288, 'COM_ADMIN', 'm_sys');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (167, 'COM_ADMIN', 'organ:role:add');
 INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (168, 'COM_ADMIN', 'organ:role:remove');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (280, 'COM_ADMIN', 'organ:role:see');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (281, 'COM_ADMIN', 'organ:role:update');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (265, 'COM_ADMIN', 'system:menu:add');
-INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (266, 'COM_ADMIN', 'system:menu:update');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (307, 'COM_ADMIN', 'organ:role:see');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (308, 'COM_ADMIN', 'organ:role:update');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (305, 'COM_ADMIN', 'plugin-market');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (291, 'COM_ADMIN', 'system:menu:add');
+INSERT INTO `role_menu` (`role_menu_id`, `role_code`, `menu_code`) VALUES (292, 'COM_ADMIN', 'system:menu:update');
 COMMIT;
 
 -- ----------------------------

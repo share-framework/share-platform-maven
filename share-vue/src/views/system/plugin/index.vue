@@ -2,6 +2,19 @@
   <div class="app-container">
     <el-row>
       <el-col :span="24">
+        <div id="vs"></div>
+
+        <video id="my-video" class="video-js" playsinline controls preload="auto" width="100%" height="800"
+                data-setup="{}">
+          <source src="" type="video/mp4">
+          <source src="" type="video/ogg">
+          <source src="" type="video/webm">
+          <p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p>
+        </video>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
         <el-carousel trigger="click" height="300px">
           <el-carousel-item v-for="item in 4" :key="item">
             <img src="https://s.cn.bing.net/th?id=OHR.GiffordPinchot_ZH-CN2050686223_1920x1080.jpg&rf=LaDigue_1920x1080.jpg" class="image">
@@ -47,6 +60,10 @@
 </template>
 
 <script>
+import Player from 'xgplayer';
+import 'xgplayer-mp4';
+import { getToken } from '@/utils/auth'
+
 export default {
   data() {
     return {
@@ -58,9 +75,38 @@ export default {
         delivery: false,
         type: [],
         resource: '',
-        desc: ''
+        mediaSource: undefined,
+        desc: '',
+        video: undefined
       }
     }
+  },
+  mounted() {
+    /*const player = new Player({
+      id: 'vs',
+      url: 'http://127.0.0.1:9090/api/video/id'
+    })*/
+    let video = document.getElementById("my-video");
+    window.URL = window.URL || window.webkitURL;
+    let xhr = new XMLHttpRequest();
+    let play_url = 'http://localhost/api/video/id';
+    xhr.open("GET", play_url, true);
+    xhr.setRequestHeader("Range", "bytes=0-")
+    xhr.responseType = "blob";
+    xhr.onload = function() {
+      if (this.status == 206) {
+        let blob = this.response;
+        console.log(blob);
+        video.onload = function(e) {
+          window.URL.revokeObjectURL(video.src);
+        };
+        video.src = window.URL.createObjectURL(blob);
+      }
+    }
+    xhr.send();
+   /* let url = 'http://localhost/api/video/id';  // url
+    let mimeCodec = 'video/mp4; codecs="avc1.640028, mp4a.40.2"'; // 编码格式
+    this.v_init('#my-video',url,mimeCodec); // 调用 #video 是选择器 id*/
   },
   methods: {
     onSubmit() {
@@ -71,6 +117,46 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
+    },
+    // 初始化 selector / assetUrl / mimeCodec / autoPlay
+    // selector：video的选择器 exp: '#video'
+    // assetUrl: video的请求地址 exp : './v.mp4'
+    // mimeCodec: 编码模式  exp:  'video/mp4; codecs="avc1.640028, mp4a.40.2"'
+    v_init: function (selector, assetUrl, mimeCodec) {
+      this.mediaSource = new MediaSource();
+      this.video = document.querySelector(selector); // 获取vide dom
+      this.assetUrl = assetUrl;
+      this.mimeCodec = mimeCodec;
+      this.v_start();// 开启
+    },
+    v_start: function () {
+      console.log(this.mediaSource.readyState); // closed
+      this.video.src = URL.createObjectURL(this.mediaSource);
+      this.fetchAB(this.assetUrl)
+    },
+    // 基于 XHR 的简单封装
+    // arguments - url
+    // arguments - cb (回调函数)
+    fetchAB: function (url) {
+      var xhr = new XMLHttpRequest;
+      xhr.open('get', url, true);
+      xhr.setRequestHeader("Range", "bytes=0-4096")/*
+      xhr.setRequestHeader("Host", "127.0.0.1:9090")
+      xhr.setRequestHeader("Sec-Fetch-Mode", "cors")
+      xhr.setRequestHeader("Origin", "http://localhost:9528")*/
+      xhr.setRequestHeader("X-Token", getToken())
+      xhr.responseType = 'blob';
+      var _this = this;
+      xhr.onload = function () {
+        var sourceBuffer = this.mediaSource.addSourceBuffer(this.mimeCodec);
+        sourceBuffer.addEventListener('updateend', function (_) {
+          _this.mediaSource.endOfStream();// 结束
+          _this.video.play(); // 播放视频
+          console.log(_this.mediaSource.readyState); // ended
+        });
+        sourceBuffer.appendBuffer(buf);
+      };
+      xhr.send();
     }
   }
 }
