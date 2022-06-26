@@ -63,6 +63,7 @@
 import Player from 'xgplayer';
 import 'xgplayer-mp4';
 import { getToken } from '@/utils/auth'
+import { getVideoStream } from '@/api/system/plugin'
 
 export default {
   data() {
@@ -82,14 +83,14 @@ export default {
     }
   },
   mounted() {
-    /*const player = new Player({
+    const player = new Player({
       id: 'vs',
-      url: 'http://127.0.0.1:9090/api/video/id'
-    })*/
-    let video = document.getElementById("my-video");
+      url: 'http://localhost:9090/api/video/id'
+    })
+    /*let video = document.getElementById("my-video");
     window.URL = window.URL || window.webkitURL;
     let xhr = new XMLHttpRequest();
-    let play_url = 'http://localhost/api/video/id';
+    let play_url = 'http://localhost:9090/api/video/id';
     xhr.open("GET", play_url, true);
     xhr.setRequestHeader("Range", "bytes=0-")
     xhr.responseType = "blob";
@@ -103,7 +104,7 @@ export default {
         video.src = window.URL.createObjectURL(blob);
       }
     }
-    xhr.send();
+    xhr.send();*/
    /* let url = 'http://localhost/api/video/id';  // url
     let mimeCodec = 'video/mp4; codecs="avc1.640028, mp4a.40.2"'; // 编码格式
     this.v_init('#my-video',url,mimeCodec); // 调用 #video 是选择器 id*/

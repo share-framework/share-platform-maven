@@ -54,9 +54,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login", "/v2/api-docs", "/v2/api-docs-ext",
                         "/swagger-resources/**", "/webjars/**", "/images/**",
-                        "/doc.html", "/favicon.ico").permitAll()
+                        "/doc.html", "/favicon.ico", "/video/**", "/static/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)
                 .authenticationEntryPoint(userUnAuthenticationHandler);
         http.logout().logoutSuccessHandler(userLogoutSuccessHandler)

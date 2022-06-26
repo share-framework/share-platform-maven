@@ -31,6 +31,24 @@ spring:
   logging:
     level:
       com.baomidou.mybatisplus.samples.quickstart: debug
+  servlet:
+    multipart:
+      enabled: true
+      # 不限制文件大小
+      max-file-size: -1
+      # 不限制请求体大小
+      max-request-size: -1
+      # 临时IO目录
+      location: "${java.io.tmpdir}"
+      # 不延迟解析
+      resolve-lazily: false
+      # 超过1Mb，就IO到临时目录
+      file-size-threshold: 1MB
+    web:
+      resources:
+        static-locations:
+          - "classpath:/static/**"
+          - "file:/Users/lucasser/Andot/App/ffmpeg/video/ts/" # 把视频文件夹目录，添加到静态资源目录列表
 
 mybatis-plus:
   mapperLocations: classpath*:/mybatis/mapper/*.xml
@@ -40,3 +58,5 @@ share:
   jwt:
     secret: share-andot
     expiration: 7200
+  video:
+    folder: /Users/lucasser/Andot/App/ffmpeg/video/
