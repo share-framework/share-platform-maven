@@ -36,7 +36,7 @@
           placement="bottom"
           width="240"
           v-model="allDialog.moveDialogVisible">
-          <el-select v-model="menu.menuParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
+          <el-select v-model="organ.organParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
             <el-option
               v-for="item in menuData"
               :key="item.menuCode"
@@ -49,7 +49,7 @@
           </div>
           <el-button
              slot="reference"
-             title="更换父菜单"
+             title="更换上级企业"
              size="small"
              icon="el-icon-truck">移动</el-button>
         </el-popover>
@@ -79,47 +79,29 @@
             width="55">
           </el-table-column>
           <el-table-column
-            prop="menuName"
+            prop="organName"
             :show-overflow-tooltip="true"
             min-width="150"
-            label=" 菜单名称">
+            label="公司名称">
             <template slot-scope="scope">
-              <i :class="scope.row.icon"></i>
-              <i> </i>
-              <span> {{scope.row.menuName}}</span>
+              <span> {{scope.row.organName}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="menuCode"
+            prop="organCode"
             :show-overflow-tooltip="true"
-            label="菜单编码">
+            label="公司编码">
           </el-table-column>
           <el-table-column
-            prop="url"
+            prop="organUrl"
             :show-overflow-tooltip="true"
-            label="菜单地址">
-          </el-table-column>
-<!--          <el-table-column-->
-<!--            prop="component"-->
-<!--            :show-overflow-tooltip="true"-->
-<!--            label="组件地址">-->
-<!--          </el-table-column>-->
-          <el-table-column
-            prop="redirect"
-            :show-overflow-tooltip="true"
-            label="跳转地址">
-          </el-table-column>
-          <el-table-column
-            prop="sort"
-            sortable
-            align="center"
-            label="顺序">
+            label="官网">
           </el-table-column>
           <el-table-column
             align="center"
             label="状态">
             <template slot-scope="scope">
-              <i v-if="scope.row.hidden==1" class="status-info status-danger" title="停用"></i>
+              <i v-if="scope.row.disabled==1" class="status-info status-danger" title="停用"></i>
               <i v-else  class="status-info status-success" title="启用"></i>
             </template>
           </el-table-column>
