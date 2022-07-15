@@ -13,4 +13,5 @@ public class MenuPermissionDTO {
     private String menuCode;
     private Long roleMenuId;
     private String menuParentCode;
+    private Boolean hidden;
 }

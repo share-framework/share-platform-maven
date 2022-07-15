@@ -14,6 +14,7 @@
         <result column="app_system_id" property="appSystemId" javaType="long" jdbcType="BIGINT"></result>
         <result column="order_code" property="orderCode" javaType="int" jdbcType="INTEGER"></result>
         <result column="disabled" property="disabled" javaType="boolean" jdbcType="TINYINT"></result>
+        <result column="hidden" property="hidden" javaType="boolean" jdbcType="TINYINT"></result>
         <result column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
         <result column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
         <result column="delete_time" property="deleteTime" javaType="java.util.Date" jdbcType="TIMESTAMP"></result>
@@ -28,6 +29,7 @@
         <result column="menu_name" property="menuName" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_code" property="menuCode" javaType="string" jdbcType="VARCHAR"></result>
         <result column="menu_parent_code" property="menuParentCode" javaType="string" jdbcType="VARCHAR"></result>
+        <result column="hidden" property="hidden" javaType="boolean" jdbcType="TINYINT"></result>
     </resultMap>
 
     <select id="getMenuListByUserId" parameterType="long" resultMap="menuMap">
@@ -57,6 +59,7 @@
             m.menu_name,
             m.menu_code,
             m.menu_parent_code,
+            m.hidden,
             IFNULL(rm.role_menu_id, 0) AS role_menu_id
         FROM an_menu AS m
         LEFT JOIN role_menu AS rm ON m.menu_code = rm.menu_code
@@ -78,6 +81,7 @@
         m.menu_name,
         m.menu_code,
         m.menu_parent_code,
+        m.hidden,
         IFNULL(rm.role_menu_id, 0) AS role_menu_id
         FROM an_menu AS m
         LEFT JOIN role_menu AS rm ON m.menu_code = rm.menu_code

@@ -37,8 +37,8 @@ public class MenuTreeDTO {
     private Long appSystemId;
     @ApiModelProperty("菜单代码")
     private Integer sort;
-    @ApiModelProperty("禁用 1 禁用 0 启用")
-    private Boolean disabled;
+    @ApiModelProperty("隐藏 1 隐藏 0 显示")
+    private Boolean hidden;
     @ApiModelProperty("是否存在子节点")
     private Boolean hashChildren;
     @ApiModelProperty("子菜单列表")

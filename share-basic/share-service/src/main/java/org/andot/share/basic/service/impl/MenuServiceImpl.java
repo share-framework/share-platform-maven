@@ -172,7 +172,7 @@ public class MenuServiceImpl implements MenuService {
                 menuTreeDto.setMenuCode(menuList.get(i).getMenuCode());
                 menuTreeDto.setRedirect(menuList.get(i).getRedirect());
                 menuTreeDto.setComponent(menuList.get(i).getComponent());
-                menuTreeDto.setDisabled(menuList.get(i).getDisabled());
+                menuTreeDto.setHidden(menuList.get(i).getHidden());
                 list.add(menuTreeDto);
             }
         }

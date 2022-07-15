@@ -24,4 +24,5 @@ public class AnMenu extends BaseEntity {
     private String menuIcon;
     private Long appSystemId;
     private Integer orderCode;
+    private Boolean hidden;
 }
