@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 16/07/2022 06:31:11
+ Date: 16/07/2022 23:44:23
 */
 
 SET NAMES utf8mb4;
@@ -103,8 +103,8 @@ INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `compone
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (20, '角色管理', 'm_hr_role', '/organ/role', '/hr/role/index', '', 2, 'm_hr', 'el-icon-medal-1', NULL, 1, 3, 0, 0, '2020-09-19 06:20:01', '2021-08-17 12:49:24', '10000', '10000', NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (22, '同道', 'm_line', '/line', '#', '', 1, 'root', 'el-icon-chat-dot-round', NULL, 1, 3, 0, 0, NULL, NULL, '10000', NULL, NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (23, '聊天', 'm_line_chat', '/line/chat', '/line/chat/index', '', 2, 'm_line', 'el-icon-chat-line-round', NULL, 1, 1, 0, 0, NULL, NULL, '10000', NULL, NULL);
-INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (25, '组织管理', 'm_hr_company', '/hr/organ', '/hr/company/index', NULL, 2, 'm_hr', 'el-icon-office-building', NULL, 1, 1, 0, 0, '2021-08-16 16:08:27', '2022-07-15 14:08:34', '10000', '10000', NULL);
-INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (26, '部门管理', 'm_hr_depart', '/hr/depart', '/hr/depart/index', NULL, 2, 'm_hr', 'el-icon-mobile', NULL, 1, 2, 0, 0, '2021-08-16 16:12:03', '2022-07-15 14:08:44', '10000', '10000', NULL);
+INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (25, '组织管理', 'm_hr_organ', '/hr/organ', '/hr/organ/index', NULL, 2, 'm_hr', 'el-icon-office-building', NULL, 1, 1, 0, 0, '2021-08-16 16:08:27', '2022-07-15 22:41:20', '10000', '10000', NULL);
+INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (26, '部门管理', 'm_hr_dept', '/hr/dept', '/hr/dept/index', NULL, 2, 'm_hr', 'el-icon-mobile', NULL, 1, 2, 0, 0, '2021-08-16 16:12:03', '2022-07-16 15:16:39', '10000', '99999', NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (27, '用户管理', 'm_hr_user', '/hr/user', '/hr/user/index', NULL, 2, 'm_hr', 'el-icon-user', NULL, 1, 5, 0, 0, '2021-08-16 16:12:37', '2021-08-17 12:46:01', '10000', '10000', NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (28, '标记管理', 'm_mark', '/mark', '#', NULL, 1, 'root', 'el-icon-help', NULL, 1, 3, 0, 0, '2021-08-16 16:15:10', NULL, '10000', NULL, NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (29, '标签管理', 'm_mark_label', '/mark/label', '#', '/mark/label/index', 2, 'm_mark', 'el-icon-collection-tag', NULL, 1, 1, 0, 0, '2021-08-17 12:33:36', NULL, '10000', NULL, NULL);
@@ -131,7 +131,7 @@ INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `compone
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (50, '数据管理', 'm_dict_data', '/dict/data/manage', '/system/dict/data', NULL, 2, 'm_dict_manage', NULL, NULL, 1, 5, 1, 0, '2021-08-29 09:13:01', '2022-07-15 13:55:01', '10000', '10000', NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (51, '插件市场', 'plugin-market', '/plugin/market', '/system/plugin/index', NULL, 2, 'm_sys', 'el-icon-s-grid', NULL, 1, 3, 0, 0, '2022-05-10 15:17:29', '2022-05-10 15:19:31', '10000', '10000', NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (52, '合格', 'app_manage', '/system/app', '/system/app/index', NULL, 2, 'm_sys', 'el-icon-menu', NULL, 1, NULL, 0, 0, '2022-05-15 07:39:00', '2022-05-15 15:30:00', '10000', '10000', NULL);
-INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (53, '测试', 'test', NULL, '#', NULL, 1, 'm_hr', NULL, NULL, 1, NULL, 0, 0, '2022-07-15 14:05:26', NULL, '10000', NULL, NULL);
+INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (53, '测试', 'test', '/aaa', '#', NULL, 1, 'm_hr', NULL, NULL, 1, NULL, 0, 0, '2022-07-15 14:05:26', NULL, '10000', NULL, NULL);
 INSERT INTO `an_menu` (`menu_id`, `menu_name`, `menu_code`, `menu_url`, `component`, `redirect`, `menu_type`, `menu_parent_code`, `menu_icon`, `page_url`, `app_system_id`, `order_code`, `hidden`, `disabled`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (54, '查看', 'm_hr_company_see', NULL, '#', NULL, 3, 'm_hr_company', NULL, NULL, 1, NULL, 0, 0, '2022-07-15 14:13:05', NULL, '10000', NULL, NULL);
 COMMIT;
 
@@ -698,23 +698,75 @@ DROP TABLE IF EXISTS `organ`;
 CREATE TABLE `organ` (
   `organ_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `organ_name` varchar(128) DEFAULT NULL,
-  `organ_type` tinyint(2) DEFAULT NULL,
-  `order_code` tinyint(3) DEFAULT NULL,
-  `organ_parent_id` int(11) DEFAULT NULL,
-  `caption` varchar(128) DEFAULT NULL,
-  `disabled` tinyint(2) DEFAULT '0' COMMENT '禁用 0 正常 1 禁用',
+  `organ_type` tinyint(2) NOT NULL COMMENT '1 集团 2 公司 3 单位 4 组织',
+  `organ_code` varchar(16) NOT NULL COMMENT '编码',
+  `organ_parent_code` varchar(16) NOT NULL COMMENT '父编码',
+  `order_code` tinyint(3) NOT NULL COMMENT '序号',
+  `organ_url` varchar(128) DEFAULT NULL COMMENT '官方地址',
+  `caption` varchar(128) DEFAULT NULL COMMENT '说明',
+  `disabled` tinyint(2) NOT NULL DEFAULT '0' COMMENT '禁用 0 正常 1 禁用',
+  `is_del` tinyint(4) NOT NULL DEFAULT '0' COMMENT '逻辑删除 0正常 1删除',
   `created_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `updated_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   `created_person` varchar(255) DEFAULT NULL COMMENT '创建人',
   `updated_person` varchar(255) DEFAULT NULL COMMENT '更新人',
   `memo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`organ_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='组织表';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='组织表';
 
 -- ----------------------------
 -- Records of organ
 -- ----------------------------
 BEGIN;
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (1, 'dd', 1, 'dd', 'ROOT', 0, NULL, NULL, 1, 1, '2022-07-16 12:35:51', '2022-07-16 14:45:48', '10000', '99999', NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (2, 'rr', 1, 'rr', 'ROOT', 0, NULL, NULL, 1, 1, '2022-07-16 12:40:05', '2022-07-16 15:03:11', '10000', '99999', NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (3, 'ff', 2, 'ff', 'rr', 0, NULL, NULL, 1, 1, '2022-07-16 13:18:33', '2022-07-16 15:02:02', '99999', '99999', NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (4, '蚁点集团', 2, 'andot_group', 'ROOT', 0, NULL, NULL, 1, 0, '2022-07-16 14:22:33', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (6, '蚁点科技', 2, 'andot_tele', 'andot_group', 1, NULL, NULL, 1, 0, '2022-07-16 14:23:48', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (7, '牧云子公司', 2, 'muyun', 'andot_tele', 1, NULL, NULL, 1, 0, '2022-07-16 14:24:37', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (8, '蚁点材料研究员', 3, 'andot_y', 'andot_group', 0, NULL, NULL, 1, 0, '2022-07-16 14:25:31', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (9, '蚁点工作室', 1, 'andot_studio', 'andot_group', 1, NULL, NULL, 1, 0, '2022-07-16 14:26:28', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (10, '蚁点生物科技', 2, 'andot_shengwu', 'andot_group', 5, NULL, NULL, 1, 0, '2022-07-16 14:27:29', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (11, '牧云能源', 2, 'muyun_engry', 'andot_tele', 0, NULL, NULL, 1, 0, '2022-07-16 14:29:05', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (12, '牧云电力', 1, 'power', 'andot_tele', 0, NULL, NULL, 1, 0, '2022-07-16 14:29:37', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (13, '牧云畜牧业', 2, 'xumuye', 'andot_tele', 0, NULL, NULL, 1, 0, '2022-07-16 14:34:45', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (14, '浪潮集团', 1, 'insper', 'ROOT', 0, '', NULL, 1, 0, '2022-07-16 15:02:54', NULL, '99999', NULL, NULL);
+INSERT INTO `organ` (`organ_id`, `organ_name`, `organ_type`, `organ_code`, `organ_parent_code`, `order_code`, `organ_url`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (15, '好未来集团', 1, 'tal', 'ROOT', 3, '', NULL, 1, 0, '2022-07-16 15:03:07', NULL, '99999', NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for organ_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `organ_dept`;
+CREATE TABLE `organ_dept` (
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `dept_name` varchar(128) DEFAULT NULL,
+  `dept_type` tinyint(2) NOT NULL COMMENT '1 集团 2 公司 3 单位 4 组织',
+  `dept_code` varchar(16) NOT NULL COMMENT '编码',
+  `dept_parent_code` varchar(16) NOT NULL COMMENT '父编码',
+  `sort` tinyint(3) NOT NULL COMMENT '序号',
+  `caption` varchar(128) DEFAULT NULL COMMENT '说明',
+  `disabled` tinyint(2) NOT NULL DEFAULT '0' COMMENT '禁用 0 正常 1 禁用',
+  `is_del` tinyint(4) NOT NULL DEFAULT '0' COMMENT '逻辑删除 0正常 1删除',
+  `created_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `created_person` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `updated_person` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `memo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`dept_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COMMENT='组织表';
+
+-- ----------------------------
+-- Records of organ_dept
+-- ----------------------------
+BEGIN;
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (16, '人事部', 1, 'person', 'ROOT', 1, NULL, 1, 0, '2022-07-16 15:18:31', NULL, '99999', NULL, NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (17, '产研部', 1, 'tel', 'ROOT', 1, NULL, 1, 0, '2022-07-16 15:18:43', '2022-07-16 15:23:25', '99999', '99999', NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (18, '产品部', 1, 'telss', 'ROOT', 1, NULL, 1, 1, '2022-07-16 15:18:51', '2022-07-16 15:23:27', '99999', '99999', NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (19, '产品组', 1, 'product', 'tel', 1, NULL, 1, 0, '2022-07-16 15:23:39', NULL, '99999', NULL, NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (20, '前端组', 1, 'fe', 'tel', 1, NULL, 1, 0, '2022-07-16 15:23:59', NULL, '99999', NULL, NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (21, '后端组', 1, 'be', 'tel', 3, NULL, 1, 0, '2022-07-16 15:24:11', NULL, '99999', NULL, NULL);
+INSERT INTO `organ_dept` (`dept_id`, `dept_name`, `dept_type`, `dept_code`, `dept_parent_code`, `sort`, `caption`, `disabled`, `is_del`, `created_time`, `updated_time`, `created_person`, `updated_person`, `memo`) VALUES (22, '测试组', 1, 'test', 'tel', 5, NULL, 1, 0, '2022-07-16 15:24:21', NULL, '99999', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
