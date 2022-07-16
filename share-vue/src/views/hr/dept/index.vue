@@ -2,17 +2,17 @@
   <div class="app-container">
     <el-row>
       <el-form :model="queryParams" ref="queryForm" :inline="true">
-        <el-form-item label="公司名称" prop="organName">
+        <el-form-item label="部门名称" prop="deptName">
           <el-input
-            v-model="queryParams.organName"
-            placeholder="请输入公司名称"
+            v-model="queryParams.deptName"
+            placeholder="请输入部门名称"
             clearable
             size="small"
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
         <el-form-item label="状态" prop="status">
-          <el-select v-model="queryParams.status" placeholder="公司状态" clearable size="small">
+          <el-select v-model="queryParams.status" placeholder="部门状态" clearable size="small">
 
           </el-select>
         </el-form-item>
@@ -27,46 +27,46 @@
         <!-- :class="showDelBtn?'hidden':''" -->
         <el-button
           class="right-10"
-           type="primary"
-           size="small"
-           icon="el-icon-circle-plus-outline"
-           @click="handleAdd">新增</el-button>
+          type="primary"
+          size="small"
+          icon="el-icon-circle-plus-outline"
+          @click="handleAdd">新增</el-button>
         <el-popover
           :class="showDelBtn?'hidden':'right-10'"
           placement="bottom"
           width="240"
           v-model="allDialog.moveDialogVisible">
-          <el-select v-model="organ.organParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
+          <el-select v-model="dept.deptParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
             <el-option
-              v-for="item in organData"
-              :key="item.organCode"
-              :label="item.organName"
-              :value="item.organCode">
+              v-for="item in deptData"
+              :key="item.deptCode"
+              :label="item.deptName"
+              :value="item.deptCode">
             </el-option>
           </el-select>
           <div style="text-align: right; margin: 0">
             <el-button type="primary" size="mini" plain @click="handleMove">确定</el-button>
           </div>
           <el-button
-             slot="reference"
-             title="更换父公司"
-             size="small"
-             icon="el-icon-truck">移动</el-button>
+            slot="reference"
+            title="更换父部门"
+            size="small"
+            icon="el-icon-truck">移动</el-button>
         </el-popover>
         <el-button
-           :class="showDelBtn?'hidden':'right-10'"
-           title="删除公司，可以删除多个"
-           size="small"
-           icon="el-icon-delete"
-           @click="handleDelete">删除</el-button>
+          :class="showDelBtn?'hidden':'right-10'"
+          title="删除部门，可以删除多个"
+          size="small"
+          icon="el-icon-delete"
+          @click="handleDelete">删除</el-button>
       </el-col>
     </el-row>
     <el-row>
       <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
         <el-table
-          :data="organData"
+          :data="deptData"
           style="width: 100%"
-          row-key="organCode"
+          row-key="deptCode"
           lazy
           @select="handleSelectionChange"
           :load="load"
@@ -74,33 +74,28 @@
           :default-sort="{prop: 'orderCode', order: 'ascending'}">
           <el-table-column
             fixed
-            prop="organId"
+            prop="deptId"
             type="selection"
             width="55">
           </el-table-column>
           <el-table-column
-            prop="organName"
+            prop="deptName"
             :show-overflow-tooltip="true"
             min-width="150"
             label="名称">
             <template slot-scope="scope">
-<!--              <i :class="scope.row.icon"></i>
-              <i> </i>-->
-              <span> {{scope.row.organName}}</span>
+              <!--              <i :class="scope.row.icon"></i>
+                            <i> </i>-->
+              <span> {{scope.row.deptName}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="organCode"
+            prop="deptCode"
             :show-overflow-tooltip="true"
             label="编码">
           </el-table-column>
           <el-table-column
-            prop="organUrl"
-            :show-overflow-tooltip="true"
-            label="官网地址">
-          </el-table-column>
-          <el-table-column
-            prop="orderCode"
+            prop="sort"
             sortable
             align="center"
             label="顺序">
@@ -122,27 +117,27 @@
                          type="text"
                          icon="el-icon-edit"
                          @click="handleSee(scope.row)"
-                         v-hasPermi="['system:organ:see']"
+                         v-hasPermi="['system:dept:see']"
               >查看</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-plus"
                 @click="handleAdd(scope.row)"
-                v-hasPermi="['system:organ:add']"
+                v-hasPermi="['system:dept:add']"
               >新增</el-button>
               <el-button size="mini"
                          type="text"
                          icon="el-icon-edit"
                          @click="handleUpdate(scope.row)"
-                         v-hasPermi="['system:organ:update']"
+                         v-hasPermi="['system:dept:update']"
               >修改</el-button>
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
-                v-hasPermi="['system:organ:remove']"
+                v-hasPermi="['system:dept:remove']"
               >删除</el-button>
             </template>
           </el-table-column>
@@ -157,27 +152,22 @@
       class="log-form">
       <el-row>
         <div style="height: 350px; overflow-x: auto;">
-          <el-form ref="organForm" :show="false" :rules="rules" :model="organ" label-width="80px">
-            <el-form-item label="父级公司" v-if="organParentName !== 'ROOT'">
-              <el-input v-model="organParentName" disabled></el-input>
+          <el-form ref="deptForm" :show="false" :rules="rules" :model="dept" label-width="80px">
+            <el-form-item label="父级部门" v-if="deptParentName !== 'ROOT'">
+              <el-input v-model="deptParentName" disabled></el-input>
             </el-form-item>
-            <el-form-item label="公司类型">
-              <el-radio v-model="organ.organType" :label="1">集团</el-radio>
-              <el-radio v-model="organ.organType" :label="2">公司</el-radio>
-              <el-radio v-model="organ.organType" :label="3">单位</el-radio>
-              <el-radio v-model="organ.organType" :label="4">组织</el-radio>
+            <el-form-item label="部门类型">
+              <el-radio v-model="dept.deptType" :label="1">普通</el-radio>
+              <el-radio v-model="dept.deptType" :label="2">虚拟</el-radio>
             </el-form-item>
-            <el-form-item label="组织名称" prop="organName">
-              <el-input v-model="organ.organName" :readonly="seeShow"></el-input>
+            <el-form-item label="组织名称" prop="deptName">
+              <el-input v-model="dept.deptName" :readonly="seeShow"></el-input>
             </el-form-item>
-            <el-form-item label="组织编码" prop="organCode">
-              <el-input v-model="organ.organCode" :readonly="seeShow"></el-input>
-            </el-form-item>
-            <el-form-item label="组织官网">
-              <el-input v-model="organ.organUrl" :readonly="seeShow"></el-input>
+            <el-form-item label="组织编码" prop="deptCode">
+              <el-input v-model="dept.deptCode" :readonly="seeShow"></el-input>
             </el-form-item>
             <el-form-item label="组织序号">
-              <el-input v-model="organ.orderCode" :readonly="seeShow"></el-input>
+              <el-input v-model="dept.sort" :readonly="seeShow"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -191,37 +181,36 @@
 </template>
 
 <script>
-import { getOrganList, addOrgan, updateOrgan, delOrgan } from '@/api/hr/organ'
+import { getDeptList, addDept, updateDept, delDept } from '@/api/hr/dept'
 
 export default {
   data() {
     return {
       queryParams: {
-        organName: undefined,
-        organParentCode: 'ROOT'
+        deptName: undefined,
+        deptParentCode: 'ROOT'
       },
-      organData: [],
-      organ: {
-        organName: '',
-        organCode: '',
-        organUrl: '',
-        organType: 1,
-        orderCode: 0,
-        organParentCode: ''
+      deptData: [],
+      dept: {
+        deptName: '',
+        deptCode: '',
+        deptType: 1,
+        sort: 1,
+        deptParentCode: ''
       },
       rules: {
-        organName: [
-          { required: true, message: '请输入公司名称', trigger: 'blur' },
+        deptName: [
+          { required: true, message: '请输入部门名称', trigger: 'blur' },
           { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ],
-        organCode: [
-          { required: true, message: '请输入公司编码', trigger: 'blur' },
+        deptCode: [
+          { required: true, message: '请输入部门编码', trigger: 'blur' },
           { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' }
         ]
       },
       dialogVisible: false,
       multipleSelection: [],
-      organParentName: 'ROOT',
+      deptParentName: 'ROOT',
       btnReadonly: true,
       seeShow: false,
       showMoveBtn: true,
@@ -240,40 +229,37 @@ export default {
   methods: {
     load(tree, treeNode, resolve) {
       /*this.loadList({
-        organName: undefined,
-        organParentCode: tree.organCode
+        deptName: undefined,
+        deptParentCode: tree.deptCode
       })*/
     },
     loadList(param) {
-      getOrganList(param).then(response => {
+      getDeptList(param).then(response => {
         const { data } = response
         console.log(data)
-        this.organData = data
+        this.deptData = data
       }).catch(error => {
         console.log(error)
       })
     },
-    handleAdd(organ) {
-      if (organ instanceof PointerEvent) {
-        organ = {
-          organCode: "ROOT",
-          organName: "ROOT"
-        }
-        this.organ.organParentCode = "ROOT";
-      } else {
-        this.seeShow = false
-        this.btnReadonly = true
-        this.organ = {
-          id: undefined,
-          organName: undefined,
-          organCode: undefined,
-          organUrl: undefined,
-          organType: 1,
-          organParentCode: organ.organCode,
-          orderCode: 0
+    handleAdd(dept) {
+      if (dept instanceof PointerEvent) {
+        dept = {
+          deptCode: "ROOT",
+          deptName: "ROOT"
         }
       }
-      this.organParentName = organ.organName
+      this.seeShow = false
+      this.btnReadonly = true
+      this.dept = {
+        id: undefined,
+        deptName: undefined,
+        deptCode: undefined,
+        deptType: 1,
+        deptParentCode: dept.deptCode,
+        sort: 1
+      }
+      this.deptParentName = dept.deptName
       this.method = 'add'
       this.dialogVisible = true
     },
@@ -294,13 +280,13 @@ export default {
       const that = this
       console.log(that.method);
       if (that.method === 'add') {
-        this.organ.id = 0
-        addOrgan(this.organ).then(response => {
+        this.dept.deptId = 0
+        addDept(this.dept).then(response => {
           const { code, data } = response
           if (code === 200) {
             this.$notify({
               title: '成功通知',
-              message: `[ ${that.organ.organName} ] 公司` + data,
+              message: `[ ${that.dept.deptName} ] 部门` + data,
               type: 'success'
             })
             this.loadList(this.queryParams)
@@ -309,17 +295,17 @@ export default {
         }).catch(error => {
           this.$notify({
             title: '失败通知',
-            message: `[ ${that.organ.organName} ] 公司` + error,
+            message: `[ ${that.dept.deptName} ] 部门` + error,
             type: 'error'
           })
         })
       } else {
-        updateOrgan(this.organ.id, this.organ).then(response => {
+        updateDept(this.dept.deptId, this.dept).then(response => {
           const { code, data } = response
           if (code === 200) {
             this.$notify({
               title: '成功通知',
-              message: `[ ${that.organ.organName} ] 公司` + data,
+              message: `[ ${that.dept.deptName} ] 部门` + data,
               type: 'success'
             })
             this.loadList(this.queryParams)
@@ -329,7 +315,7 @@ export default {
         }).catch(error => {
           this.$notify({
             title: '失败通知',
-            message: `[ ${that.organ.organName} ] 公司` + error,
+            message: `[ ${that.dept.deptName} ] 部门` + error,
             type: 'error'
           })
         })
@@ -339,17 +325,17 @@ export default {
       console.log(row)
       let id = undefined;
       if (row instanceof PointerEvent) {
-        id = this.organ.id;
+        id = this.dept.deptId;
       } else {
-        id = row.organId;
+        id = row.deptId;
       }
       const that = this
-      delOrgan(id).then(response => {
+      delDept(id).then(response => {
         const { code, data } = response
         if (code === 200) {
           that.$notify({
             title: '成功通知',
-            message: `[ ${row.organName} ] 公司` + data,
+            message: `[ ${row.deptName} ] 部门` + data,
             type: 'success'
           })
           this.loadList(this.queryParams)
@@ -359,7 +345,7 @@ export default {
         console.log(error, response)
         this.$notify({
           title: '失败通知',
-          message: `[ ${row.organName} ] 公司删除失败，原因为：` + error.message,
+          message: `[ ${row.deptName} ] 部门删除失败，原因为：` + error.message,
           type: 'error'
         })
       })
@@ -372,9 +358,9 @@ export default {
       }
       console.log(val)
       if (val.length !== 0) {
-        this.organ.id = val[val.length - 1].id
-        this.organ.organCode = val[val.length - 1].organCode
-        this.organ.organName = val[val.length - 1].organName
+        this.dept.id = val[val.length - 1].id
+        this.dept.deptCode = val[val.length - 1].deptCode
+        this.dept.deptName = val[val.length - 1].deptName
         this.multipleSelection = val
         this.showDelBtn = false
       } else {
@@ -382,13 +368,12 @@ export default {
       }
     },
     propCopy(row) {
-      this.organ.id = row.id
-      this.organ.organParentCode = row.organParentCode
-      this.organ.organName = row.organName
-      this.organ.organCode = row.organCode
-      this.organ.organType = row.organType
-      this.organ.organUrl = row.organUrl
-      this.organ.orderCode = row.orderCode
+      this.dept.deptId = row.deptId
+      this.dept.deptParentCode = row.deptParentCode
+      this.dept.deptName = row.deptName
+      this.dept.deptCode = row.deptCode
+      this.dept.deptType = row.deptType
+      this.dept.sort = row.sort
     },
     showIconDialog() {
       /*const that = this
@@ -404,9 +389,9 @@ export default {
       })*/
     },
     handleMove() {
-      this.organ = {
-        id: this.organ.id,
-        organParentCode: this.organ.organParentCode
+      this.dept = {
+        id: this.dept.id,
+        deptParentCode: this.dept.deptParentCode
       }
       this.method = 'edit'
       this.enterHandler()

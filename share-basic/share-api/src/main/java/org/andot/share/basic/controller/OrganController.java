@@ -42,7 +42,7 @@ public class OrganController {
                                @RequestBody OrganDTO organDto) {
         organDto.setOrganId(id);
         if (organService.updateOrgan(organDto)) {
-            return CommonResult.success("保存成功");
+            return CommonResult.success("更新成功");
         } else {
             return CommonResult.failed("保存失败，请重试！");
         }
@@ -52,7 +52,7 @@ public class OrganController {
     @DeleteMapping("/{id}")
     public CommonResult del(@PathVariable("id") Long id) {
         if (organService.delOrganById(id)) {
-            return CommonResult.success("保存成功");
+            return CommonResult.success("删除成功");
         } else {
             return CommonResult.failed("保存失败，请重试！");
         }
@@ -73,7 +73,7 @@ public class OrganController {
     @ApiOperation("根据条件获取列表数据")
     @GetMapping("/list")
     public CommonResult getList(OrganDTO organDto) {
-        return CommonResult.success(organService.getOrganList(organDto.getOrganName()));
+        return CommonResult.success(organService.getOrganTree(organDto.getOrganName(), organDto.getOrganParentCode()));
     }
 
     @ApiOperation("根据条件获取分页列表数据")
@@ -81,6 +81,6 @@ public class OrganController {
     public CommonPage getPageList(@RequestBody PageDTO<OrganDTO> organPage) {
         PageHelper.startPage(organPage.getPage(), organPage.getRows());
         return CommonPage.restPage(organService.getOrganList(
-                organPage.getParam().getOrganName()));
+                organPage.getParam().getOrganName(), organPage.getParam().getOrganParentCode()));
     }
 }

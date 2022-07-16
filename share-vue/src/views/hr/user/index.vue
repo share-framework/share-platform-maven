@@ -24,36 +24,36 @@
     <el-row>
       <el-col :span="24">
         <el-table
-          :data="roleData"
+          :data="userData"
           fit
           @selection-change="handleSelectionChange">
           <el-table-column
             fixed
-            prop="roleId"
+            prop="userId"
             type="selection"
             width="55">
           </el-table-column>
           <el-table-column
-            prop="roleName"
-            label="角色名称">
+            prop="xnumber"
+            label="账号">
           </el-table-column>
           <el-table-column
-            prop="roleCode"
-            label="角色编码">
+            prop="realName"
+            label="用户名称">
           </el-table-column>
-          <el-table-column
-            prop="roleType"
+<!--          <el-table-column
+            prop="userType"
             label="角色类型">
             <template slot-scope="scope">
-              {{roleTypeMap[scope.row.roleType]}}
+              {{userTypeMap[scope.row.userType]}}
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column
-            prop="roleOrder"
+            prop="introduction"
             align="center"
-            label="角色序号">
+            label="说明">
           </el-table-column>
-          <el-table-column
+<!--          <el-table-column
             prop="disabled"
             align="center"
             label="禁用状态">
@@ -61,31 +61,31 @@
               <i v-if="scope.row.disabled==1" class="status-info status-danger" title="停用"></i>
               <i v-else  class="status-info status-success" title="启用"></i>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column
             fixed="right"
             label="操作"
             min-width="100">
             <template slot-scope="scope">
-              <div v-if="scope.row.roleType != 1">
+              <div v-if="scope.row.userType != 1">
                 <el-button size="mini"
                            type="text"
                            icon="el-icon-edit"
                            @click="handleSee(scope.row)"
-                           v-hasPermi="['organ:role:see']"
+                           v-hasPermi="['organ:user:see']"
                 >查看</el-button>
                 <el-button size="mini"
                            type="text"
                            icon="el-icon-edit"
                            @click="handleUpdate(scope.row)"
-                           v-hasPermi="['organ:role:update']"
+                           v-hasPermi="['organ:user:update']"
                 >修改</el-button>
                 <el-button
                   size="mini"
                   type="text"
                   icon="el-icon-delete"
                   @click="handleDelete(scope.row)"
-                  v-hasPermi="['organ:role:remove']"
+                  v-hasPermi="['organ:user:remove']"
                 >删除</el-button>
               </div>
             </template>
@@ -102,7 +102,7 @@
           :page-sizes="[10, 20, 50, 100]"
           :page-size="10"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="roleBodyParam.total">
+          :total="userBodyParam.total">
         </el-pagination>
       </el-col>
     </el-row>
@@ -113,44 +113,21 @@
       width="50%"
       class="log-form">
       <div>
-        <el-form ref="menuForm" :show="false" :rules="rules" :model="role" label-width="80px">
-          <el-form-item label="角色名称" prop="menuName">
-            <el-input v-model="role.roleName" :readonly="seeShow"></el-input>
+        <el-form ref="menuForm" :show="false" :rules="rules" :model="user" label-width="80px">
+          <el-form-item label="账号" prop="menuName">
+            <el-input v-model="user.xnumber" :readonly="seeShow"></el-input>
           </el-form-item>
-          <el-form-item label="角色编码" prop="menuCode">
-            <el-input v-model="role.roleCode" :readonly="seeShow"></el-input>
+          <el-form-item label="用户名称" prop="menuCode">
+            <el-input v-model="user.realName" :readonly="seeShow"></el-input>
           </el-form-item>
-          <el-form-item label="角色类型">
-            <el-select v-model="role.roleType" placeholder="请选择系统" :disabled="seeShow" class="el-select">
-              <el-option v-for="roleType in roleTypes" :key="roleType.id"
-                         :label="roleType.name" :value="roleType.id"></el-option>
+<!--          <el-form-item label="角色类型">
+            <el-select v-model="user.userType" placeholder="请选择系统" :disabled="seeShow" class="el-select">
+              <el-option v-for="userType in userTypes" :key="userType.id"
+                         :label="userType.name" :value="userType.id"></el-option>
             </el-select>
-          </el-form-item>
-          <el-form-item label="角色序号">
-            <el-input-number v-model="role.roleOrder"
-                             controls-position="right" :min="1" :disabled="seeShow"></el-input-number>
-          </el-form-item>
-          <el-form-item label="禁用状态">
-            <el-switch v-model="role.disabled" :disabled="seeShow"></el-switch>
-          </el-form-item>
-          <el-form-item label="菜单权限">
-            <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-            <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
-            <el-checkbox v-model="role.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
-            <el-tree
-              class="tree-border"
-              :data="menuTreeData"
-              show-checkbox
-              ref="menu"
-              node-key="menuCode"
-              :default-checked-keys="defaultCheckedKeys"
-              :check-strictly="!role.menuCheckStrictly"
-              empty-text="加载中，请稍后"
-              :props="defaultProps"
-            ></el-tree>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="备注">
-            <el-input v-model="role.memo" :disabled="seeShow" type="textarea" placeholder="请输入内容"></el-input>
+            <el-input v-model="user.introduction" :disabled="seeShow" type="textarea" placeholder="请输入内容"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -163,40 +140,40 @@
 </template>
 
 <script>
-import { getRoleList, getRoleMenuList, addRole, updateRole, delRole, addRolePermission, delRolePermission } from '@/api/role'
+import { getUserList, addUser, updateUser, delUser } from '@/api/user'
 
 export default {
   data() {
     return {
-      roleBodyParam: {
+      userBodyParam: {
         page: 1,
         param: {
-          roleCode: '',
-          roleId: 0,
-          roleName: '',
-          roleType: 0
+          userCode: '',
+          userId: 0,
+          userName: '',
+          userType: 0
         },
         rows: 10,
         total: 0
       },
-      roleData: [],
-      role: {
-        roleId: 0,
-        roleName: '',
-        roleCode: '',
-        roleOrder: 1,
-        roleType: 0,
+      userData: [],
+      user: {
+        userId: 0,
+        userName: '',
+        userCode: '',
+        userOrder: 1,
+        userType: 0,
         disabled: false,
         memo: undefined,
         menuCheckStrictly: true,
         deptCheckStrictly: true
       },
       rules: {
-        roleName: [
+        userName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
           { min: 1, max: 8, message: '长度在 1 到 8 个字符', trigger: 'blur' }
         ],
-        roleCode: [
+        userCode: [
           { required: true, message: '请输入角色编码', trigger: 'blur' },
           { min: 1, max: 32, message: '长度在 1 到 32 个字符', trigger: 'blur' }
         ]
@@ -219,7 +196,7 @@ export default {
       },
       // 默认选中菜单
       defaultCheckedKeys: [],
-      roleTypes: [{
+      userTypes: [{
         id: 1,
         name: '超级管理员'
       }, {
@@ -229,7 +206,7 @@ export default {
         id: 3,
         name: '普通用户'
       }],
-      roleTypeMap: {
+      userTypeMap: {
         1: '超级管理员',
         2: '管理员',
         3: '普通用户',
@@ -243,18 +220,18 @@ export default {
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
-      this.roleBodyParam.rows = val
+      this.userBodyParam.rows = val
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
-      this.roleBodyParam.page = val
-      this.load(this.roleBodyParam)
+      this.userBodyParam.page = val
+      this.load(this.userBodyParam)
     },
     load(data) {
-      getRoleList(data).then(response => {
+      getUserList(data).then(response => {
         const { data, total } = response
-        this.roleData = data
-        this.roleBodyParam.total = total
+        this.userData = data
+        this.userBodyParam.total = total
       }).catch(error => {
         this.$notify({
           title: '失败通知',
@@ -267,12 +244,12 @@ export default {
       this.seeShow = false
       this.btnReadonly = true
       this.dialogVisible = true
-      this.role = {
-        roleId: 0,
-        roleName: '',
-        roleCode: '',
-        roleType: 3,
-        roleOrder: 1,
+      this.user = {
+        userId: 0,
+        userName: '',
+        userCode: '',
+        userType: 3,
+        userOrder: 1,
         disabled: false,
         memo: undefined
       }
@@ -284,7 +261,7 @@ export default {
       this.propCopy(row)
       console.log(row)
       this.dialogVisible = true
-      this.role.roleId = row.roleId
+      this.user.userId = row.userId
       this.loadMenu();
     },
     handleUpdate(row) {
@@ -293,7 +270,7 @@ export default {
       this.propCopy(row)
       this.dialogVisible = true
       this.method = 'edit'
-      this.role.roleId = row.roleId
+      this.user.userId = row.userId
       this.loadMenu();
     },
     handleDelete(row) {
@@ -301,44 +278,43 @@ export default {
     },
     enterHandler() {
       const that = this
-      this.role.menuCodes = this.getMenuAllCheckedKeys()
       if (that.method === 'add') {
-        this.role.roleId = 0
-        addRole(this.role).then(response => {
+        this.user.userId = 0
+        addUser(this.user).then(response => {
           const { code, message } = response
           if (code === 200) {
             this.$notify({
               title: '成功通知',
-              message: `[ ${that.role.roleName} ] ` + message,
+              message: `[ ${that.user.userName} ] ` + message,
               type: 'success'
             })
-            that.load(that.roleBodyParam)
+            that.load(that.userBodyParam)
             that.dialogVisible = false
           }
         }).catch(error => {
           this.$notify({
             title: '失败通知',
-            message: `[ ${that.role.roleName} ] ` + error,
+            message: `[ ${that.user.userName} ] ` + error,
             type: 'error'
           })
         })
       } else {
-        updateRole(this.role.roleId, this.role).then(response => {
+        updateUser(this.user.userId, this.user).then(response => {
           const { code, message } = response
           if (code === 200) {
             this.$notify({
               title: '成功通知',
-              message: `[ ${that.role.roleName} ]` + message,
+              message: `[ ${that.user.userName} ]` + message,
               type: 'success'
             })
-            that.load(that.roleBodyParam)
+            that.load(that.userBodyParam)
             that.dialogVisible = false
             this.allDialog.moveDialogVisible = false
           }
         }).catch(error => {
           this.$notify({
             title: '失败通知',
-            message: `[ ${that.role.roleName} ]` + error,
+            message: `[ ${that.user.userName} ]` + error,
             type: 'error'
           })
         })
@@ -346,27 +322,27 @@ export default {
     },
     delMenuHandle() {
       const that = this
-      this.$confirm(`您确认要删除角色[${that.role.roleName}]吗？`, '是否继续?', '提示', {
+      this.$confirm(`您确认要删除角色[${that.user.userName}]吗？`, '是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delRole(this.role.roleId).then(response => {
+        delUser(this.user.userId).then(response => {
           const { code, message } = response
           if (code === 200) {
             this.$notify({
               title: '成功通知',
-              message: `[ ${that.role.roleName} ]` + message,
+              message: `[ ${that.user.userName} ]` + message,
               type: 'success'
             })
-            this.roleBodyParam.page = 1
-            this.load(this.roleBodyParam)
+            this.userBodyParam.page = 1
+            this.load(this.userBodyParam)
             that.dialogVisible = false
           }
         }).catch(error => {
           this.$notify({
             title: '失败通知',
-            message: `[ ${that.role.roleName} ] 角色` + error,
+            message: `[ ${that.user.userName} ] 角色` + error,
             type: 'error'
           })
         })
@@ -385,120 +361,20 @@ export default {
       }
       console.log(val)
       if (val.length !== 0) {
-        this.role.roleId = val[val.length - 1].roleId
-        this.role.roleCode = val[val.length - 1].roleCode
-        this.role.roleName = val[val.length - 1].roleName
+        this.user.userId = val[val.length - 1].userId
+        this.user.userCode = val[val.length - 1].userCode
+        this.user.userName = val[val.length - 1].userName
         this.showDelBtn = false
       } else {
         this.showDelBtn = true
       }
     },
     propCopy(row) {
-      this.role = row
-    },
-    loadMenu() {
-      const that = this
-      getRoleMenuList({
-        appId: 1,
-        roleId: this.role.roleId
-      }).then(response => {
-        const { data } = response
-        that.menuTreeData = data.menuList
-        that.defaultCheckedKeys = data.menuCodes
-      }).catch(error => {
-        this.$notify({
-          title: '失败通知',
-          message: error,
-          type: 'error'
-        })
-      })
-    },
-    distributionPermission(data) {
-      const that = this
-      if (!this.defaultCheckedKeys.includes(data.menuId)) {
-        addRolePermission({
-          roleId: this.role.roleId,
-          menuCode: data.menuCode
-        }).then(response => {
-          that.loadMenu()
-        }).catch(error => {
-          this.$notify({
-            title: '失败通知',
-            message: error,
-            type: 'error'
-          })
-        })
-      } else {
-        delRolePermission({
-          roleId: this.role.roleId,
-          menuCode: data.menuCode
-        }).then(response => {
-          that.loadMenu()
-        }).catch(error => {
-          this.$notify({
-            title: '失败通知',
-            message: error,
-            type: 'error'
-          })
-        })
-      }
-    },
-    reloadPage() {
-      this.$confirm('菜单已经修改是否需要重新刷新页面，让菜单重新加载?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        location.reload()
-      }).catch(() => {
-        this.$message({
-          type: 'warning',
-          message: '可能会影响左侧菜单使用体验！'
-        })
-      })
-    },
-    // 树权限（展开/折叠）
-    handleCheckedTreeExpand(value, type) {
-      if (type == 'menu') {
-        let treeList = this.menuTreeData;
-        for (let i = 0; i < treeList.length; i++) {
-          this.$refs.menu.store.nodesMap[treeList[i].menuCode].expanded = value;
-        }
-      } else if (type == 'dept') {
-        let treeList = this.deptOptions;
-        for (let i = 0; i < treeList.length; i++) {
-          this.$refs.dept.store.nodesMap[treeList[i].id].expanded = value;
-        }
-      }
-    },
-    // 树权限（全选/全不选）
-    handleCheckedTreeNodeAll(value, type) {
-      if (type == 'menu') {
-        this.$refs.menu.setCheckedNodes(value ? this.menuTreeData: []);
-      } else if (type == 'dept') {
-        this.$refs.dept.setCheckedNodes(value ? this.deptOptions: []);
-      }
-    },
-    // 树权限（父子联动）
-    handleCheckedTreeConnect(value, type) {
-      if (type == 'menu') {
-        this.role.menuCheckStrictly = value ? true: false;
-      } else if (type == 'dept') {
-        this.role.deptCheckStrictly = value ? true: false;
-      }
-    },
-    // 所有菜单节点数据
-    getMenuAllCheckedKeys() {
-      // 目前被选中的菜单节点
-      let checkedKeys = this.$refs.menu.getCheckedKeys();
-      // 半选中的菜单节点
-      let halfCheckedKeys = this.$refs.menu.getHalfCheckedKeys();
-      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-      return checkedKeys;
-    },
+      this.user = row
+    }
   },
   mounted() {
-    this.load(this.roleBodyParam)
+    this.load(this.userBodyParam)
   }
 }
 </script>

@@ -17,7 +17,7 @@ public interface OrganService {
 
     OrganDTO getOrganById(Long roleId);
 
-    List<OrganDTO> getOrganList(String organName);
+    List<OrganDTO> getOrganList(String organName, String parentCode);
 
     boolean saveOrgan(OrganDTO role);
 
@@ -25,5 +25,5 @@ public interface OrganService {
 
     boolean delOrganById(Long id);
 
-    List<OrganDTO> getOrganTree(Long organId);
+    List<OrganDTO> getOrganTree(String organName, String parentCode);
 }

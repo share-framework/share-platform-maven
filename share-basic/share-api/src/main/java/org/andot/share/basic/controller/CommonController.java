@@ -14,10 +14,7 @@ import org.andot.share.basic.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -61,5 +58,15 @@ public class CommonController {
     public CommonResult logout() {
 
         return CommonResult.success( "退出成功");
+    }
+
+    /**
+     * 注册账号
+     * @return
+     */
+    @PostMapping("/{type}/sign")
+    public CommonResult sign(@PathVariable("type") String type) {
+
+        return null;
     }
 }

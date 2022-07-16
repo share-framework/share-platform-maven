@@ -27,16 +27,16 @@
         <!-- :class="showDelBtn?'hidden':''" -->
         <el-button
           class="right-10"
-           type="primary"
-           size="small"
-           icon="el-icon-circle-plus-outline"
-           @click="handleAdd">新增</el-button>
+          type="primary"
+          size="small"
+          icon="el-icon-circle-plus-outline"
+          @click="handleAdd">新增</el-button>
         <el-popover
           :class="showDelBtn?'hidden':'right-10'"
           placement="bottom"
           width="240"
           v-model="allDialog.moveDialogVisible">
-          <el-select v-model="organ.organParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
+          <el-select v-model="menu.menuParentCode" filterable placeholder="请选择" style="width:100%; padding-bottom: 10px;">
             <el-option
               v-for="item in menuData"
               :key="item.menuCode"
@@ -48,17 +48,17 @@
             <el-button type="primary" size="mini" plain @click="handleMove">确定</el-button>
           </div>
           <el-button
-             slot="reference"
-             title="更换上级企业"
-             size="small"
-             icon="el-icon-truck">移动</el-button>
+            slot="reference"
+            title="更换父菜单"
+            size="small"
+            icon="el-icon-truck">移动</el-button>
         </el-popover>
         <el-button
-           :class="showDelBtn?'hidden':'right-10'"
-           title="删除菜单，可以删除多个"
-           size="small"
-           icon="el-icon-delete"
-           @click="handleDelete">删除</el-button>
+          :class="showDelBtn?'hidden':'right-10'"
+          title="删除菜单，可以删除多个"
+          size="small"
+          icon="el-icon-delete"
+          @click="handleDelete">删除</el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -79,23 +79,41 @@
             width="55">
           </el-table-column>
           <el-table-column
-            prop="organName"
+            prop="menuName"
             :show-overflow-tooltip="true"
             min-width="150"
-            label="公司名称">
+            label=" 菜单名称">
             <template slot-scope="scope">
-              <span> {{scope.row.organName}}</span>
+              <i :class="scope.row.icon"></i>
+              <i> </i>
+              <span> {{scope.row.menuName}}</span>
             </template>
           </el-table-column>
           <el-table-column
-            prop="organCode"
+            prop="menuCode"
             :show-overflow-tooltip="true"
-            label="公司编码">
+            label="菜单编码">
           </el-table-column>
           <el-table-column
-            prop="organUrl"
+            prop="url"
             :show-overflow-tooltip="true"
-            label="官网">
+            label="菜单地址">
+          </el-table-column>
+          <!--          <el-table-column-->
+          <!--            prop="component"-->
+          <!--            :show-overflow-tooltip="true"-->
+          <!--            label="组件地址">-->
+          <!--          </el-table-column>-->
+          <el-table-column
+            prop="redirect"
+            :show-overflow-tooltip="true"
+            label="跳转地址">
+          </el-table-column>
+          <el-table-column
+            prop="sort"
+            sortable
+            align="center"
+            label="顺序">
           </el-table-column>
           <el-table-column
             align="center"
@@ -198,8 +216,8 @@
                 <el-option label="Share核心" :value="1"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="是否隐藏">
-              <el-switch v-model="menu.hidden" :disabled="seeShow"></el-switch>
+            <el-form-item label="禁用状态">
+              <el-switch v-model="menu.disabled" :disabled="seeShow"></el-switch>
             </el-form-item>
           </el-form>
         </div>
@@ -241,7 +259,7 @@ export default {
         menuIcon: 'el-icon-question',
         appSystemId: 1,
         orderCode: 0,
-        hidden: false
+        disabled: false
       },
       rules: {
         menuName: [
@@ -322,7 +340,7 @@ export default {
         menuIcon: undefined,
         appSystemId: 1,
         orderCode: this.menuData[this.menuData.length - 1].orderCode,
-        hidden: false
+        disabled: false
       }
       this.menuParentName = this.multipleSelection[0].menuName
       this.method = 'add'
@@ -446,7 +464,7 @@ export default {
       this.menu.redirect = row.redirect
       this.menu.appSystemId = row.appSystemId
       this.menu.menuIcon = row.icon
-      this.menu.hidden = row.hidden
+      this.menu.disabled = row.disabled
       this.menu.menuCode = row.menuCode
       this.menu.menuType = row.type
       this.menu.menuUrl = row.url

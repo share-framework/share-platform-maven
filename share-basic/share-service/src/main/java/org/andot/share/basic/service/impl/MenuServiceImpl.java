@@ -10,6 +10,7 @@ import org.andot.share.basic.entity.AnMenu;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.dto.MenuDTO;
 import org.andot.share.common.type.ConstantType;
+import org.andot.share.common.utils.GodUtil;
 import org.andot.share.common.utils.JSONObject;
 import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.beans.BeanUtils;
@@ -95,9 +96,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuTreeDTO> getMenuTreeList(Long appSystemId, Long xNumber) {
-        if (ConstantType.GOD_USER_NUMBER.equals(xNumber)) {
-            xNumber = null;
-        }
+        xNumber = GodUtil.god(xNumber);
         List<AnMenu> menuList = menuMapper.getMenuListByUserId(appSystemId, xNumber);
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))

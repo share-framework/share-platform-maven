@@ -18,4 +18,6 @@ public class ConstantType {
 
     public static final String DICT_KEY = "dict_";
 
+    public static final String ROOT = "ROOT";
+
 }

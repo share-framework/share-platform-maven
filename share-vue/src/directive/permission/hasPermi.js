@@ -10,12 +10,17 @@ export default {
     const { value } = binding
     const all_permission = "*:*:*";
     const permissions = store.getters && store.getters.permissions
-
+    console.log(store.getters.roles)
     if (value && value instanceof Array && value.length > 0) {
-      const permissionFlag = value
-      const hasPermissions = permissions.some(permission => {
-        return all_permission === permission || permissionFlag.includes(permission)
-      })
+      let hasPermissions;
+      if (store.getters.roles.concat('admin')) {
+        hasPermissions = true;
+      } else {
+        const permissionFlag = value
+        hasPermissions = permissions.some(permission => {
+          return all_permission === permission || permissionFlag.includes(permission)
+        })
+      }
       if (!hasPermissions) {
         el.parentNode && el.parentNode.removeChild(el)
       }

@@ -14,6 +14,7 @@ import org.andot.share.basic.dto.UserDTO;
 import org.andot.share.basic.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
 import org.andot.share.common.type.ConstantType;
+import org.andot.share.common.utils.GodUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -51,6 +52,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user = this.getUser(xNumber);
             } else {
                 user = this.getUser(Long.parseLong(xNumber));
+            }
+            if (GodUtil.isGod(xNumber)) {
+                List<RoleDTO> roles = new ArrayList<RoleDTO>(){{
+                    add(RoleDTO.builder()
+                            .roleCode(ConstantType.GOD_ROLE_CODE)
+                            .roleId(1L)
+                            .roleName("上帝管理员")
+                            .roleType(1).build());
+                }};
+                List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, new ArrayList<String>(){{
+                    add(ConstantType.GOD_ROLE_CODE);
+                }});
+                return new XUserDetail(user, roles, menuPermissionList);
             }
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, xNumber));
             List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());

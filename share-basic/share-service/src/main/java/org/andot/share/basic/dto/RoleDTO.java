@@ -19,7 +19,7 @@ public class RoleDTO {
     private Long roleId;
     private String roleName;
     private String roleCode;
-    private Byte roleType;
+    private Integer roleType;
     private Integer roleOrder;
     private Boolean disabled;
     private String memo;

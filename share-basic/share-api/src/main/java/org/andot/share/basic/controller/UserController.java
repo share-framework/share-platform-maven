@@ -1,5 +1,6 @@
 package org.andot.share.basic.controller;
 
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.basic.components.utils.CurrentUserUtil;
@@ -11,6 +12,7 @@ import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,7 +89,9 @@ public class UserController {
 
     @ApiOperation("根据条件获取分页列表数据")
     @PostMapping("/table")
-    public CommonPage getPageList(@RequestBody PageDTO<RoleDTO> rolePage) {
-        return null;
+    public CommonPage getPageList(@RequestBody PageDTO<UserDTO> userPage) {
+        PageHelper.startPage(userPage.getPage(), userPage.getRows());
+        List<UserDetail> list = userService.getUserList(userPage.getParam());
+        return CommonPage.restPage(list);
     }
 }

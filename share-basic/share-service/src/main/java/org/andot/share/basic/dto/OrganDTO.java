@@ -10,9 +10,12 @@ import java.util.List;
 public class OrganDTO {
     private Long organId;
     private String organName;
-    private Byte organType;
-    private Byte orderCode;
-    private Integer organParentId;
+    private String organCode;
+    private String organParentCode;
+    private Integer organType;
+    private String organUrl;
+    private Integer orderCode;
     private String caption;
     List<OrganDTO> children;
+    private Boolean hasChildren;
 }
