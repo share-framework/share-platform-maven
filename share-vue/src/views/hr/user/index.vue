@@ -8,6 +8,11 @@
            icon="el-icon-circle-plus-outline"
            @click="add">新增</el-button>
         <el-button
+           type="primary"
+           size="small"
+           icon="el-icon-circle-plus-outline"
+           @click="product">账号生产</el-button>
+        <el-button
           :class="showDelBtn?'hidden':''"
           title="为角色分配菜单权限"
           size="small"
@@ -19,6 +24,7 @@
            size="small"
            icon="el-icon-delete"
            @click="delMenuHandle">删除</el-button>
+
       </el-col>
     </el-row>
     <el-row>
@@ -140,7 +146,7 @@
 </template>
 
 <script>
-import { getUserList, addUser, updateUser, delUser } from '@/api/user'
+import { getUserList, addUser, updateUser, delUser, productXNumber } from '@/api/user'
 
 export default {
   data() {
@@ -254,6 +260,24 @@ export default {
         memo: undefined
       }
       this.method = 'add'
+    },
+    product() {
+      productXNumber().then(response => {
+        const { code, data, message } = response
+        if (code === 200) {
+          this.$notify({
+            title: '成功通知',
+            message: data,
+            type: 'success'
+          })
+        }
+      }).catch(error => {
+        this.$notify({
+          title: '失败通知',
+          message: error,
+          type: 'error'
+        })
+      })
     },
     handleSee(row) {
       this.seeShow = true

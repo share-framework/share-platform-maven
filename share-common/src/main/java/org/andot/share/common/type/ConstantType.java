@@ -20,4 +20,8 @@ public class ConstantType {
 
     public static final String ROOT = "ROOT";
 
+    public static final String PHONE = "phone";
+
+    public static final String EMAIL = "email";
+
 }

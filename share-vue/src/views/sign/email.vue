@@ -13,13 +13,13 @@
               </div>
               <div style="width: 100%; display: flex; justify-content: center;">
                 <el-tabs v-model="activeName" @tab-click="tabSwitchClick" style="width:60%;">
-                  <el-tab-pane label="账号登录" name="account">
+                  <el-tab-pane label="注册" name="account">
                     <el-form style="width:100%" ref="loginForm" :model="loginForm" :rules="loginRules">
                       <el-form-item>
                         <el-input
                           ref="number"
-                          v-model="loginForm.number"
-                          placeholder="请输入用戶名"
+                          v-model="loginForm.email"
+                          placeholder="请输入邮箱"
                           prefix-icon="el-icon-user"
                           name="number"
                           type="text"
@@ -38,21 +38,13 @@
                           name="password"
                           tabindex="2"
                           auto-complete="on"
-                          @keyup.enter.native="handleLogin"
+                          @keyup.enter.native="handleSign"
                           show-password
                         />
                       </el-form-item>
-                      <el-form-item align="right">
-                        <el-button type="text" @click="">忘记密码?</el-button>
-                      </el-form-item>
-                      <el-button style="width:100%" type="primary" :loading="loading" @click="handleLogin" >登录</el-button>
-                      <el-form-item align="right">
-                        还没有蚁点账号，
-                        <el-button type="text" @click="sign">立即注册</el-button>
-                      </el-form-item>
+                      <el-button style="width:100%" type="primary" :loading="loading" @click="handleSign" >注册</el-button>
                     </el-form>
                   </el-tab-pane>
-                  <el-tab-pane label="扫码登录" name="scan">扫码登录</el-tab-pane>
                 </el-tabs>
 
               </div>
@@ -123,7 +115,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    handleSign() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -149,9 +141,6 @@ export default {
       } else {
         this.activeName = 'account'
       }
-    },
-    sign() {
-      this.$router.push({ path: '/sign' })
     }
   },
   mounted() {

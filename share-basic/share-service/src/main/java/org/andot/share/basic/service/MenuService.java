@@ -1,9 +1,7 @@
 package org.andot.share.basic.service;
 
 import org.andot.share.basic.dto.MenuDTO;
-import org.andot.share.basic.dto.MenuPermissionDTO;
 import org.andot.share.basic.dto.MenuTreeDTO;
-import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

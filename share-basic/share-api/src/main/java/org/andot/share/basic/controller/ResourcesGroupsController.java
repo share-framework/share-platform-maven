@@ -2,13 +2,12 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.entity.PageElement;
 import org.andot.share.basic.entity.ResourcesGroups;
 import org.andot.share.basic.service.ResourcesGroupsService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDTO;
-import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.core.dto.RoleDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -1,6 +1,6 @@
 package org.andot.share.basic.service;
 
-import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.core.dto.RoleDTO;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

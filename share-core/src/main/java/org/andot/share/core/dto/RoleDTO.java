@@ -1,4 +1,4 @@
-package org.andot.share.basic.dto;
+package org.andot.share.core.dto;
 
 import lombok.Builder;
 import lombok.Getter;

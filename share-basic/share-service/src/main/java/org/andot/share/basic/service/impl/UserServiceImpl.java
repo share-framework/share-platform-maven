@@ -4,17 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.basic.dao.*;
-import org.andot.share.basic.dto.MenuPermissionDTO;
-import org.andot.share.basic.entity.Role;
-import org.andot.share.basic.entity.RoleUser;
-import org.andot.share.basic.entity.User;
-import org.andot.share.basic.entity.UserDetail;
-import org.andot.share.basic.dto.RoleDTO;
-import org.andot.share.basic.dto.UserDTO;
-import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.basic.entity.*;
+import org.andot.share.core.dto.MenuPermissionDTO;
+import org.andot.share.core.dto.RoleDTO;
+import org.andot.share.core.dto.UserDTO;
+import org.andot.share.core.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
 import org.andot.share.common.type.ConstantType;
-import org.andot.share.common.utils.GodUtil;
+import org.andot.share.core.util.GodUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,9 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleMapper roleMapper;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final MenuMapper menuMapper;
+    private final XNumberPoolMapper xNumberPoolMapper;
 
     @Override
     public UserDetails loadUserByUsername(String xNumber) {
@@ -117,6 +114,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, user.getXNumber()));
             List<String> roleCodes = roleUserList.stream().map(RoleUser::getRoleCode).collect(Collectors.toList());
+            if (GodUtil.isGod(number)) {
+                roleCodes.add(ConstantType.GOD_ROLE_CODE);
+            }
             List<RoleDTO> roles = new ArrayList<>();
             List<MenuPermissionDTO> menuPermissionList = new ArrayList<>();
             if (roleCodes.size() != 0) {
@@ -162,5 +162,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         LambdaQueryWrapper<UserDetail> queryWrapper = new LambdaQueryWrapper<>();
         List<UserDetail> userDetailList = userDeatilMapper.selectList(queryWrapper);
         return userDetailList;
+    }
+
+    @Override
+    public UserDTO addUserBase(UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
+        String s = UUID.randomUUID().toString();
+        user.setSalt(s.substring(0, s.indexOf("-")));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        int c = userMapper.insert(user);
+        if (c > 0) {
+            UserDetail userDetail = new UserDetail();
+            userDetail.setXNumber(user.getXNumber());
+            userDetail.setRealName("新用户");
+            userDeatilMapper.insert(userDetail);
+            RoleUser roleUser = new RoleUser();
+            roleUser.setXNumber(user.getXNumber());
+            roleUser.setRoleCode("BASIC_USER");
+            roleUserMapper.insert(roleUser);
+            XNumberPool xNumberPool = new XNumberPool();
+            xNumberPool.setUsed(1);
+            xNumberPoolMapper.update(xNumberPool, new LambdaQueryWrapper<XNumberPool>().eq(XNumberPool::getXNumber, user.getXNumber()));
+        }
+        return userDTO;
     }
 }

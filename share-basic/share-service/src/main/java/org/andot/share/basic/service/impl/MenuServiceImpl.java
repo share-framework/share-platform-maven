@@ -3,16 +3,16 @@ package org.andot.share.basic.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.andot.share.basic.dao.MenuMapper;
-import org.andot.share.basic.dto.MenuPermissionDTO;
+import org.andot.share.core.dto.MenuPermissionDTO;
 import org.andot.share.basic.dto.MenuTreeDTO;
 import org.andot.share.basic.dto.MenuTreeSelectorDTO;
 import org.andot.share.basic.entity.AnMenu;
 import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.dto.MenuDTO;
 import org.andot.share.common.type.ConstantType;
-import org.andot.share.common.utils.GodUtil;
 import org.andot.share.common.utils.JSONObject;
 import org.andot.share.common.utils.ObjectUtil;
+import org.andot.share.core.util.GodUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,7 +96,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuTreeDTO> getMenuTreeList(Long appSystemId, Long xNumber) {
-        xNumber = GodUtil.god(xNumber);
+        if (GodUtil.isGod()) {
+            xNumber = null;
+        }
         List<AnMenu> menuList = menuMapper.getMenuListByUserId(appSystemId, xNumber);
         Map<String, List<AnMenu>> menuListMap = menuList.stream()
                 .filter(menu -> ObjectUtil.isNotEmpty(menu))

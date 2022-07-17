@@ -3,13 +3,18 @@ package org.andot.share.basic.controller;
 import io.swagger.annotations.Api;
 import org.andot.share.basic.components.ShareValueComponent;
 import org.andot.share.basic.domain.request.LoginParam;
-import org.andot.share.basic.dto.MenuPermissionDTO;
+import org.andot.share.basic.entity.User;
+import org.andot.share.basic.entity.XNumberPool;
+import org.andot.share.basic.service.XNumberPoolService;
+import org.andot.share.common.type.ConstantType;
+import org.andot.share.core.dto.MenuPermissionDTO;
 import org.andot.share.common.domain.AccessToken;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.common.utils.JwtUtil;
-import org.andot.share.basic.dto.RoleDTO;
-import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.core.dto.RoleDTO;
+import org.andot.share.core.dto.UserDTO;
+import org.andot.share.core.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +38,8 @@ public class CommonController {
     private UserService userService;
     @Resource
     private ShareValueComponent shareValueComponent;
+    @Resource
+    private XNumberPoolService xNumberPoolService;
 
     @PostMapping("/login")
     public CommonResult login(@RequestBody LoginParam loginParam,
@@ -65,8 +74,17 @@ public class CommonController {
      * @return
      */
     @PostMapping("/{type}/sign")
-    public CommonResult sign(@PathVariable("type") String type) {
-
+    public CommonResult sign(@PathVariable("type") String type, @RequestBody UserDTO userDTO) {
+        int count = 10;
+        List<XNumberPool> xNumberPoolList = xNumberPoolService.getXNumberPool(count);
+        Random random = new Random();
+        if (ConstantType.PHONE.equalsIgnoreCase(type)) {
+            XNumberPool xNumberPool = xNumberPoolList.get(random.nextInt(count));
+            userDTO.setXNumber(xNumberPool.getXNumber());
+            userDTO.setAppId(1L);
+            UserDTO userDTO1 = userService.addUserBase(userDTO);
+            return CommonResult.success(userDTO1);
+        }
         return null;
     }
 }

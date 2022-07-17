@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.andot.share.basic.dao.XNumberPoolMapper">
+
+    <resultMap id="xNumberMap" type="org.andot.share.basic.entity.XNumberPool">
+        <id column="id" property="id" javaType="long" jdbcType="BIGINT"></id>
+        <id column="x_number" property="xNumber" javaType="long" jdbcType="BIGINT"></id>
+        <id column="used" property="used" javaType="int" jdbcType="INTEGER"></id>
+        <id column="reserve" property="reserve" javaType="int" jdbcType="INTEGER"></id>
+    </resultMap>
+
+    <select id="getXNumberMaxData" resultType="org.andot.share.basic.entity.XNumberPool">
+        SELECT id, max(x_number), used, reserve FROM x_number_pool LIMIT 1
+    </select>
+
+</mapper>

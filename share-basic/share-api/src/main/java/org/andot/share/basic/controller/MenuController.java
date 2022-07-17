@@ -3,7 +3,7 @@ package org.andot.share.basic.controller;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.components.utils.CurrentUserUtil;
+import org.andot.share.core.util.CurrentUserUtil;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.MenuDTO;

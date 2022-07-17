@@ -1,6 +1,6 @@
-package org.andot.share.basic.components.utils;
+package org.andot.share.core.util;
 
-import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.core.dto.XUserDetail;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -29,6 +29,9 @@ public class CurrentUserUtil {
 
     public static XUserDetail userDetail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal().equals("anonymousUser")) {
+            return null;
+        }
         XUserDetail securityUserDetail = (XUserDetail) authentication.getPrincipal();
         return securityUserDetail;
     }

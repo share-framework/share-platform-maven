@@ -6,7 +6,7 @@ import lombok.SneakyThrows;
 import org.andot.share.basic.dao.RoleMapper;
 import org.andot.share.basic.dao.RoleMenuMapper;
 import org.andot.share.basic.entity.Role;
-import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.core.dto.RoleDTO;
 import org.andot.share.basic.entity.RoleMenu;
 import org.andot.share.basic.service.RoleService;
 import org.andot.share.common.utils.ObjectUtil;

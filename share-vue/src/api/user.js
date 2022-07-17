@@ -55,3 +55,34 @@ export function delUser(id) {
     method: 'DELETE'
   })
 }
+
+export function phoneSign(phone, password) {
+  let data = {
+    phone: phone,
+    password: password
+  }
+  return request({
+    url: '/phone/sign',
+    method: 'post',
+    data
+  })
+}
+
+export function emailSign(email, password) {
+  let data = {
+    email: email,
+    password: password
+  }
+  return request({
+    url: '/email/sign',
+    method: 'post',
+    data
+  })
+}
+
+export function productXNumber() {
+  return request({
+    url: '/user/product/xnumber',
+    method: 'post'
+  })
+}

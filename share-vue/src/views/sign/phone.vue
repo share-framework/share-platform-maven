@@ -6,20 +6,20 @@
           <el-col :span="16">
             <div :style="'background:url('+lg+') no-repeat; background-size: 100% 100%; width: 100%; height:'+height+'px;'"></div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="successText==''">
             <div>
               <div style="width: 100%; display: flex; justify-content: center; margin-top:30%;">
                 <img :src="logo" width="50%" height="80%">
               </div>
               <div style="width: 100%; display: flex; justify-content: center;">
                 <el-tabs v-model="activeName" @tab-click="tabSwitchClick" style="width:60%;">
-                  <el-tab-pane label="账号登录" name="account">
+                  <el-tab-pane label="注册" name="account">
                     <el-form style="width:100%" ref="loginForm" :model="loginForm" :rules="loginRules">
                       <el-form-item>
                         <el-input
                           ref="number"
-                          v-model="loginForm.number"
-                          placeholder="请输入用戶名"
+                          v-model="loginForm.phone"
+                          placeholder="请输入手机号"
                           prefix-icon="el-icon-user"
                           name="number"
                           type="text"
@@ -38,23 +38,26 @@
                           name="password"
                           tabindex="2"
                           auto-complete="on"
-                          @keyup.enter.native="handleLogin"
+                          @keyup.enter.native="handleSign"
                           show-password
                         />
                       </el-form-item>
-                      <el-form-item align="right">
-                        <el-button type="text" @click="">忘记密码?</el-button>
-                      </el-form-item>
-                      <el-button style="width:100%" type="primary" :loading="loading" @click="handleLogin" >登录</el-button>
-                      <el-form-item align="right">
-                        还没有蚁点账号，
-                        <el-button type="text" @click="sign">立即注册</el-button>
-                      </el-form-item>
+                      <el-button style="width:100%" type="primary" :loading="loading" @click="handleSign" >注册</el-button>
                     </el-form>
                   </el-tab-pane>
-                  <el-tab-pane label="扫码登录" name="scan">扫码登录</el-tab-pane>
                 </el-tabs>
-
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="8" v-if="successText!=''">
+            <div>
+              <div style="width: 100%; display: flex; justify-content: center;">
+                <el-alert
+                  :title="successText"
+                  type="success"
+                  show-icon>
+                </el-alert>
+                <el-button type="text" @click="login">立刻去登录</el-button>
               </div>
             </div>
           </el-col>
@@ -66,8 +69,10 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { phoneSign } from '@/api/user'
 import lg from '@/assets/bg.jpg'
 import logo from '@/assets/logo.png'
+import {updateData} from "@/api/system/dict/data";
 
 export default {
   name: 'Login',
@@ -88,11 +93,11 @@ export default {
     }
     return {
       loginForm: {
-        number: 10000,
-        password: '123456'
+        number: undefined,
+        password: ''
       },
       loginRules: {
-        number: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        phone: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
@@ -101,7 +106,11 @@ export default {
       lg: lg,
       logo: logo,
       height: 900,
-      activeName: 'account'
+      activeName: 'account',
+      xNumber: {
+
+      },
+      successText: ''
     }
   },
   watch: {
@@ -123,19 +132,17 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    handleSign() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', {
-            number: this.loginForm.number,
-            password: this.loginForm.password
-          }).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+          phoneSign(this.loginForm.phone, this.loginForm.password).then(response => {
+            this.xNumber = response.data
+            this.successText = `账号注册成功，账号为 [${response.data.xnumber}]`
             this.loading = false
-          }).catch(() => {
+          }).catch((error) => {
             this.loading = false
-          })
+          });
         } else {
           console.log('error submit!!')
           return false
@@ -150,8 +157,8 @@ export default {
         this.activeName = 'account'
       }
     },
-    sign() {
-      this.$router.push({ path: '/sign' })
+    login() {
+      this.$router.push({ path: '/login' })
     }
   },
   mounted() {

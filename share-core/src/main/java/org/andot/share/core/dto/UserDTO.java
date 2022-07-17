@@ -1,4 +1,4 @@
-package org.andot.share.basic.dto;
+package org.andot.share.core.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +13,7 @@ public class UserDTO {
     private Long xNumber;
     private Long appId;
     private String phone;
+    private String email;
     private String password;
     private Integer userType;
     private Integer onlineStatus;

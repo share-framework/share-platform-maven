@@ -23,7 +23,7 @@
         <result column="delete_person" property="deletePerson" javaType="string" jdbcType="VARCHAR"></result>
     </resultMap>
 
-    <resultMap id="menuRolePermission" type="org.andot.share.basic.dto.MenuPermissionDTO">
+    <resultMap id="menuRolePermission" type="org.andot.share.core.dto.MenuPermissionDTO">
         <id column="menu_id" property="menuId" javaType="long" jdbcType="BIGINT"></id>
         <result column="role_menu_id" property="roleMenuId" javaType="long" jdbcType="BIGINT"></result>
         <result column="menu_name" property="menuName" javaType="string" jdbcType="VARCHAR"></result>

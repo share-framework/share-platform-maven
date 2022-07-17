@@ -8,7 +8,7 @@ import org.andot.share.basic.service.RoleService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.basic.dto.PageDTO;
-import org.andot.share.basic.dto.RoleDTO;
+import org.andot.share.core.dto.RoleDTO;
 import org.andot.share.common.utils.ObjectUtil;
 import org.springframework.web.bind.annotation.*;
 

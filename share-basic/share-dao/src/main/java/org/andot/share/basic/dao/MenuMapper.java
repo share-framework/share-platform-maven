@@ -2,7 +2,7 @@ package org.andot.share.basic.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.andot.share.basic.entity.AnMenu;
-import org.andot.share.basic.dto.MenuPermissionDTO;
+import org.andot.share.core.dto.MenuPermissionDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

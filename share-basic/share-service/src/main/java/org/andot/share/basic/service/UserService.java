@@ -1,8 +1,8 @@
 package org.andot.share.basic.service;
 
 import org.andot.share.basic.entity.UserDetail;
-import org.andot.share.basic.dto.UserDTO;
-import org.andot.share.basic.dto.XUserDetail;
+import org.andot.share.core.dto.UserDTO;
+import org.andot.share.core.dto.XUserDetail;
 
 import java.util.List;
 
@@ -31,6 +31,13 @@ public interface UserService {
      * @return
      */
     List<UserDetail> getUserList(UserDTO userDTO);
+
+    /**
+     * 注册添加用户
+     * @param userDTO
+     * @return
+     */
+    UserDTO addUserBase(UserDTO userDTO);
 
 
 }

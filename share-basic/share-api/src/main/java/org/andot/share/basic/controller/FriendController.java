@@ -2,21 +2,18 @@ package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.andot.share.basic.components.utils.CurrentUserUtil;
+import org.andot.share.core.util.CurrentUserUtil;
 import org.andot.share.basic.dto.PageDTO;
-import org.andot.share.basic.dto.RoleDTO;
-import org.andot.share.basic.dto.UserDTO;
+import org.andot.share.core.dto.RoleDTO;
+import org.andot.share.core.dto.UserDTO;
 import org.andot.share.basic.entity.UserDetail;
-import org.andot.share.basic.service.MenuService;
 import org.andot.share.basic.service.UserService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author lucas
