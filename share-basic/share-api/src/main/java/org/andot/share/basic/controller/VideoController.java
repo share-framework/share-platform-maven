@@ -1,11 +1,8 @@
 package org.andot.share.basic.controller;
 
-
-import com.sun.xml.internal.ws.client.ClientTransportException;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Objects;
 
 @Slf4j
 @Api(tags = "视频管理API", description = "视频管理控制器")
@@ -116,7 +112,7 @@ public class VideoController {
             randomAccessFile.close();
             System.out.println("下载完毕：" + startByte + "-" + endByte + "：" + transmitted);
 
-        } catch (ClientTransportException e) {
+        } catch (RuntimeException e) {
             System.out.println("用户停止下载：" + startByte + "-" + endByte + "：" + transmitted);
             //捕获此异常表示拥护停止下载
         } catch (IOException e) {
