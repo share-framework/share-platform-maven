@@ -87,4 +87,13 @@ public class CommonController {
         }
         return null;
     }
+
+    /**
+     * 健康检查
+     * @return
+     */
+    @GetMapping("/healthy/status")
+    public CommonResult healthy() {
+        return CommonResult.success("basic api startup sucess!");
+    }
 }
