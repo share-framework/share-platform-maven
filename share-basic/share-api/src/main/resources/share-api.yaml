@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: share-app
+  name: share-api
+  labels:
+    app: share-api
+spec:
+  selector:
+    matchLabels:
+      app: share-api
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: share-api
+    spec:
+      containers:
+        - name: share-api
+          image: harbor.andot.org/lucas/share-api:1.0.0
+          ports:
+            -  containerPort: 80
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1G"
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - name: nginx-data
+              mountPath: /usr/share/nginx/html/
+              readOnly: false
+            - name: log
+              mountPath: /var/log/nginx/
+      volumes:
+        - name:  nginx-data
+          hostPath:
+            path: /home/nginx/data/
+            type: DirectoryOrCreate
+        - name: log
+          hostPath:
+            path: /home/nginx/logs/
+            type: DirectoryOrCreate
