@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: share-app-im-svc
+  name: share-app-im-svc
+  namespace: share-app
+spec:
+  ports:
+    - port: 9090
+      name: http9090
+      protocol: TCP
+      targetPort: 9090
+      nodePort: 31091
+  selector:
+    app: share-app-im
+  type: NodePort

@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: share-api
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.3:3306/share-rbac?useSSL=false&serverTimezone=UTC #mysql-svc.share-app.svc.cluster.local
+    username: root
+    password: 123456
+    hikari:
+      pool-name: share-rbac-pool
+  redis:
+    cluster:
+      nodes:
+        - 192.168.1.3:6377
+    sentinel:
+      master: redis-sentinel-master
+      nodes:
+        - 192.168.1.3:6377
+      password:
+    lettuce:
+      pool:
+        # 最大活跃链接数 默认8
+        max-active: 8
+        # 最大空闲连接数 默认8
+        max-idle: 8
+        # 最小空闲连接数 默认0
+        min-idle: 0
+    host: 192.168.1.3
+    port: 6377
+  logging:
+    level:
+      com.baomidou.mybatisplus.samples.quickstart: debug
+  servlet:
+    multipart:
+      enabled: true
+      # 不限制文件大小
+      max-file-size: -1
+      # 不限制请求体大小
+      max-request-size: -1
+      # 临时IO目录
+      location: "${java.io.tmpdir}"
+      # 不延迟解析
+      resolve-lazily: false
+      # 超过1Mb，就IO到临时目录
+      file-size-threshold: 1MB
+    web:
+      resources:
+        static-locations:
+          - "classpath:/static/**"
+          - "file:/Users/lucasser/Andot/App/ffmpeg/video/ts/" # 把视频文件夹目录，添加到静态资源目录列表
+
+mybatis-plus:
+  mapperLocations: classpath*:/mybatis/mapper/*.xml
+
+share:
+  info: share-cloud
+  jwt:
+    secret: share-andot
+    expiration: 7200
+  video:
+    folder: /Users/lucasser/Andot/App/ffmpeg/video/

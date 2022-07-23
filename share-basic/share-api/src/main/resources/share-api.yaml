@@ -31,12 +31,12 @@ spec:
               memory: "512Mi"
           volumeMounts:
             - name: nginx-data
-              mountPath: /usr/share/nginx/html/
+              mountPath: /usr/share/nginx/html/v
               readOnly: false
             - name: log
               mountPath: /var/log/nginx/
       volumes:
-        - name:  nginx-data
+        - name: nginx-data
           hostPath:
             path: /home/nginx/data/
             type: DirectoryOrCreate
