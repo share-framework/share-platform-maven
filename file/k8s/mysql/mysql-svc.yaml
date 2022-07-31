@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mysql-svc
+  name: mysql-svc
+  namespace: share-app
+spec:
+  ports:
+    - port: 3306
+      name: http3306
+      protocol: TCP
+      targetPort: 3306
+      nodePort: 31096
+  selector:
+    app: mysql-server
+  type: NodePort

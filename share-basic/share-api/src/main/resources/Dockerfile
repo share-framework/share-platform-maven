@@ -14,7 +14,7 @@ RUN pwd && cd /app && ls
 
 WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "/app/share-api-1.0.0.jar"]
+ENTRYPOINT ["java", "-jar", "/app/share-api-1.0.0.jar -noverify -Dspring.profiles.active=test"]
 
 #ENTRYPOINT ["java -XX:MaxGCPauseMillis=200 \
 #	-Xms512m -Xmx512m -Xss512k \

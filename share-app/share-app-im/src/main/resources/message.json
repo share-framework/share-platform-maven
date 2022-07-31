@@ -1,0 +1,20 @@
+{
+  "roomId": "10000",
+  "header": {
+    "lineId": "10000",
+    "toLineId": "99999",
+    "msgType": 1
+  },
+  "body": {
+    "category": "",
+    "title": "",
+    "content": "哈哈",
+    "format": "",
+    "extra": ""
+  },
+  "footer": {
+    "version": "1.0.0",
+    "timestamp": 1659255200000,
+    "clientName": "line"
+  }
+}

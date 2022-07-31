@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import io.netty.handler.codec.http.multipart.MemoryAttribute;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.andot.share.app.line.exception.LineIdNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,7 @@ public class HttpRequestParamUtil {
             }
         } else {
             log.warn("line id is null!");
+            throw new LineIdNotFoundException("您好，请在同道App中打开！");
         }
         return lineId;
     }

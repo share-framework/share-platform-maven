@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <share.basic.version>1.0.0</share.basic.version>
+        <jetcache.version>2.6.7</jetcache.version>
     </properties>
 
     <dependencies>
@@ -26,10 +27,21 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.59.Final</version>
         </dependency>
-
+        <!-- SpringBoot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--   monogo db store message data     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <!--   jetcache redis cache     -->
+        <dependency>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-starter-redis</artifactId>
+            <version>${jetcache.version}</version>
         </dependency>
     </dependencies>
 

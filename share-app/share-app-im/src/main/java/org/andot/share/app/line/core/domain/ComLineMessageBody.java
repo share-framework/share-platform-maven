@@ -1,4 +1,4 @@
-package org.andot.share.app.line.core.dto;
+package org.andot.share.app.line.core.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ public class ComLineMessageBody implements Serializable {
     /**
      * 消息类型，用户自定义消息类别
      */
-    private long id;
+    private Integer category;
 
     /**
      * 消息标题

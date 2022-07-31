@@ -7,9 +7,9 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.config.ComLineConfig;
-import org.andot.share.app.line.core.dto.ComLineMessage;
-import org.andot.share.app.line.core.dto.ComLineMessageBody;
-import org.andot.share.app.line.core.dto.ComLineMessageHeader;
+import org.andot.share.app.line.core.domain.ComLineMessage;
+import org.andot.share.app.line.core.domain.ComLineMessageBody;
+import org.andot.share.app.line.core.domain.ComLineMessageHeader;
 import org.andot.share.app.line.util.HttpRequestParamUtil;
 
 

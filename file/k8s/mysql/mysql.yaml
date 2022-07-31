@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: share-app
+  name: mysql-server
+  labels:
+    app: mysql-server
+spec:
+  selector:
+    matchLabels:
+      app: mysql-server
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mysql-server
+    spec:
+      containers:
+        - name: mysql-server
+          image: daocloud.io/library/mysql:5.7.5-m15
+          ports:
+            -  containerPort: 3306
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1G"
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/mysql/conf.d
+              readOnly: false
+            - name: data
+              mountPath: /var/lib/mysql
+          env:   #容器运行前需设置的环境变量列表
+            - name: MYSQL_ROOT_PASSWORD  #环境变量名称
+              value: "123456"
+      volumes:
+        - name: conf
+          hostPath:
+            path: /home/mysql/conf/
+            type: DirectoryOrCreate
+        - name: data
+          hostPath:
+            path: /home/mysql/data/
+            type: DirectoryOrCreate

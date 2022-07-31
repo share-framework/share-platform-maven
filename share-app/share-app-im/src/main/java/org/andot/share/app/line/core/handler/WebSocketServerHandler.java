@@ -8,8 +8,9 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.config.ComLineConfig;
-import org.andot.share.app.line.core.dto.ComLineMessage;
+import org.andot.share.app.line.core.domain.ComLineMessage;
 import org.andot.share.app.line.util.HttpRequestParamUtil;
+import org.andot.share.app.line.util.MessageSaveUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -82,6 +83,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         // 返回应答消息
         String request = ((TextWebSocketFrame)frame).text();
         ComLineMessage data = JSONObject.parseObject(request, ComLineMessage.class);
+        /**
+         * 存储消息记录
+         */
+        MessageSaveUtil.addMessage(data);
 
         String lineId = data.getHeader().getToLineId();
 

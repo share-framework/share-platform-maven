@@ -1,14 +1,13 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  namespace: share-api-web
-  name: share-api-gateway
+  name: sky-ui-gateway
 spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
     - port:
-        number: 80
+        number: 9999
         name: http
         protocol: HTTP
       hosts:
@@ -17,19 +16,19 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  namespace: share-api-web
-  name: share-api-vs
+  namespace: ns-monitor
+  name: sky-ui-vs
 spec:
   hosts:
     - "*"
   gateways:
-    - share-api-gateway
+    - sky-ui-gateway
   http:
     - match:
         - uri:
-            prefix: /api
+            prefix: /
       route:
         - destination:
-            host: share-api
+            host: oapui-service
             port:
-              number: 9090
+              number: 8080
