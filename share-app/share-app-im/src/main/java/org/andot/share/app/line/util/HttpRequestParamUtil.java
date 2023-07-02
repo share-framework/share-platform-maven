@@ -8,6 +8,9 @@ import io.netty.handler.codec.http.multipart.MemoryAttribute;
 import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.exception.LineIdNotFoundException;
+import org.andot.share.common.components.ShareValueComponent;
+import org.andot.share.common.domain.JwtUserDetail;
+import org.andot.share.common.utils.JwtUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,11 +47,13 @@ public class HttpRequestParamUtil {
 
     public static String getLineId (String url) {
         String lineId = null;
-        if (!StringUtil.isNullOrEmpty(url) && url.indexOf("lineId") > -1) {
-            String params = url.substring(url.indexOf("lineId="));
+        if (!StringUtil.isNullOrEmpty(url) && url.indexOf("token") > -1) {
+            String params = url.substring(url.indexOf("token="));
             String[] str = params.split("=");
             if (str != null && str.length > 1) {
-                lineId = str[1];
+                String token = str[1];
+                JwtUserDetail jwtUserDetail = JwtUtil.releaseJwtToken(token, ShareValueComponent.getStaticJwtSecret());
+                lineId = jwtUserDetail.getXNumber();
             }
         } else {
             log.warn("line id is null!");

@@ -12,6 +12,10 @@ export function getToken() {
   return Cookies.get(TokenKey)
 }
 
+export function getNoToken() {
+  return Cookies.get(TokenKey)
+}
+
 export function setToken(token) {
   return Cookies.set(TokenKey, token)
 }

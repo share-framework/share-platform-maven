@@ -24,6 +24,10 @@ public class JwtUserDetail {
     private Long appId;
 
     private String username;
+    /**
+     *
+     */
+    private String avatar;
 
     /**
      * 部门ID

@@ -1,4 +1,4 @@
-package org.andot.share.basic.components.exception;
+package org.andot.share.common.components.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -21,6 +21,7 @@
         <module>share-app-mall</module>
         <module>share-app-search</module>
         <module>share-app-im</module>
+        <module>share-app-health</module>
     </modules>
 
     <properties>
@@ -30,6 +31,12 @@
     </properties>
 
     <dependencies>
+        <!--    api    -->
+        <dependency>
+            <groupId>org.andot.share.basic</groupId>
+            <artifactId>share-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <artifactId>share-common</artifactId>
             <groupId>org.andot.share</groupId>
@@ -39,21 +46,6 @@
             <groupId>org.andot.share.basic</groupId>
             <artifactId>share-service</artifactId>
             <version>1.0.0</version>
-        </dependency>
-        <!-- undertow serve -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
     </dependencies>
 </project>

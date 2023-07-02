@@ -1,4 +1,4 @@
-package org.andot.share.basic.components.handler;
+package org.andot.share.common.components.hander;
 
 import org.andot.share.common.response.CommonResult;
 import org.springframework.http.HttpStatus;

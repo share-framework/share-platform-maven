@@ -27,15 +27,17 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.59.Final</version>
         </dependency>
-        <!-- SpringBoot Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <!--   monogo db store message data     -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <exclusions>
+                <!-- log4j2之后就要排除，两者不可兼得 -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--   jetcache redis cache     -->
         <dependency>

@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import {getNoToken} from '@/utils/auth'
     export default {
       name: "LineChat",
       props: {
@@ -123,7 +124,7 @@
       methods: {
         initWebSocket(){
           console.log(this.$store.state.user)
-          this.websocket = new WebSocket(process.env.VUE_APP_WEB_SOCKET_API + "?lineId=" + this.$store.state.user.xNumber);
+          this.websocket = new WebSocket(process.env.VUE_APP_WEB_SOCKET_API + "?token=" + getNoToken());
           this.websocket.onopen = this.webSocketOnOpen;
 
           this.websocket.onerror = this.webSocketOnError;

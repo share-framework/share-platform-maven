@@ -1,13 +1,12 @@
-package org.andot.share.basic.components.filter;
+package org.andot.share.basic.components;
 
 import lombok.extern.slf4j.Slf4j;
-import org.andot.share.basic.components.ShareValueComponent;
-import org.andot.share.basic.components.exception.TokenErrorServletException;
+import org.andot.share.common.components.ShareValueComponent;
 import org.andot.share.common.cache.LocalThreadCache;
+import org.andot.share.common.components.exception.TokenErrorServletException;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.utils.JwtUtil;
 import org.andot.share.basic.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
-    @Autowired
+    @Resource
     private ShareValueComponent shareValueComponent;
     @Resource
     private UserServiceImpl userService;

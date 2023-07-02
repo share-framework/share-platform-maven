@@ -1,3 +1,33 @@
 spring:
   profiles:
     active: dev
+  application:
+    name: share-app-im
+
+server:
+  port: 9001
+  servlet:
+    context-path: /api
+  undertow:
+    threads:
+      io: 4
+      worker: 32
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metric
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 1ms
+        descriptions: true
+    tags:
+      # 为指标设置一个Tag，这里设置为应用名，Tag是Prometheus提供的一种能力，从而实现更加灵活的筛选
+      application: ${spring.application.name}

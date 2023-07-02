@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 启动器
  * @author andot
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.andot.share.basic", "org.andot.share.common"})
 public class ShareBasicApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShareBasicApplication.class, args);

@@ -1,4 +1,4 @@
-package org.andot.share.basic.components;
+package org.andot.share.common.components.hander;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;

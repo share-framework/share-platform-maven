@@ -15,6 +15,6 @@ import org.springframework.context.annotation.Configuration;
         "org.andot.share.app.line.service"
 })
 @EnableCreateCacheAnnotation
-public class JetCacheConfig {
+public class ImJetCacheConfig {
 
 }

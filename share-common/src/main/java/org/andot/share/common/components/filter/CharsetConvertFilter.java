@@ -1,4 +1,4 @@
-package org.andot.share.basic.components.filter;
+package org.andot.share.common.components.filter;
 
 
 import lombok.extern.slf4j.Slf4j;

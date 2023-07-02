@@ -1,7 +1,9 @@
-package org.andot.share.basic.components;
+package org.andot.share.common.components;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Andot
@@ -15,6 +17,13 @@ public class ShareValueComponent {
     @Value("${share.jwt.expiration}")
     private Long jwtExpiration;
 
+    private static ShareValueComponent that;
+
+    @PostConstruct
+    public void init() {
+        that = this;
+    }
+
     public String getInfo() {
         return info;
     }
@@ -25,5 +34,9 @@ public class ShareValueComponent {
 
     public Long getJwtExpiration() {
         return jwtExpiration;
+    }
+
+    public static String getStaticJwtSecret() {
+        return that.jwtSecret;
     }
 }

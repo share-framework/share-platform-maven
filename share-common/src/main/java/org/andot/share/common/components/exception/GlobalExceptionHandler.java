@@ -1,4 +1,4 @@
-package org.andot.share.basic.components.exception;
+package org.andot.share.common.components.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.common.response.CommonResult;

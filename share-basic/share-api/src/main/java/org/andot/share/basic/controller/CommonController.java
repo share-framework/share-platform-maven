@@ -1,9 +1,8 @@
 package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
-import org.andot.share.basic.components.ShareValueComponent;
+import org.andot.share.common.components.ShareValueComponent;
 import org.andot.share.basic.domain.request.LoginParam;
-import org.andot.share.basic.entity.User;
 import org.andot.share.basic.entity.XNumberPool;
 import org.andot.share.basic.service.XNumberPoolService;
 import org.andot.share.common.type.ConstantType;

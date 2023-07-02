@@ -1,14 +1,16 @@
 package org.andot.share.basic.configuration;
 
-import org.andot.share.basic.components.UserAccessDecisionManager;
-import org.andot.share.basic.components.handler.UserAccessDeniedHandler;
-import org.andot.share.basic.components.handler.UserAuthenticationManager;
-import org.andot.share.basic.components.handler.UserLogoutSuccessHandler;
-import org.andot.share.basic.components.handler.UserUnAuthenticationHandler;
-import org.andot.share.basic.components.filter.CORSSecurityFilter;
-import org.andot.share.basic.components.filter.JwtAuthenticationFilter;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import org.andot.share.common.components.hander.UserAccessDecisionManager;
+import org.andot.share.common.components.hander.UserAccessDeniedHandler;
+import org.andot.share.common.components.hander.UserAuthenticationManager;
+import org.andot.share.common.components.hander.UserLogoutSuccessHandler;
+import org.andot.share.common.components.hander.UserUnAuthenticationHandler;
+import org.andot.share.common.components.filter.CORSSecurityFilter;
+import org.andot.share.basic.components.JwtAuthenticationFilter;
 import org.andot.share.basic.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,6 +22,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author lucas
@@ -48,13 +53,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter(userAuthenticationManager);
     }
 
+    @Value("${share.publicPath:'/doc.html,/favicon.ico'}")
+    private List<String> PUBLIC_PATH;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (CollectionUtils.isEmpty(PUBLIC_PATH)) {
+            PUBLIC_PATH = new ArrayList<>();
+        }
+        PUBLIC_PATH.addAll(Arrays.asList(new String[]{"/login", "/v2/api-docs", "/v2/api-docs-ext",
+                "/swagger-resources/**", "/webjars/**", "/images/**",
+                "/doc.html", "/favicon.ico", "/video/**", "/static/**"}));
+        String[] urls = new String[PUBLIC_PATH.size()];
+        PUBLIC_PATH.toArray(urls);
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/v2/api-docs", "/v2/api-docs-ext",
-                        "/swagger-resources/**", "/webjars/**", "/images/**",
-                        "/doc.html", "/favicon.ico", "/video/**", "/static/**").permitAll()
+                .antMatchers(urls).permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().permitAll();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)

@@ -14,7 +14,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  *  dot 音译 道
  * @author andot
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {
+        "org.andot.share.app.line",
+        "org.andot.share.common",
+        "org.andot.share.basic"})
 public class ComLineApplication {
 
     public static void main(String[] args) {

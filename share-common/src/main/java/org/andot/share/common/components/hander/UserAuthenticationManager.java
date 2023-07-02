@@ -1,4 +1,4 @@
-package org.andot.share.basic.components.handler;
+package org.andot.share.common.components.hander;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
