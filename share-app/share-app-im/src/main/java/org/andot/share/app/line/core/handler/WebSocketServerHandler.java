@@ -11,6 +11,9 @@ import org.andot.share.app.line.config.ComLineConfig;
 import org.andot.share.app.line.core.domain.ComLineMessage;
 import org.andot.share.app.line.util.HttpRequestParamUtil;
 import org.andot.share.app.line.util.MessageSaveUtil;
+import org.andot.share.common.components.ShareValueComponent;
+import org.andot.share.common.exception.TokenExpiredRuntimeException;
+import org.andot.share.common.utils.JwtUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -46,11 +49,24 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
                 !"websocket".equalsIgnoreCase(fullHttpRequest.headers().get("Upgrade"))) {
             sendHttpResponse(ctx, fullHttpRequest, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
         }
+        // 获取请求头
 
+//        HttpHeaders headers = fullHttpRequest.headers();
+//        String token = headers.get(HttpHeaderNames.AUTHORIZATION);
+        String token = HttpRequestParamUtil.getToken(fullHttpRequest.uri());
+        // 判断token有效期
+        if (JwtUtil.isTokenExpired(token)) {
+            // Token 失效，返回 401 响应码
+            FullHttpResponse response = new DefaultFullHttpResponse(
+                    HttpVersion.HTTP_1_1, HttpResponseStatus.UNAUTHORIZED);
+            ctx.writeAndFlush(response);
+            return;
+        }
+        String lineId = HttpRequestParamUtil.getLineIdByAuthorization(token);
         // 加入用户存储
         String channelId = ctx.channel().id().asLongText();
         if (!ComLineConfig.getUserIdMap().containsKey(channelId)) {
-            ComLineConfig.getUserIdMap().put(channelId, HttpRequestParamUtil.getLineId(fullHttpRequest.uri()));
+            ComLineConfig.getUserIdMap().put(channelId, lineId);
             ComLineConfig.getUserChannelMap().put(HttpRequestParamUtil.getLineId(fullHttpRequest.uri()), ctx);
             log.info(ComLineConfig.getUserIdMap().get(channelId) + "已经上线");
         }
@@ -73,32 +89,50 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         }
         // 判断是否ping消息
         if (frame instanceof  PingWebSocketFrame) {
-            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
+            ctx.channel().writeAndFlush(new PongWebSocketFrame(frame.content().retain()));
             return;
         }
         // 仅支持文本消息，不支持二进制消息
-        if (!(frame instanceof TextWebSocketFrame)) {
+        if (frame instanceof BinaryWebSocketFrame) {
+            BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
+            ByteBuf buf = binaryWebSocketFrame.content();
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.readBytes(bytes);
+            String message = new String(bytes, StandardCharsets.UTF_8);
+            ComLineMessage data = JSONObject.parseObject(message.substring(11), ComLineMessage.class);
+            /**
+             * 存储消息记录
+             */
+            MessageSaveUtil.addMessage(data);
+            String lineId = data.getHeader().getToLineId();
+            if (ComLineConfig.getUserChannelMap().containsKey(lineId)) {
+                log.info("{}消息收到：{}, 准备转发！", lineId, message);
+                ComLineConfig.getUserChannelMap().get(lineId).channel().writeAndFlush(binaryWebSocketFrame);
+                log.info("{}消息转发成功！", lineId, message);
+            }
+            log.info(lineId + "消息收到：" + message);
+        } else if (frame instanceof TextWebSocketFrame) {
+            // 返回应答消息
+            String request = ((TextWebSocketFrame)frame).text();
+            ComLineMessage data = JSONObject.parseObject(request, ComLineMessage.class);
+            /**
+             * 存储消息记录
+             */
+            MessageSaveUtil.addMessage(data);
+
+            String lineId = data.getHeader().getToLineId();
+
+            if (ComLineConfig.getUserChannelMap().containsKey(lineId)) {
+                log.info("{}消息收到：{}, 准备转发！", lineId, request);
+                ComLineConfig.getUserChannelMap().get(lineId).channel().writeAndFlush(new TextWebSocketFrame(request));
+                log.info("{}消息转发成功！", lineId, request);
+            }
+
+            log.info(lineId + "消息收到：" + request);
+            ctx.channel().write(new TextWebSocketFrame(request));
+        } else {
             throw new UnsupportedOperationException(String.format("%s frame types not suppoorted", frame.getClass().getName()));
         }
-        // 返回应答消息
-        String request = ((TextWebSocketFrame)frame).text();
-        ComLineMessage data = JSONObject.parseObject(request, ComLineMessage.class);
-        /**
-         * 存储消息记录
-         */
-        MessageSaveUtil.addMessage(data);
-
-        String lineId = data.getHeader().getToLineId();
-
-        if (ComLineConfig.getUserChannelMap().containsKey(lineId)) {
-            log.info("{}消息收到：{}, 准备转发！", lineId, request);
-            ComLineConfig.getUserChannelMap().get(lineId).channel().writeAndFlush(new TextWebSocketFrame(request));
-            log.info("{}消息转发成功！", lineId, request);
-        }
-
-        log.info(lineId + "消息收到：" + request);
-        ctx.channel().write(new TextWebSocketFrame(request));
-
     }
 
     private static void sendHttpResponse (ChannelHandlerContext ctx, FullHttpRequest req, FullHttpResponse res) {

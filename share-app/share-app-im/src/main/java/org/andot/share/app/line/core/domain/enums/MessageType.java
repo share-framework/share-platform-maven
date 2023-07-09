@@ -19,6 +19,8 @@ public enum MessageType {
     VIDEO(4, "视频消息"),
     FILE(5, "文件消息"),
     POSITION(6, "定位消息"),
+    HEART(7, "心跳消息"),
+    TOKEN_EXPIRED(8, "token过期消息"),
     OTHER(0, "未知消息");
 
     private int code;

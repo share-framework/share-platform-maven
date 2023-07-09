@@ -11,6 +11,7 @@ import org.andot.share.app.line.exception.LineIdNotFoundException;
 import org.andot.share.common.components.ShareValueComponent;
 import org.andot.share.common.domain.JwtUserDetail;
 import org.andot.share.common.utils.JwtUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,5 +61,33 @@ public class HttpRequestParamUtil {
             throw new LineIdNotFoundException("您好，请在同道App中打开！");
         }
         return lineId;
+    }
+
+    public static String getLineIdByAuthorization (String token) {
+        String lineId;
+        if (StringUtils.isNotBlank(token)) {
+            JwtUserDetail jwtUserDetail = JwtUtil.releaseJwtToken(token, ShareValueComponent.getStaticJwtSecret());
+            lineId = jwtUserDetail.getXNumber();
+        } else {
+            log.warn("line id is null!");
+            throw new LineIdNotFoundException("您好，请在同道App中打开！");
+        }
+        return lineId;
+    }
+
+    public static String getToken (String url) {
+        if (!StringUtil.isNullOrEmpty(url) && url.indexOf("token") > -1) {
+            String params = url.substring(url.indexOf("token="));
+            String[] str = params.split("=");
+            if (str != null && str.length > 1) {
+                String token = str[1];
+                return token;
+            }
+        } else {
+            log.warn("line id is null! 您好，请在同道App中打开！");
+//            throw new LineIdNotFoundException("您好，请在同道App中打开！");
+            return null;
+        }
+        return null;
     }
 }

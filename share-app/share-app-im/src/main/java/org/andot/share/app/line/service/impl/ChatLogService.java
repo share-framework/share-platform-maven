@@ -28,14 +28,14 @@ public class ChatLogService implements org.andot.share.app.line.service.ChatLogS
     @Override
     public List<ChatLog> getChatLogsByConversationId(String conversationId) {
         List<ChatLog> chatLogs = chatLogMapper.selectList(new LambdaQueryWrapper<ChatLog>().
-                eq(ChatLog::getClientMsgID, conversationId).orderByAsc(ChatLog::getSendTime));
+                eq(ChatLog::getClientMsgId, conversationId).orderByAsc(ChatLog::getSendTime));
         return chatLogs;
     }
 
     @Override
     public CommonPage<ChatLog> getChatLogsByConversationIdOfPage(String conversationId, Integer page, Integer size) {
         List<ChatLog> chatLogs = chatLogMapper.selectList(new LambdaQueryWrapper<ChatLog>().
-                eq(ChatLog::getClientMsgID, conversationId).orderByAsc(ChatLog::getSendTime));
+                eq(ChatLog::getClientMsgId, conversationId).orderByAsc(ChatLog::getSendTime));
         return CommonPage.restPage(chatLogs);
     }
 }

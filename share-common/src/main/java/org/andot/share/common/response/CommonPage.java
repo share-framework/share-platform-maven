@@ -40,17 +40,17 @@ public class CommonPage<T> {
      * 将PageHelper分页后的list转为分页信息
      */
     public static <T> CommonPage<T> restPage(List<T> list) {
-        if(list == null){
-            return null;
-        }
         CommonPage<T> result = new CommonPage<T>();
+        result.setCode(ErrorCodeType.SUCCESS.intValue());
+        if(list == null){
+            return result;
+        }
         PageInfo<T> pageInfo = new PageInfo<T>(list);
         result.setTotalPage(pageInfo.getPages());
         result.setPageNum(pageInfo.getPageNum());
         result.setPageSize(pageInfo.getPageSize());
         result.setTotal(pageInfo.getTotal());
         result.setData(pageInfo.getList());
-        result.setCode(ErrorCodeType.SUCCESS.intValue());
         return result;
     }
 
@@ -58,16 +58,14 @@ public class CommonPage<T> {
      * 将SpringData分页后的list转为分页信息
      */
     public static <T> CommonPage<T> restPage(Page<T> pageInfo) {
-        if(pageInfo == null){
-            return null;
-        }
         CommonPage<T> result = new CommonPage<>();
+        result.setCode(ErrorCodeType.SUCCESS.intValue());
+        if(pageInfo == null){
+            return result;
+        }
         result.setTotalPage(pageInfo.getPages());
-        result.setPageNum(pageInfo.getPageNum());
-        result.setPageSize(pageInfo.getPageSize());
         result.setTotal(pageInfo.getTotal());
         result.setData(pageInfo.getResult());
-        result.setCode(ErrorCodeType.SUCCESS.intValue());
         return result;
     }
 

@@ -9,6 +9,7 @@ import org.andot.share.app.line.service.ChatLogService;
 import org.andot.share.app.line.service.ConversationService;
 import org.andot.share.basic.annotation.PageStart;
 import org.andot.share.basic.dto.PageDTO;
+import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.core.dto.RoleDTO;
 import org.andot.share.core.util.CurrentUserUtil;
@@ -46,9 +47,9 @@ public class ConversationController {
     @ApiOperation("打开会话")
     @PageStart
     @GetMapping("/open")
-    public CommonResult openConversation(@RequestBody PageDTO<String> chatLogPage) {
+    public CommonPage openConversation(PageDTO<String> chatLogPage) {
         List<ChatLog> chatLogs = chatLogService.getChatLogsByConversationId(chatLogPage.getParam());
-        return CommonResult.success(chatLogs);
+        return CommonPage.restPage(chatLogs);
     }
 
     @ApiOperation("创建会话")

@@ -68,9 +68,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         PUBLIC_PATH.toArray(urls);
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(urls).permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)
                 .authenticationEntryPoint(userUnAuthenticationHandler);
         http.logout().logoutSuccessHandler(userLogoutSuccessHandler)

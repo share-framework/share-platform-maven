@@ -2,6 +2,7 @@ package org.andot.share.common.utils;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.andot.share.common.components.ShareValueComponent;
 import org.andot.share.common.domain.JwtUserDetail;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;
 import org.andot.share.common.exception.TokenExpiredRuntimeException;
@@ -71,11 +72,17 @@ public class JwtUtil {
         } catch (Exception exception) {
             if (exception instanceof ExpiredJwtException) {
                 log.error("token is expired, ", exception);
-                throw new TokenExpiredRuntimeException("登录已失效，请重新登录！", exception);
+//                throw new TokenExpiredRuntimeException("登录已失效，请重新登录！", exception);
+                return true;
             }
             log.error("token if expired error, ", exception);
-            throw new RuntimeException("请重新登录重试！", exception);
+//            throw new RuntimeException("请重新登录重试！", exception);
+            return true;
         }
+    }
+
+    public static boolean isTokenExpired(String token) {
+        return isTokenExpired(token, ShareValueComponent.getStaticJwtSecret());
     }
 
 }

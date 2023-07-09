@@ -18,13 +18,13 @@ import java.util.Date;
 @Data
 public class ChatLog {
     @TableId(type = IdType.ASSIGN_UUID)
-    private String serverMsgID;
-    private String clientMsgID;
-    private String sendID;
-    private String recvID;
-    private int senderPlatformID;
-    private String senderNickname;
-    private String senderFaceURL;
+    private String serverMsgId;
+    private String clientMsgId;
+    private String sendId;
+    private String recvId;
+    private int senderPlatformId;
+    private String senderNickName;
+    private String senderFaceUrl;
     private int sessionType;
     private int msgFrom;
     private int contentType;

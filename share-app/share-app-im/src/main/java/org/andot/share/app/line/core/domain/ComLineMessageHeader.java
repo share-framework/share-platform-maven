@@ -22,7 +22,7 @@ public class ComLineMessageHeader implements Serializable {
     private String toLineId;
     /**
      * 消息类型
-     * 1 文本消息 2 图片消息 3 语音消息 4 视频消息 5 文件消息 6 定位消息
+     * 1 文本消息 2 图片消息 3 语音消息 4 视频消息 5 文件消息 6 定位消息 7 心跳消息 8 token过期消息
      */
     private Integer msgType;
 }
