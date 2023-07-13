@@ -6,6 +6,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,9 +46,20 @@ public class RedisUtil {
      * @param key
      * @param t
      * @param <T>
+     */
+    public static  <T> void put (String key, T t, Long expire) {
+        staticRedisTemplate.opsForValue().set(key, t);
+        staticRedisTemplate.expire(key, Duration.of(expire, ChronoUnit.SECONDS));
+    }
+
+    /**
+     * 单个value
+     * @param key
+     * @param t
+     * @param <T>
      * @return
      */
-    public static  <T> T get (String key, T t) {
+    public static  <T> T get (String key) {
         return (T) staticRedisTemplate.opsForValue().get(key);
     }
 

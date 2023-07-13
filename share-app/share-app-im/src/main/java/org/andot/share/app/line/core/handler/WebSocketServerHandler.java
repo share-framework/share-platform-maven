@@ -6,9 +6,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.config.ComLineConfig;
 import org.andot.share.app.line.core.domain.ComLineMessage;
+import org.andot.share.app.line.core.domain.enums.MessageType;
 import org.andot.share.app.line.util.HttpRequestParamUtil;
 import org.andot.share.app.line.util.MessageSaveUtil;
 import org.andot.share.common.components.ShareValueComponent;
@@ -16,6 +18,7 @@ import org.andot.share.common.exception.TokenExpiredRuntimeException;
 import org.andot.share.common.utils.JwtUtil;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * websocket 服务器端处理类
@@ -48,6 +51,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         if (!fullHttpRequest.decoderResult().isSuccess() ||
                 !"websocket".equalsIgnoreCase(fullHttpRequest.headers().get("Upgrade"))) {
             sendHttpResponse(ctx, fullHttpRequest, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
+            return;
         }
         // 获取请求头
 
@@ -57,9 +61,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         // 判断token有效期
         if (JwtUtil.isTokenExpired(token)) {
             // Token 失效，返回 401 响应码
-            FullHttpResponse response = new DefaultFullHttpResponse(
-                    HttpVersion.HTTP_1_1, HttpResponseStatus.UNAUTHORIZED);
-            ctx.writeAndFlush(response);
+            sendHttpResponse(ctx, fullHttpRequest, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.UNAUTHORIZED));
             return;
         }
         String lineId = HttpRequestParamUtil.getLineIdByAuthorization(token);
@@ -96,10 +98,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
         if (frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrame binaryWebSocketFrame = (BinaryWebSocketFrame) frame;
             ByteBuf buf = binaryWebSocketFrame.content();
+            buf.skipBytes(1);
             byte[] bytes = new byte[buf.readableBytes()];
             buf.readBytes(bytes);
             String message = new String(bytes, StandardCharsets.UTF_8);
-            ComLineMessage data = JSONObject.parseObject(message.substring(11), ComLineMessage.class);
+            ComLineMessage data = JSONObject.parseObject(message, ComLineMessage.class);
+            if (Objects.isNull(data.getHeader().getLineId()) || Objects.equals(MessageType.HEART.getCode(), data.getHeader().getMsgType())) {
+                log.info("心跳检测");
+                return;
+            }
             /**
              * 存储消息记录
              */
@@ -107,8 +114,12 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> 
             String lineId = data.getHeader().getToLineId();
             if (ComLineConfig.getUserChannelMap().containsKey(lineId)) {
                 log.info("{}消息收到：{}, 准备转发！", lineId, message);
-                ComLineConfig.getUserChannelMap().get(lineId).channel().writeAndFlush(binaryWebSocketFrame);
+                ByteBuf repBuf = Unpooled.copiedBuffer(message, StandardCharsets.UTF_8);
+                BinaryWebSocketFrame repFrame = new BinaryWebSocketFrame(repBuf);
+                ComLineConfig.getUserChannelMap().get(lineId).channel().writeAndFlush(repFrame);
                 log.info("{}消息转发成功！", lineId, message);
+            } else {
+                // 保存，并且设置为未读，需要推送
             }
             log.info(lineId + "消息收到：" + message);
         } else if (frame instanceof TextWebSocketFrame) {

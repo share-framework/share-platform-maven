@@ -46,6 +46,17 @@ public class JwtUtil {
                 .claim("permissions", userDetail.getPermissions()).compact();
     }
 
+    public static String productJwtToken2(JwtUserDetail userDetail, String secret, Long expiration) {
+        JwtBuilder jwtBuilder = new DefaultJwtBuilder().signWith(SignatureAlgorithm.HS256, secret);
+        return jwtBuilder.setExpiration(new Date(System.currentTimeMillis() + expiration * 1000 * 2))
+                .setId(userDetail.getXNumber())
+                .setIssuer("share.andot.org")
+                .setIssuedAt(Calendar.getInstance().getTime())
+                .claim("username", userDetail.getUsername())
+                .claim("roles", userDetail.getRoles())
+                .claim("permissions", userDetail.getPermissions()).compact();
+    }
+
     /**
      * 释放token中的对象
      *

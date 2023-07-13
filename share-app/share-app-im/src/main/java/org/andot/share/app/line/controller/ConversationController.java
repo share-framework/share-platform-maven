@@ -3,10 +3,12 @@ package org.andot.share.app.line.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.app.line.core.domain.ChatLog;
+import org.andot.share.app.line.core.domain.ComLineMessage;
 import org.andot.share.app.line.core.domain.Conversation;
 import org.andot.share.app.line.core.domain.enums.MessageType;
 import org.andot.share.app.line.service.ChatLogService;
 import org.andot.share.app.line.service.ConversationService;
+import org.andot.share.app.line.service.MessageService;
 import org.andot.share.basic.annotation.PageStart;
 import org.andot.share.basic.dto.PageDTO;
 import org.andot.share.common.response.CommonPage;
@@ -36,6 +38,8 @@ public class ConversationController {
     private ConversationService conversationService;
     @Resource
     private ChatLogService chatLogService;
+    @Resource
+    private MessageService mongoMessageService;
 
     @ApiOperation("最近会话列表")
     @GetMapping("/list")
@@ -48,7 +52,8 @@ public class ConversationController {
     @PageStart
     @GetMapping("/open")
     public CommonPage openConversation(PageDTO<String> chatLogPage) {
-        List<ChatLog> chatLogs = chatLogService.getChatLogsByConversationId(chatLogPage.getParam());
+//        List<ChatLog> chatLogs = chatLogService.getChatLogsByConversationId(chatLogPage.getParam());
+        List<ComLineMessage> chatLogs = mongoMessageService.getConversationMessageList(chatLogPage.getParam());
         return CommonPage.restPage(chatLogs);
     }
 

@@ -1,11 +1,13 @@
 package org.andot.share.basic.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.andot.share.common.components.ShareValueComponent;
 import org.andot.share.basic.domain.request.LoginParam;
 import org.andot.share.basic.entity.XNumberPool;
 import org.andot.share.basic.service.XNumberPoolService;
 import org.andot.share.common.type.ConstantType;
+import org.andot.share.common.utils.RedisUtil;
 import org.andot.share.core.dto.MenuPermissionDTO;
 import org.andot.share.common.domain.AccessToken;
 import org.andot.share.common.domain.JwtUserDetail;
@@ -15,6 +17,7 @@ import org.andot.share.core.dto.RoleDTO;
 import org.andot.share.core.dto.UserDTO;
 import org.andot.share.core.dto.XUserDetail;
 import org.andot.share.basic.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -24,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +62,9 @@ public class CommonController {
         jwtUserDetail.setPermissions(userDetail.getMenuDTOList().stream().map(MenuPermissionDTO::getMenuCode).collect(Collectors.toList()));
         accessToken.setData(jwtUserDetail);
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
+        String token2 = JwtUtil.productJwtToken2(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
         accessToken.setToken(token);
+        RedisUtil.put(token, token2, 24*60*60L);
         return CommonResult.success(accessToken, "登录成功");
     }
 
@@ -94,5 +100,26 @@ public class CommonController {
     @GetMapping("/healthy/status")
     public CommonResult healthy() {
         return CommonResult.success("basic api startup sucess!");
+    }
+
+    /**
+     * 刷新token，token续期
+     * @param token
+     * @return
+     */
+    @ApiOperation("刷新token，token续期")
+    @GetMapping("/refreshToken")
+    public CommonResult refush(@RequestHeader("X-Token") String token) {
+        if (!JwtUtil.isTokenExpired(token)) {
+            return CommonResult.success(token);
+        }
+        String tokenE = RedisUtil.get(token);
+        if (StringUtils.isNotBlank(tokenE)) {
+            JwtUserDetail jwtUserDetail = JwtUtil.releaseJwtToken(tokenE, shareValueComponent.getJwtSecret());
+            String newToken = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
+            RedisUtil.put(token, newToken, 24*60*60L);
+            return CommonResult.success(newToken);
+        }
+        return CommonResult.failed();
     }
 }

@@ -8,6 +8,7 @@ import org.andot.share.app.line.core.domain.enums.MessageType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 消息对象
@@ -27,6 +28,10 @@ public class ComLineMessage implements Serializable {
     private ComLineMessageHeader header;
     private ComLineMessageBody body;
     private ComLineMessageFooter footer;
+
+    public Long getTime() {
+        return this.footer.getTimestamp();
+    }
 
     public ComLineMessage(Integer msgType) {
         this.header = new ComLineMessageHeader();

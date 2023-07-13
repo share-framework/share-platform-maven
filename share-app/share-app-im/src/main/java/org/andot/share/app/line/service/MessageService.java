@@ -54,5 +54,12 @@ public interface MessageService {
      */
     List<ComLineMessage> getPersonMessageList (String lineId, Integer page, Integer size);
 
+    /**
+     * 根据会话id获取对应消息
+     * @param conversationId 会话id
+     * @return 消息列表
+     */
+    List<ComLineMessage> getConversationMessageList (String conversationId);
+
 
 }

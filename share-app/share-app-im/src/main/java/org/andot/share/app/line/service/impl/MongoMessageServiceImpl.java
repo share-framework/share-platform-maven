@@ -9,10 +9,13 @@ import org.andot.share.app.line.core.domain.Room;
 import org.andot.share.app.line.service.MessageService;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 保存消息, mongo 实现类
@@ -61,5 +64,15 @@ public class MongoMessageServiceImpl implements MessageService {
     @Override
     public List<ComLineMessage> getPersonMessageList(String lineId, Integer page, Integer size) {
         return null;
+    }
+
+    @Override
+    public List<ComLineMessage> getConversationMessageList(String conversationId) {
+        String[] cs = conversationId.split("_");
+        List<ComLineMessage> clm1 = mongoTemplate.findAll(ComLineMessage.class, String.format("msg_%s", conversationId));
+        List<ComLineMessage> clm2 =  mongoTemplate.findAll(ComLineMessage.class, String.format("msg_%s_%s_%s", cs[0], cs[2], cs[1]));
+        clm1.addAll(clm2);
+        clm1 = clm1.stream().sorted(Comparator.comparing(ComLineMessage::getTime)).collect(Collectors.toList());
+        return clm1;
     }
 }
