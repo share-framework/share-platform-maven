@@ -61,5 +61,12 @@ public interface MessageService {
      */
     List<ComLineMessage> getConversationMessageList (String conversationId);
 
+    /**
+     * 根据会话id获取最后一条消息
+     * @param conversationId 会话id
+     * @return 消息列表
+     */
+    ComLineMessage getLastConversationMessage (String conversationId);
+
 
 }

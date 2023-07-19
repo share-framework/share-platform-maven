@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.core.domain.ChatLog;
 import org.andot.share.app.line.mapper.MysqlChatLogMapper;
+import org.andot.share.app.line.service.ChatLogService;
 import org.andot.share.common.response.CommonPage;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service("chatLogService")
-public class ChatLogService implements org.andot.share.app.line.service.ChatLogService {
+public class ChatLogServiceImpl implements ChatLogService {
 
     private final MysqlChatLogMapper chatLogMapper;
 

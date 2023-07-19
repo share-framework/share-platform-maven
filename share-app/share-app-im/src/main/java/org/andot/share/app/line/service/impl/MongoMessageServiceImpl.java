@@ -6,9 +6,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.andot.share.app.line.core.domain.ComLineMessage;
 import org.andot.share.app.line.core.domain.Room;
+import org.andot.share.app.line.mapper.MongoMessageMapper;
 import org.andot.share.app.line.service.MessageService;
 import org.bson.Document;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
+import org.springframework.data.mongodb.core.query.Collation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +38,7 @@ import java.util.stream.Collectors;
 public class MongoMessageServiceImpl implements MessageService {
 
     private final MongoTemplate mongoTemplate;
+    private final MongoMessageMapper mongoMessageMapper;
 
     @Cached(name = "LINE_", key = "IsRoomCollection:{collectionName}")
     @Override
@@ -74,5 +83,25 @@ public class MongoMessageServiceImpl implements MessageService {
         clm1.addAll(clm2);
         clm1 = clm1.stream().sorted(Comparator.comparing(ComLineMessage::getTime)).collect(Collectors.toList());
         return clm1;
+    }
+
+    @Override
+    public ComLineMessage getLastConversationMessage(String conversationId) {
+//        // 构建聚合查询
+//        Sort sort = Sort.by("date").descending();
+//        SortOperation sortOperation = Aggregation.sort(sort);
+//        GroupOperation groupOperation = Aggregation.group(Aggregation.fields("date").getField("date").toString("%Y-%m-%d")).first("$$ROOT").as("firstRecord");
+//        Aggregation aggregation = Aggregation.newAggregation(sortOperation, groupOperation);
+//
+//        // 执行聚合查询
+//        AggregationResults<ComLineMessage> results = mongoTemplate.aggregate(aggregation, conversationId, ComLineMessage.class);
+//
+//        // 返回查询结果
+//        return results.getMappedResults();
+        Query query = new Query();
+        Sort sort = Sort.by(Sort.Direction.DESC, "footer.timestamp");
+        query.with(sort);
+        ComLineMessage singleMessages = mongoTemplate.findOne(query, ComLineMessage.class, String.format("msg_%s", conversationId));
+        return singleMessages;
     }
 }

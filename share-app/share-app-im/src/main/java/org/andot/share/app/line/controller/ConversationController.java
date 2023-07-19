@@ -1,16 +1,20 @@
 package org.andot.share.app.line.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.andot.share.app.line.core.domain.ChatLog;
 import org.andot.share.app.line.core.domain.ComLineMessage;
 import org.andot.share.app.line.core.domain.Conversation;
 import org.andot.share.app.line.core.domain.enums.MessageType;
+import org.andot.share.app.line.core.resp.ConversationVo;
 import org.andot.share.app.line.service.ChatLogService;
 import org.andot.share.app.line.service.ConversationService;
 import org.andot.share.app.line.service.MessageService;
 import org.andot.share.basic.annotation.PageStart;
 import org.andot.share.basic.dto.PageDTO;
+import org.andot.share.basic.entity.UserDetail;
+import org.andot.share.basic.service.UserService;
 import org.andot.share.common.response.CommonPage;
 import org.andot.share.common.response.CommonResult;
 import org.andot.share.core.dto.RoleDTO;
@@ -18,8 +22,10 @@ import org.andot.share.core.util.CurrentUserUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * ConversationController
@@ -37,14 +43,35 @@ public class ConversationController {
     @Resource
     private ConversationService conversationService;
     @Resource
-    private ChatLogService chatLogService;
-    @Resource
     private MessageService mongoMessageService;
+    @Resource
+    private UserService userService;
 
     @ApiOperation("最近会话列表")
     @GetMapping("/list")
     public CommonResult messageList(@RequestParam Long xNumber) {
         List<Conversation> conversationList = conversationService.getListByXNumber(xNumber);
+        if (CollectionUtils.isNotEmpty(conversationList)) {
+            List<ConversationVo> list = conversationList.stream().map(conversation -> {
+                ConversationVo conversationVo = new ConversationVo();
+                conversationVo.setConversationId(conversation.getConversationId());
+                conversationVo.setConversationType(conversation.getConversationType());
+                conversationVo.setOwnerUserId(conversation.getOwnerUserId());
+                conversationVo.setUserId(conversation.getUserId());
+                Long acceptUserId = conversation.getUserId();
+                UserDetail userDetail = userService.getUserDetail(acceptUserId);
+                conversationVo.setAcceptPersonName(userDetail.getRealName());
+                UserDetail sendUserDetail = userService.getUserDetail(conversation.getOwnerUserId());
+                conversationVo.setSendPersonName(sendUserDetail.getRealName());
+                ComLineMessage comLineMessage = mongoMessageService.getLastConversationMessage(conversation.getConversationId());
+                if (Objects.nonNull(comLineMessage)) {
+                    conversationVo.setLastConversation(comLineMessage.getBody().getContent());
+                    conversationVo.setLastConversationTime(new Date(comLineMessage.getTime()));
+                }
+                return conversationVo;
+            }).collect(Collectors.toList());
+            return CommonResult.success(list);
+        }
         return CommonResult.success(conversationList);
     }
 

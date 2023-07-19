@@ -14,24 +14,24 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.3:3306/share-im?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://62.234.42.130:9901/share-im?useSSL=false&serverTimezone=UTC
     username: root
-    password: 123456
+    password: 8af14495be1e271841b5c2975d9f5689
     hikari:
       pool-name: share-rbac-pool
   redis:
-    host: 114.113.230.69
-    port: 16379
+    host: 62.234.42.130
+    port: 9902
     database: 1
-    password: Enst@2022
+    password: 8af14495be1e271841b5c2975d9f5689
   data:
     mongodb:
-      host: 127.0.0.1
-      port: 27017
+      host: 62.234.42.130
+      port: 9900
       database: share-im-store
       authentication-database: admin
-      username: admin
-      password: "123456"
+      username: lucas
+      password: "8af14495be1e271841b5c2975d9f5689"
 
 jetcache:
   statIntervalMinutes: 15
