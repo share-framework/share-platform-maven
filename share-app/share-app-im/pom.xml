@@ -55,6 +55,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.andot.share.app.line.ComLineApplication</mainClass>
+                    <arguments>
+                        <argument>–parameters</argument>
+                    </arguments>
                 </configuration>
                 <executions>
                     <execution>
@@ -63,6 +66,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
         </plugins>
     </build>

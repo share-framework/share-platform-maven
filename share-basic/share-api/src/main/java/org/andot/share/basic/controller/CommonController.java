@@ -60,6 +60,7 @@ public class CommonController {
         jwtUserDetail.setXNumber(userDetail.getUsername());
         jwtUserDetail.setAppId(userDetail.getUser().getAppId());
         jwtUserDetail.setPermissions(userDetail.getMenuDTOList().stream().map(MenuPermissionDTO::getMenuCode).collect(Collectors.toList()));
+        jwtUserDetail.setRealName(userDetail.getUsername());
         accessToken.setData(jwtUserDetail);
         String token = JwtUtil.productJwtToken(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());
         String token2 = JwtUtil.productJwtToken2(jwtUserDetail, shareValueComponent.getJwtSecret(), shareValueComponent.getJwtExpiration());

@@ -61,6 +61,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, new ArrayList<String>(){{
                     add(ConstantType.GOD_ROLE_CODE);
                 }});
+                UserDetail userDetail = userDeatilMapper.selectOne(new LambdaQueryWrapper<UserDetail>()
+                        .eq(UserDetail::getXNumber, user.getXNumber()));
+                user.setRealName(userDetail.getRealName());
                 return new XUserDetail(user, roles, menuPermissionList);
             }
             List<RoleUser> roleUserList = roleUserMapper.selectList(new LambdaQueryWrapper<RoleUser>().eq(RoleUser::getXNumber, xNumber));
@@ -76,6 +79,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 .roleType(item.getRoleType()).build())
                         .collect(Collectors.toList());
                 List<MenuPermissionDTO> menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
+                UserDetail userDetail = userDeatilMapper.selectOne(new LambdaQueryWrapper<UserDetail>()
+                        .eq(UserDetail::getXNumber, user.getXNumber()));
+                user.setRealName(userDetail.getRealName());
                 return new XUserDetail(user, roles, menuPermissionList);
             }
             throw new UsernameNotFoundException("请为用户设置角色！");
@@ -136,6 +142,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                     menuPermissionList = menuMapper.getMenuListByRoleCodes(1L, roleCodes);
                 }
             }
+            UserDetail userDetail = userDeatilMapper.selectOne(new LambdaQueryWrapper<UserDetail>()
+                    .eq(UserDetail::getXNumber, user.getXNumber()));
+            userDto.setRealName(userDetail.getRealName());
             return new XUserDetail(userDto, roles, menuPermissionList);
         } else {
             throw new UsernameNotFoundException("用户密码错误");

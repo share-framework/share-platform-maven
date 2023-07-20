@@ -25,6 +25,10 @@ public class JwtUserDetail {
 
     private String username;
     /**
+     * 如果没有备注则为昵称，如果有备注则为备注
+     */
+    private String realName;
+    /**
      *
      */
     private String avatar;
