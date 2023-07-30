@@ -61,21 +61,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         if (CollectionUtils.isEmpty(PUBLIC_PATH)) {
             PUBLIC_PATH = new ArrayList<>();
         }
-        PUBLIC_PATH.addAll(Arrays.asList(new String[]{"/login", "/v2/api-docs", "/v2/api-docs-ext",
+        PUBLIC_PATH.addAll(Arrays.asList(new String[]{"/login", "/phone/sign", "/v2/api-docs", "/v2/api-docs-ext",
                 "/swagger-resources/**", "/webjars/**", "/images/**",
                 "/doc.html", "/favicon.ico", "/video/**", "/static/**"}));
         String[] urls = new String[PUBLIC_PATH.size()];
         PUBLIC_PATH.toArray(urls);
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers(urls).permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)
                 .authenticationEntryPoint(userUnAuthenticationHandler);
         http.logout().logoutSuccessHandler(userLogoutSuccessHandler)
                 .invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                .logoutUrl("/share/logout");
+                .logoutUrl("/logout");
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(corsSecurityFilter, JwtAuthenticationFilter.class);
     }

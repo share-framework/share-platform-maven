@@ -53,6 +53,6 @@ public class XNumberPoolServiceImpl implements XNumberPoolService {
     public List<XNumberPool> getXNumberPool(Integer count) {
         return xNumberPoolMapper.selectList(new LambdaQueryWrapper<XNumberPool>()
                 .eq(XNumberPool::getUsed, 0)
-                .eq(XNumberPool::getReserve, 0));
+                .eq(XNumberPool::getReserve, 0).last(" LIMIT " + count));
     }
 }

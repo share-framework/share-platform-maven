@@ -85,7 +85,13 @@ public class CommonController {
         List<XNumberPool> xNumberPoolList = xNumberPoolService.getXNumberPool(count);
         Random random = new Random();
         if (ConstantType.PHONE.equalsIgnoreCase(type)) {
-            XNumberPool xNumberPool = xNumberPoolList.get(random.nextInt(count));
+            XNumberPool xNumberPool = xNumberPoolList.get(random.nextInt(xNumberPoolList.size()));
+            userDTO.setXNumber(xNumberPool.getXNumber());
+            userDTO.setAppId(1L);
+            UserDTO userDTO1 = userService.addUserBase(userDTO);
+            return CommonResult.success(userDTO1);
+        } else if (ConstantType.EMAIL.equalsIgnoreCase(type)) {
+            XNumberPool xNumberPool = xNumberPoolList.get(random.nextInt(xNumberPoolList.size()));
             userDTO.setXNumber(xNumberPool.getXNumber());
             userDTO.setAppId(1L);
             UserDTO userDTO1 = userService.addUserBase(userDTO);
